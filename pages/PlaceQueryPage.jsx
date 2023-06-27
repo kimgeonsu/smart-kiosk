@@ -40,7 +40,8 @@ const ButtonContainer = styled.div`
   top: 548px;
 `;
 
-function PlaceQuery() {
+  const PlaceQuery = () => {
+
   const router = useRouter();
   const [showComponents, setShowComponents] = useState(false);
 
