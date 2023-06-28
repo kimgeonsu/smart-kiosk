@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from 'next/router';
 import styled, { keyframes } from "styled-components";
-import { ReactComponent as QuerySvg } from '../public/wheretoeat.svg';
-import { ReactComponent as Takeout } from '../public/takeout.svg';
-import { ReactComponent as Seat } from '../public/seat.svg';
+import Image from 'next/image';
+import wheretoeatSvg from '../public/wheretoeat.svg';
+import takeoutSvg from '../public/takeout.svg';
+import seatSvg from '../public/seat.svg';
+import SquareButton from './SquareButton';
 
 const fadeInAnimation = keyframes`
   from {
@@ -19,6 +21,7 @@ const fadeInAnimation = keyframes`
 const Wrapper = styled.div`
   opacity: 0;
   animation: ${fadeInAnimation} 1s ease-in forwards;
+ 
 `;
 
 const TextContainer = styled.div`
@@ -26,8 +29,10 @@ const TextContainer = styled.div`
   height: 51px;
   width: 233px;
   left: 298px;
-  top: 445px;
+  top: 438px;
   border-radius: nullpx;
+  display: flex;
+  position: relative; 
 `;
 
 const ButtonContainer = styled.div`
@@ -40,8 +45,7 @@ const ButtonContainer = styled.div`
   top: 548px;
 `;
 
-  const PlaceQuery = () => {
-
+const PlaceQuery = () => {
   const router = useRouter();
   const [showComponents, setShowComponents] = useState(false);
 
@@ -67,12 +71,13 @@ const ButtonContainer = styled.div`
   return (
     <Wrapper>
       <TextContainer>
-        <QuerySvg />
+        <Image src={wheretoeatSvg} alt="Wheretoeat" />
       </TextContainer>
       {showComponents && (
         <ButtonContainer>
-          <SquareButton onClick={handleNextPage} svgfile={<Seat />} />
-          <SquareButton onClick={handleNextPage} svgfile={<Takeout />} />
+          {/* SquareButton 컴포넌트 사용 */}
+          <SquareButton onClick={handleNextPage} svgfile={<Image src={seatSvg} alt="Seat" />} />
+          <SquareButton onClick={handleNextPage} svgfile={<Image src={takeoutSvg} alt="Takeout" />} />
         </ButtonContainer>
       )}
     </Wrapper>

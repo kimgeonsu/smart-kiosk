@@ -1,7 +1,8 @@
 import React from "react";
 import styled from "styled-components";
-import { ReactComponent as Espresso } from '../../asset/espresso.svg';
-import { ReactComponent as DeleteSvg } from '../../asset/delete.svg'
+
+import DeleteSvg from '../../../public/asset/delete.svg'
+
 
 const Wrapper = styled.div`
   padding:8px;

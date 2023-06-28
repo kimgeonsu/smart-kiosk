@@ -1,0 +1,18 @@
+[
+      {
+        "name": "에스프레소",
+        "price": 3000,
+        "image": "/espresso.svg"
+      },
+      {
+        "name": "아메리카노",
+        "price": 4000,
+        "image": "/asset/espresso.svg"
+      },
+      {
+        "name": "라떼",
+        "price": 4500,
+        "image": "/asset/espresso.svg"
+      }
+]
+

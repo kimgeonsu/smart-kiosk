@@ -16,6 +16,8 @@
     "styled-components": "^5.3.10"
   },
   "devDependencies": {
+    "@types/node": "20.3.2",
+    "@types/react": "18.2.14",
     "babel-plugin-inline-react-svg": "^2.0.2",
     "eslint": "8.41.0",
     "eslint-config-next": "13.4.4"

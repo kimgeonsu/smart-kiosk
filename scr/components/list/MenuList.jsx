@@ -9,22 +9,22 @@ const Wrapper = styled.div`
     margin-left: 64px;
     margin-right: 64px;
     margin-top: 16px;
+    height: 69vh;
+    
 `;
 
-function MenuList(props) {
+const MenuList=(props)=> {
   const { drinks, onClickItem } = props;
+
+  if (!Array.isArray(drinks) || drinks.length === 0) {
+    return null; // Return null or display an alternative content if drinks is not a valid array
+  }
 
   return (
     <Wrapper>
-      <MenuListItem />
-      <MenuListItem />
-      <MenuListItem />
-      <MenuListItem />
-      <MenuListItem />
-      <MenuListItem />
-      <MenuListItem />
-      <MenuListItem />
-      <MenuListItem />
+      {drinks.map((drink, index) => {
+                return <MenuListItem key={drink.name} drink={drink} />;
+            })}
     </Wrapper>
   );
 }

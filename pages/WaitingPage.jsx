@@ -13,16 +13,17 @@ const fadeInAnimation = keyframes`
 `;
 
 const Wrapper = styled.div`
-    position: absolute;
-    width: 448px;
-    height: 346.74px;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    animation: ${fadeInAnimation} 1s ease-in;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation: ${fadeInAnimation} 1s ease-in;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
-const Waitingforcustomer = () => {
+const WaitingPage = () => {
   const router = useRouter();
 
   const handleNextPage = () => {
@@ -50,4 +51,4 @@ const Waitingforcustomer = () => {
   );
 }
 
-export default Waitingforcustomer;
+export default WaitingPage;

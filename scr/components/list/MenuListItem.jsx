@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { ReactComponent as Espresso } from '../../asset/espresso.svg';
+
 const Wrapper = styled.div`
     width: 223px;
     height: 240px;
@@ -9,21 +9,19 @@ const Wrapper = styled.div`
 `;
 
 const ImageContainer = styled.div`
-width: 162px;
-height: 163px;
-border-bottom: 1px solid #CACACA;
-width: 191px;
-margin-top: 1px;
-margin-left: 16px;
+    width: 162px;
+    height: 163px;
+    border-bottom: 1px solid #CACACA;
+    width: 191px;
+    margin-top: 1px;
+    margin-left: 16px;
 `;
 
 const Image = styled.svg`
     alling:center;
     width: 157px
     height: 159px
-
     border: none;
-    
 `;
 
 const NoticeTag =styled.svg`
@@ -33,7 +31,7 @@ const NoticeTag =styled.svg`
 
 const NameText = styled.p`
     margin-left: 16px;
-    margin-top: 13px;
+    margin-top: 16px;
     font-family: SF Pro Text;
     font-size: 12px;
     font-weight: 600;
@@ -44,7 +42,7 @@ const NameText = styled.p`
 
 const PriceText = styled.p`
     margin-left: 16px;
-    margin-top: 13px;
+    margin-top: 8px;
     font-family: SF Pro Text;
     font-size: 16px;
     font-weight: 800;
@@ -53,22 +51,17 @@ const PriceText = styled.p`
     text-align: left;
 `;
 
-
-
-
-
-function MenuListItem(props){
+const MenuListItem=(props)=>{
     const {drink, onClick}= props;
     
     return(
-        <Wrapper>
-            <ImageContainer> <Image><Espresso/></Image><NameText>에스프레소</NameText>
-            <PriceText>4,000원</PriceText></ImageContainer>
-           
-        </Wrapper>
+    <Wrapper>
+       <ImageContainer>
+       <Image src={drink.image} alt={drink.name} />
+       <NameText>{drink.name}</NameText>
+       <PriceText>{drink.price}</PriceText>
+      </ImageContainer>
+    </Wrapper>
     );
-
-
 }
-
 export default MenuListItem;

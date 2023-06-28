@@ -5,18 +5,20 @@ import styled from "styled-components";
 const StyledButton = styled.div`
   width: 223px;
   height: 216px;
-  border: 1px solid;
+  border: none;
   background: #FFFFFF;
   cursor: pointer;
+  transition: border 0.3s ease-in-out; 
+  &:hover {
+    border: 3px solid #72A3FF;
+  }
 `;
 
 function Button(props) {
   const { svgfile, href } = props;
 
   return (
-    <Link href={href}>
       <StyledButton>{svgfile}</StyledButton>
-    </Link>
   );
 }
 

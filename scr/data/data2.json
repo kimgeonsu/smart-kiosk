@@ -1,0 +1,17 @@
+[
+    {
+      "name": "케모마일",
+      "price": 1000,
+      "image": "../public/asset/espresso.svg"
+    },
+    {
+      "name": "녹차",
+      "price": 4600,
+      "image": "../public/asset/espresso.svg"
+    },
+    {
+        "name": "페퍼민트티",
+        "price": 3000,
+        "image": "../public/asset/espresso.svg"
+    }
+]
