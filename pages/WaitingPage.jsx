@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import Head from 'next/head';
 import { useRouter } from 'next/router';
 import styled, { keyframes } from "styled-components";
+import Image from "next/image";
 
 const fadeInAnimation = keyframes`
   from {
@@ -13,10 +13,8 @@ const fadeInAnimation = keyframes`
 `;
 
 const Wrapper = styled.div`
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 100%;
   animation: ${fadeInAnimation} 1s ease-in;
   display: flex;
   justify-content: center;
@@ -42,10 +40,8 @@ const WaitingPage = () => {
 
   return (
     <>
-      <Head>
-      </Head>
       <Wrapper onClick={handleNextPage}>
-        {showWaiting && <img src="/waiting.svg" alt="Waiting" />}
+        {showWaiting && <Image width={820} height={1180} src="/waiting.svg" alt="Waiting" />}
       </Wrapper>
     </>
   );

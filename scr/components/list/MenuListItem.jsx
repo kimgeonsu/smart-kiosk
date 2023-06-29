@@ -1,11 +1,11 @@
 import React from "react";
 import styled from "styled-components";
+import Image from "next/image";
 
 const Wrapper = styled.div`
-    width: 223px;
+    /* width: 223px; */
     height: 240px;
     border : 1px solid #000000;
-       
 `;
 
 const ImageContainer = styled.div`
@@ -17,16 +17,15 @@ const ImageContainer = styled.div`
     margin-left: 16px;
 `;
 
-const Image = styled.svg`
-    alling:center;
-    width: 157px
-    height: 159px
-    border: none;
+// const Image = styled.svg`
+//     width: 157px;
+//     height: 159px;
+//     border: none;
+// `;
+
+const NoticeTag = styled.svg`
+
 `;
-
-const NoticeTag =styled.svg`
-
-`; 
 
 
 const NameText = styled.p`
@@ -51,17 +50,49 @@ const PriceText = styled.p`
     text-align: left;
 `;
 
-const MenuListItem=(props)=>{
-    const {drink, onClick}= props;
-    
-    return(
-    <Wrapper>
-       <ImageContainer>
-       <Image src={drink.image} alt={drink.name} />
-       <NameText>{drink.name}</NameText>
-       <PriceText>{drink.price}</PriceText>
-      </ImageContainer>
-    </Wrapper>
+const MenuListItem = (props) => {
+    const { drink, onClick } = props;
+
+    return (
+        // <Wrapper>
+        //     <ImageContainer>
+        //         <Image src={drink.image} alt={drink.name} />
+        //         <NameText>{drink.name}</NameText>
+        //         <PriceText>{drink.price}</PriceText>
+        //     </ImageContainer>
+        // </Wrapper>
+        <>
+            <div className="wrapper">
+                <Image width={150} height={150} src='/espresso.png' />
+                <hr />
+                <div className="name">에스프레소</div>
+                <div className="price">4,000원</div>
+            </div>
+            <style jsx>{`
+                .wrapper {
+                    padding: 16px;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    align-items: center;
+                    border: 1px solid #000;
+                }
+
+                hr {
+                    width: 100%;
+                    color: #CACACA;
+                }
+                
+                .name {
+                    font-size: 12px;
+                    font-weight: 600;
+                }
+                .price {
+                    font-size: 16px;
+                    font-weight: 800;
+                }
+            `}</style>
+        </>
     );
 }
 export default MenuListItem;

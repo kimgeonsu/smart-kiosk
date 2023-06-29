@@ -6,14 +6,10 @@ const Wrapper = styled.div`
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-gap: 16px;
-    margin-left: 64px;
-    margin-right: 64px;
-    margin-top: 16px;
-    height: 69vh;
     
 `;
 
-const MenuList=(props)=> {
+const MenuList = (props) => {
   const { drinks, onClickItem } = props;
 
   if (!Array.isArray(drinks) || drinks.length === 0) {
@@ -23,8 +19,8 @@ const MenuList=(props)=> {
   return (
     <Wrapper>
       {drinks.map((drink, index) => {
-                return <MenuListItem key={drink.name} drink={drink} />;
-            })}
+        return <MenuListItem key={drink.name} drink={drink} />;
+      })}
     </Wrapper>
   );
 }
