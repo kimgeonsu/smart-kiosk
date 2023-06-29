@@ -120,6 +120,7 @@ const PayStarting = styled.div`
 
 const Selectingmenu = () => {
   const [menuData, setMenuData] = useState([]);
+  const [cartRenderCount, setCartRenderCount] = useState(0);
 
   const handleTypeButtonClick = (type) => {
     setMenuData([]);
@@ -136,6 +137,10 @@ const Selectingmenu = () => {
   useEffect(() => {
     setMenuData(data1);
   }, []);
+
+  const handleMenuTouch = () => {
+    setCartRenderCount((prevCount) => prevCount + 1);
+  };
 
   return (
     // <Wrapper>
@@ -183,8 +188,6 @@ const Selectingmenu = () => {
           <div></div>
         </div>
 
-
-
         <div className="contentWrapper">
           <div className="imgContainer">
             <Image width={13} height={26} src='/asset/prev.svg' />
@@ -194,19 +197,35 @@ const Selectingmenu = () => {
             <hr />
 
             <div className="categoryWrapper">
-              <button>커피</button>
-              <button>커피</button>
-              <button>커피</button>
-              <button>커피</button>
+              <button onClick={() => handleTypeButtonClick("커피")}>커피</button>
+              <button onClick={() => handleTypeButtonClick("차")}>차</button>
+              <button>스무디</button>
+              <button>주스</button>
             </div>
 
-            <MenuList drinks={menuData} />
+            <MenuList drinks={menuData} onTouch={handleMenuTouch}/>
 
-            {/* 여기 안에를 채워봐~~ */}
+            {/* 여기 안에를 채워봐~~
+                dw: 채웠슴둥~~~*/}
             <div className="payContent">
 
+              <div className="barContainer">
+               <GrayText>주문내역</GrayText>
+                 <div className="ChangingText">
+                   <GrayText>수량</GrayText>
+                  <div className="SumTextContainer">
+                  <BlueText>15,000</BlueText>
+                  <GrayText>원</GrayText>
+                  <CartList />   
+                  </div>
+                 </div>
+              </div>
+              {/* 결제하기 버튼 */}
+              <PayStarting>
+                <PayStartButton payment="결제하기" width={223} height={99} />
+              </PayStarting>
+              </div>
             </div>
-          </div>
           <div className="imgContainer">
             <Image style={{ rotate: '180deg' }} width={13} height={26} src='/asset/prev.svg' />
           </div>
@@ -241,8 +260,9 @@ const Selectingmenu = () => {
         }
 
         .content {
-          {/* height: 1180px; */}
+           /*height: 1180px;*/
         }
+
         .categoryWrapper {
           margin-top: 24px;
           display: flex;
@@ -253,16 +273,98 @@ const Selectingmenu = () => {
         button {
           border: 0;
           background-color: transparent;
-          padding: 11px 37px;
+          padding: 11px 3px;
           border: 1px solid #000;
           font-weight: bolder;
           font-size: 16px;
+          width: 102px;
+          height: 48px;
+          border: 1px solid #000000;
+          cursor: pointer;
+          transition: background-color 0.3s;
+
+          &:hover {
+            background-color: #666666;
+            color: #ffffff;
+            border: none;
+          }
+
         }
 
         .imgContainer {
           display: flex;
           align-items: center;
+          padding: 16px;
         }
+
+        .barContainer{
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          height: 18px;
+          border-bottom: 1px solid #CACACA;
+          padding: 16px;
+          width: 70%;
+        }
+        
+        .payContent{
+          align-items: flex-start;
+          border: 1px;
+          display: flex;
+          justify-content: space-between;
+        }
+
+        .GrayText{
+          font-family: SF Pro Text;
+          font-size: 12px;
+          font-weight: 600;
+          line-height: 19px;
+          letter-spacing: 0px;
+          text-align: left;
+          color: #666666;
+        }
+        .ChangingText{
+            width: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 64px;
+        }
+
+        .SumTextContainer{{
+            margin-right: 0;
+        }
+
+        .BlueText{
+            font-size: 20px;
+            font-weight: 800;
+            line-height: 32px;
+            letter-spacing: 0px;
+            text-align: right;
+            color : #367CFF;
+          }
+
+        .PayStarting{
+            width: 30%;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+        }
+
+        .PayStartButton{
+        width: ${props => props.width}px;
+        height: ${props => props.height}px;
+        font-family: SF Pro Text;
+        font-size: 20px;
+        font-weight: 600;
+        line-height: 32px;
+        letter-spacing: 0px;
+        text-align: center;
+        background: #72A3FF;
+        color: white;
+        border: none;
+      }
+
       `}</style>
     </>
   );

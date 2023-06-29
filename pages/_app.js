@@ -1,7 +1,8 @@
 import '../styles/globals.css'
+import Selectingmenu from './SelectingMenuPage'
 
 function MyApp({ Component, pageProps }) {
-  return <Component {...pageProps} />
+  return <Selectingmenu {...pageProps} />
 }
 
 export default MyApp

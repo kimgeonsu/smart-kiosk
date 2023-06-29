@@ -13,9 +13,9 @@ function PayDrinkList(props) {
   return (
     <Wrapper>
         
-      <PayDrinkListItem/>
-      <PayDrinkListItem/>
-    
+        {drinks.map((payment, index) => {
+                return <MenuListItem key={payment.name} drink={payment} />;
+            })}
     </Wrapper>
   );
 }

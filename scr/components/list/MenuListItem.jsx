@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import Image from "next/image";
 
@@ -52,6 +52,21 @@ const PriceText = styled.p`
 
 const MenuListItem = (props) => {
     const { drink, onClick } = props;
+    const [touchCount, setTouchCount] = useState(0);
+
+    const handleClick = () => {
+        setTouchCount((prevCount) => prevCount + 1);
+        const dataToSave = {
+            name: drink.name,
+            price: drink.price,
+            touchCount: touchCount + 1,
+        };
+      
+        // Example: Saving the data to localStorage
+        localStorage.setItem(`menuData_${drink.name}`, JSON.stringify(dataToSave));
+
+        console.log("Clicked Drink:", drink);
+    };  
 
     return (
         // <Wrapper>
@@ -62,11 +77,11 @@ const MenuListItem = (props) => {
         //     </ImageContainer>
         // </Wrapper>
         <>
-            <div className="wrapper">
-                <Image width={150} height={150} src='/espresso.png' />
+            <div className="wrapper" onClick={handleClick}>
+                <Image width={150} height={150} src={drink.image} />
                 <hr />
-                <div className="name">에스프레소</div>
-                <div className="price">4,000원</div>
+                <div className="name">{drink.name}</div>
+                <div className="price">{drink.price}원</div>
             </div>
             <style jsx>{`
                 .wrapper {
@@ -95,4 +110,5 @@ const MenuListItem = (props) => {
         </>
     );
 }
+
 export default MenuListItem;
