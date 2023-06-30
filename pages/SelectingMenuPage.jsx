@@ -9,6 +9,7 @@ import PayStartButton from "../scr/components/ui/PayStartButton";
 import CartList from "../scr/components/list/CartList";
 import data1 from "../scr/data/data1.json";
 import data2 from "../scr/data/data2.json";
+import CartListItem from "../scr/components/list/CartListItem";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -118,6 +119,20 @@ const PayStarting = styled.div`
   justify-content: flex-end;
 `;
 
+const PayStartingButton = styled.button`
+  width: ${props => props.width}px;
+  height: ${props => props.height}px;
+  font-family: "SF Pro Text", sans-serif;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 32px;
+  letter-spacing: 0px;
+  text-align: center;
+  background: #72A3FF;
+  color: white;
+  border: none;
+`;
+
 const Selectingmenu = () => {
   const [menuData, setMenuData] = useState([]);
   const [cartRenderCount, setCartRenderCount] = useState(0);
@@ -138,48 +153,10 @@ const Selectingmenu = () => {
     setMenuData(data1);
   }, []);
 
-  const handleMenuTouch = () => {
-    setCartRenderCount((prevCount) => prevCount + 1);
-  };
+
 
   return (
-    // <Wrapper>
-    //   <UpperBar>
-    //     <StyledButton>
-    //       <BackButton />
-    //     </StyledButton>
-    //     <TextContainer>주문하기</TextContainer>
-    //   </UpperBar>
-
-    //   <BubbleContainer>
-    //     <Image src={BubbleSvg} alt="BubbleSvg" />
-    //   </BubbleContainer>
-
-    //   <ButtonContainer>
-    //     <TypeButton type="커피" onClick={() => handleTypeButtonClick("커피")} />
-    //     <TypeButton type="차" onClick={() => handleTypeButtonClick("차")} />
-    //     <TypeButton type="스무디" />
-    //     <TypeButton type="주스" />
-    //   </ButtonContainer>
-
-    //   <MenuList drinks={menuData} />
-
-    //   <CartContainer>
-    //     <BarContainer>
-    //       <GrayText>주문내역</GrayText>
-    //       <ChangingText>
-    //         <GrayText>수량</GrayText>
-    //         <SumTextContainer>
-    //           <BlueText>15,000</BlueText>
-    //           <GrayText>원</GrayText>
-    //         </SumTextContainer>
-    //       </ChangingText>
-    //     </BarContainer>
-    //     <PayStarting>
-    //       <PayStartButton payment="결제하기" width={223} height={99} />
-    //     </PayStarting>
-    //   </CartContainer>
-    // </Wrapper>
+    
     <>
       <div className="wrapper">
         <div className="upperBar">
@@ -192,6 +169,7 @@ const Selectingmenu = () => {
           <div className="imgContainer">
             <Image width={13} height={26} src='/asset/prev.svg' />
           </div>
+
           <div className="content">
             <Image width={671} height={55} src='/asset/speechbubble.svg' />
             <hr />
@@ -203,12 +181,12 @@ const Selectingmenu = () => {
               <button>주스</button>
             </div>
 
-            <MenuList drinks={menuData} onTouch={handleMenuTouch}/>
+            <MenuList drinks={menuData} />
 
             {/* 여기 안에를 채워봐~~
                 dw: 채웠슴둥~~~*/}
             <div className="payContent">
-
+<div className="cartlistContainer">
               <div className="barContainer">
                <GrayText>주문내역</GrayText>
                  <div className="ChangingText">
@@ -216,16 +194,22 @@ const Selectingmenu = () => {
                   <div className="SumTextContainer">
                   <BlueText>15,000</BlueText>
                   <GrayText>원</GrayText>
-                  <CartList />   
                   </div>
-                 </div>
+                 </div> 
               </div>
+<CartList/>
+<CartList/>
+</div>
               {/* 결제하기 버튼 */}
               <PayStarting>
-                <PayStartButton payment="결제하기" width={223} height={99} />
+                <PayStartingButton width={223} height={99}>결제 하기   </PayStartingButton>
+              
               </PayStarting>
+              
               </div>
+       
             </div>
+            
           <div className="imgContainer">
             <Image style={{ rotate: '180deg' }} width={13} height={26} src='/asset/prev.svg' />
           </div>
@@ -304,7 +288,12 @@ const Selectingmenu = () => {
           height: 18px;
           border-bottom: 1px solid #CACACA;
           padding: 16px;
-          width: 70%;
+          width: 100%;
+        }
+
+        .cartlistContainer{
+          width: 100%;
+          align-items: column;
         }
         
         .payContent{
@@ -351,18 +340,18 @@ const Selectingmenu = () => {
             justify-content: flex-end;
         }
 
-        .PayStartButton{
-        width: ${props => props.width}px;
-        height: ${props => props.height}px;
-        font-family: SF Pro Text;
-        font-size: 20px;
-        font-weight: 600;
-        line-height: 32px;
-        letter-spacing: 0px;
-        text-align: center;
-        background: #72A3FF;
-        color: white;
-        border: none;
+        PayStartingButton {
+          width: ${props => props.width}px;
+          height: ${props => props.height}px;
+          font-family: SF Pro Text;
+          font-size: 20px;
+          font-weight: 600;
+          line-height: 32px;
+          letter-spacing: 0px;
+          text-align: center;
+          background: #72A3FF;
+          color: white;
+          border: none;
       }
 
       `}</style>

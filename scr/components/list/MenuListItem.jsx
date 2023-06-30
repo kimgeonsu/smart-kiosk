@@ -62,9 +62,9 @@ const MenuListItem = (props) => {
             touchCount: touchCount + 1,
         };
       
-        // Example: Saving the data to localStorage
+        // localStorage에 데이터 저장
         localStorage.setItem(`menuData_${drink.name}`, JSON.stringify(dataToSave));
-
+        console.log("Saved Data:", dataToSave);
         console.log("Clicked Drink:", drink);
     };  
 

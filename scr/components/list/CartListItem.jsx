@@ -10,6 +10,7 @@ const Wrapper = styled.div`
   display: flex;
   align-items: center;
   gap: 0px 132px;
+  
 `;
 
 const NameContainer = styled.div`
@@ -31,34 +32,61 @@ const ButtonContainer = styled.div``;
 
 const CartListItem=(props)=> {
   // localStorage에서 데이터 가져오기
-  const savedData = JSON.parse(localStorage.getItem("menuData"));
+ // const savedData = JSON.parse(localStorage.getItem("menuData"));
 
   // 저장된 데이터를 표시할 변수
-  let drinkName = "";
+  let drinkName = "아메리카노";
   let touchCount = 0;
   let drinkPrice = 0;
 
   // localStorage에 데이터가 있는 경우 변수에 저장된 데이터 할당
-  if (savedData) {
+  /*if (savedData) {
     drinkName = savedData.name;
     touchCount = savedData.touchCount;
     drinkPrice = savedData.price;
  
-  }
+  }*/
 
   return (
-    <Wrapper>
-      <NameContainer>
-        <Text>아메리카노</Text>
-      </NameContainer>
+    <>
+    <div className="wrapper">
+      <div className="nameContainer"> <text>{drinkName}</text></div>
       <ButtonContainer>
-        <Text>개</Text>
+        <text>개</text>
       </ButtonContainer>
-      <NameContainer>
-        <Text>원</Text>
-        <DeleteSvg />
-      </NameContainer>
-    </Wrapper>
+      <div className="nameContainer"> <text>10000원</text></div>
+    </div>
+
+     <style jsx>{`
+                .wrapper {
+                  display: flex;
+                  align-items: center;
+                  justify-content: space-between;
+                  height: 18px;
+                  border-bottom: 1px solid #CACACA;
+                  padding: 16px;
+                  width: 100%;
+                }
+
+                hr {
+                    width: 100%;
+                    color: #CACACA;
+                }
+                
+                .nameContainer {
+                  display: flex;
+                  align-items: center;
+                  gap: 16px;
+                }
+                .text {
+                    font-size: 20px;
+                    font-weight: 600;
+                    line-height: 32px;
+                    letter-spacing: 0px;
+                    text-align: left;
+              }
+            `}</style>
+            </>
   );
 }
 
