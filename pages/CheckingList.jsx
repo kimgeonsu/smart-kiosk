@@ -1,82 +1,184 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import styled, { keyframes } from "styled-components";
 import Image from "next/image";
 import BackSvg from '../public/asset/back.svg';
-import PayStartButton from "../scr/components/ui/PayStartButton";
-import PayDrinkList from "../scr/components/list/PayDrinkList";
-import data1 from "../scr/data/data1.json";
-import data2 from "../scr/data/data2.json";
 
-const Wrapper = styled.div`
+
+import { useRouter } from 'next/router';
+import menu from "../src/data/menu.json";
+
+
+const CheckingList=()=>{
+
+  const router = useRouter();
+  const [selectedMenu, setSelectedMenu] = useState([]);
+  const handlePage = () => {
+    router.push("/checkingList");
+  };
   
-`;
-
-const UpperBar = styled.div`
-  margin-top: 42px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
-
-
-const StyledButton = styled.button`
-  width: 18px;
-  height: 36px;
-  position: absolute;
-  left: 42px;
-  border: none
-`;
-
-const BackButton = () => (
-  <Image src={BackSvg} alt="Back Button" width={18} height={36} />
-);
-
-const TextContainer = styled.div`
-  font-family: "SF Pro Text", sans-serif;
-  font-size: 25px;
-  font-weight: 600;
-  line-height: 32px;
-  letter-spacing: 0px;
-  text-align: center;
-  color: #000000;
-  
-`;
-
-const PayStarting = styled.button`
-position: absolute;
-top: 1055px;
-left: 63px;
-  margin-left: 0px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-`;
-
-function CheckingList(){
-    
-    
-    const handlePreviousPage = () => {
+  const handlePreviousPage = () => {
       
-      };
+  };
 
     return (
-        <Wrapper>
-          <UpperBar>
-          <StyledButton>
-          <BackButton />
-        </StyledButton>
-          <TextContainer>주문 내역</TextContainer>
-          </UpperBar>
+      <>
+        <div className="wrapper">
+        <div className="upperBar">
+          <Image width={16} height={32} src='/asset/back.svg' />
+          <h1>주문내역</h1>
+          <div></div>
+        </div>
 
-          <PayDrinkList/>
+        <div className="cart-list">
+              {
+                selectedMenu.map((item) =>
+                  <div className="cart-item">
+                    <div style={{ flex: 3 }}>{item.name}</div>
+                    <div style={{ flex: 0.8 }}>{item.quantity}</div>
+                    <div style={{ flex: 1 }}>{item.price * item.quantity}</div>
+                  </div>
+                )
+              }
+          </div>
+
+        <hr />
+        <style jsx>{`
+        .wrapper {
+          padding: 40px 30px;
+          width: 100%;
+          height: 1180px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+        }
+        .upperBar {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          width: 100%;
+        }
+        hr {
+          width: 671px;
+          margin-top: 24px;
+        }
+
+        .contentWrapper {
+          display: flex;
+          justify-content: center;
+          width: 100%;
+          height: 100%;
+        }
+
+        .content {
+        }
+
+        .categoryWrapper {
+          margin-top: 24px;
+          display: flex;
+          gap: 16px;
+          margin-bottom: 16px;
+        }
+
+        .imgContainer {
+          display: flex;
+          align-items: center;
+          padding: 16px;
+        }
+
+        .barContainer{
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          height: 18px;
+          border-bottom: 1px solid #CACACA;
+          padding: 16px;
+          width: 100%;
+        }
+
+        .cartlistContainer{
           
-          <PayStarting>
-            <PayStartButton payment="결제하기" onClick={handlePreviousPage} width={703} height={99} />
-          </PayStarting>
-        </Wrapper>
+          width: 100%;
+          align-items: column;
+        }
+        
+        .payContent{
+          margin-left:32px;
+          margin-top: 10px;
+          width: 100%;
+          display: flex;
+          justify-content: space-between;
+        }
+
+        .pay-top {
+          display: flex;
+          width: 100%;
+          border-bottom: 1px solid #CACACA;
+        }
+
+        .cart-list {
+          max-height: 69px;
+          overflow-y: scroll;
+        }
+
+        .cart-item {
+          display: flex;
+          width: 100%;
+        }
+
+        .cart-wrapper {
+          width: 100%;
+        }
+
+        .pay-btn {
+          margin-right:32px;
+          width: 223px;
+          height: 99px;
+          background-color: #72A3FF;
+          color: #FFF;
+          font-size: 20px;
+          font-weight: 600;
+          border: none;
+        }
+
+        .GrayText{
+          font-family: SF Pro Text;
+          font-size: 12px;
+          font-weight: 600;
+          line-height: 19px;
+          letter-spacing: 0px;
+          text-align: left;
+          color: #666666;
+        }
+        .ChangingText{
+            width: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 64px;
+        }
+
+        .SumTextContainer{
+            margin-right: 0;
+        }
+
+        .BlueText{
+            font-size: 20px;
+            font-weight: 800;
+            line-height: 32px;
+            letter-spacing: 0px;
+            text-align: right;
+            color : #367CFF;
+          }
+
+        .PayStarting{
+            width: 30%;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+        }
+      `}</style>
+      </div>
+      </>
       );
 
 }

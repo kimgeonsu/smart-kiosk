@@ -3,11 +3,11 @@ import styled from "styled-components";
 import Image from "next/image";
 import MenuList from "../src/components/list/MenuList";
 import menu from "../src/data/menu.json";
-import data2 from "../src/data/data2.json";
 
 const Selectingmenu = () => {
   const [menuData, setMenuData] = useState([]);
   const [selectedMenu, setSelectedMenu] = useState([]);
+  const [totalPrice, setTotalPrice] = useState(0);
 
   const handleTypeButtonClick = (type) => {
     setMenuData([]);
@@ -34,6 +34,16 @@ const Selectingmenu = () => {
   useEffect(() => {
     console.log(selectedMenu);
   }, [selectedMenu])
+
+  useEffect(() => {
+    const totalPrice = selectedMenu.reduce(
+      (sum, item) => sum + item.price * item.quantity,
+      0
+    );
+    localStorage.setItem("totalPrice", JSON.stringify(totalPrice));
+    console.log(totalPrice);
+  }, [selectedMenu]);
+  
 
   const saveOrder = () => {
     localStorage.setItem('order', JSON.stringify(selectedMenu));
@@ -77,15 +87,18 @@ const Selectingmenu = () => {
           <div className="cart-wrapper">
             <div className="pay-top">
               <div style={{ flex: 3}}>주문내역</div>
-              <div style={{ flex: 1 }}>수량</div>
-              <div style={{ flex: 1, fontSize: 24, color: '#367cff', fontWeight: 'bolder' }} >15,000원</div>
+              <div style={{ flex: 0.8 }}>수량</div>
+              <div style={{ flex: 1, fontSize: 24, color: '#367cff', fontWeight: 'bolder' }}>
+              {selectedMenu.reduce((sum, item) => sum + item.price * item.quantity, 0).toLocaleString()}원
+</div>
+
             </div>
             <div className="cart-list">
               {
                 selectedMenu.map((item) =>
                   <div className="cart-item">
                     <div style={{ flex: 3 }}>{item.name}</div>
-                    <div style={{ flex: 1 }}>{item.quantity}</div>
+                    <div style={{ flex: 0.8 }}>{item.quantity}</div>
                     <div style={{ flex: 1 }}>{item.price * item.quantity}</div>
                   </div>
                 )
@@ -176,7 +189,7 @@ const Selectingmenu = () => {
         }
         
         .payContent{
-          margin-left:64px;
+          margin-left:32px;
           margin-top: 10px;
           width: 100%;
           display: flex;
