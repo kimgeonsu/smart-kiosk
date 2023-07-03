@@ -18,27 +18,34 @@ const ImageContainer = styled.div`
 `;
 
 const MenuListItem = (props) => {
-    const { drink, onClick } = props;
-    const [touchCount, setTouchCount] = useState(0);
+    const { drink, selectedMenu, setSelectedMenu } = props;
 
     const handleClick = () => {
-        setTouchCount((prevCount) => prevCount + 1);
-        const dataToSave = {
-            name: drink.name,
-            price: drink.price,
-            touchCount: touchCount + 1,
-        };
-
-        // localStorage에 데이터 저장
-        localStorage.setItem(`menuData_${drink.name}`, JSON.stringify(dataToSave));
-        console.log("Saved Data:", dataToSave);
-        console.log("Clicked Drink:", drink);
+        let names = selectedMenu.map(e => e.name);
+        let idx = names.indexOf(drink.name);
+        if (idx == -1) {
+            const dataToSave = {
+                name: drink.name,
+                price: drink.price,
+                quantity: 1
+            };
+            setSelectedMenu([dataToSave, ...selectedMenu]);
+        } else {
+            // selectedMenu[idx]['quantity'] = selectedMenu[idx]['quantity'] + 1;
+            const updateArr = selectedMenu.map(item => {
+                if (item.name == drink.name) {
+                    return { ...item, quantity: selectedMenu[idx]['quantity'] + 1 }
+                }
+                return item
+            })
+            setSelectedMenu(updateArr);
+        }
     };
 
     return (
         <>
             <div className="wrapper" onClick={handleClick}>
-                <Image width={150} height={150} src={drink.image} />
+                <Image width={150} height={150} alt="음료" src={drink.image} />
                 <hr />
                 <div className="name">{drink.name}</div>
                 <div className="price">{drink.price}원</div>
@@ -61,11 +68,11 @@ const MenuListItem = (props) => {
                 }
                 
                 .name {
-                    font-size: 12px;
+                    font-size: 16px;
                     font-weight: 600;
                 }
                 .price {
-                    font-size: 16px;
+                    font-size: 12px;
                     font-weight: 800;
                 }
             `}</style>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import styled from "styled-components";
 import Image from "next/image";
 import MenuList from "../src/components/list/MenuList";
@@ -7,6 +7,7 @@ import data2 from "../src/data/data2.json";
 
 const Selectingmenu = () => {
   const [menuData, setMenuData] = useState([]);
+  const [selectedMenu, setSelectedMenu] = useState([]);
 
   const handleTypeButtonClick = (type) => {
     setMenuData([]);
@@ -23,6 +24,14 @@ const Selectingmenu = () => {
   useEffect(() => {
     setMenuData(data1);
   }, []);
+
+  useEffect(() => {
+    console.log(selectedMenu);
+  }, [selectedMenu])
+
+  const saveOrder = () => {
+    localStorage.setItem('order', JSON.stringify(selectedMenu));
+  }
 
   return (
     <>
@@ -49,7 +58,7 @@ const Selectingmenu = () => {
               <button>주스</button>
             </div>
 
-            <MenuList drinks={menuData} />
+            <MenuList selectedMenu={selectedMenu} setSelectedMenu={setSelectedMenu} drinks={menuData} />
 
           </div>
 
@@ -65,14 +74,21 @@ const Selectingmenu = () => {
               <div style={{ flex: 1, fontSize: 24, color: '#367cff', fontWeight: 'bolder' }} >15,000원</div>
             </div>
             <div className="cart-list">
-              <div className="cart-item">
-                <div style={{ flex: 3 }}>아메리카노</div>
+              {/* <div style={{ flex: 3 }}>아메리카노</div>
                 <div style={{ flex: 1 }}>1개</div>
-                <div style={{ flex: 1 }}>5,000원</div>
-              </div>
+                <div style={{ flex: 1 }}>5,000원</div> */}
+              {
+                selectedMenu.map((item) =>
+                  <div className="cart-item">
+                    <div style={{ flex: 3 }}>{item.name}</div>
+                    <div style={{ flex: 1 }}>{item.quantity}</div>
+                    <div style={{ flex: 1 }}>{item.price * item.quantity}</div>
+                  </div>
+                )
+              }
             </div>
           </div>
-          <button className="pay-btn">결제 하기</button>
+          <button onClick={saveOrder} className="pay-btn">결제 하기</button>
         </div>
       </div>
       <style jsx>{`
