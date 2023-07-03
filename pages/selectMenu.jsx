@@ -2,7 +2,7 @@ import React, { use, useEffect, useState } from "react";
 import styled from "styled-components";
 import Image from "next/image";
 import MenuList from "../src/components/list/MenuList";
-import data1 from "../src/data/data1.json";
+import menu from "../src/data/menu.json";
 import data2 from "../src/data/data2.json";
 
 const Selectingmenu = () => {
@@ -13,16 +13,22 @@ const Selectingmenu = () => {
     setMenuData([]);
     let newData;
     if (type === "커피") {
-      newData = data1;
+      newData = menu.coffee;
     } else if (type === "차") {
-      newData = data2;
+      newData = menu.tea;
     }
+      else if (type === "스무디") {
+    newData = menu.smoothie;
+    }
+      else if (type === "주스") {
+    newData = menu.juice;
+  }
     setMenuData(newData);
 
   };
 
   useEffect(() => {
-    setMenuData(data1);
+    setMenuData(menu.coffee);
   }, []);
 
   useEffect(() => {
@@ -54,8 +60,9 @@ const Selectingmenu = () => {
             <div className="categoryWrapper">
               <button onClick={() => handleTypeButtonClick("커피")}>커피</button>
               <button onClick={() => handleTypeButtonClick("차")}>차</button>
-              <button>스무디</button>
-              <button>주스</button>
+              <button onClick={() => handleTypeButtonClick("스무디")}>스무디</button>
+              <button onClick={() => handleTypeButtonClick("주스")}>주스</button>
+
             </div>
 
             <MenuList selectedMenu={selectedMenu} setSelectedMenu={setSelectedMenu} drinks={menuData} />
@@ -69,7 +76,7 @@ const Selectingmenu = () => {
         <div className="payContent">
           <div className="cart-wrapper">
             <div className="pay-top">
-              <div style={{ flex: 3 }}>주문내역</div>
+              <div style={{ flex: 3}}>주문내역</div>
               <div style={{ flex: 1 }}>수량</div>
               <div style={{ flex: 1, fontSize: 24, color: '#367cff', fontWeight: 'bolder' }} >15,000원</div>
             </div>
@@ -163,11 +170,13 @@ const Selectingmenu = () => {
         }
 
         .cartlistContainer{
+          
           width: 100%;
           align-items: column;
         }
         
         .payContent{
+          margin-left:64px;
           margin-top: 10px;
           width: 100%;
           display: flex;
@@ -177,6 +186,7 @@ const Selectingmenu = () => {
         .pay-top {
           display: flex;
           width: 100%;
+          border-bottom: 1px solid #CACACA;
         }
 
         .cart-list {
@@ -194,6 +204,7 @@ const Selectingmenu = () => {
         }
 
         .pay-btn {
+          margin-right:32px;
           width: 223px;
           height: 99px;
           background-color: #72A3FF;

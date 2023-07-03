@@ -1,157 +1,181 @@
 {
-    "커피": [
-      {
-        "name": "아메리카노",
-        "temperature": "HOT",
-        "price": 4500,
-        "image": "/assets/americano.png"
-      },
-      {
-        "name": "아이스아메리카노",
-        "temperature": "ICED",
-        "price": 4000,
-        "image": "/assets/americano.png"
-      },
-      {
-        "name": "카페라떼",
-        "temperature": "HOT",
-        "price": 500,
-        "image": "/assets/banilalatte.png"
-      },
-      {
-        "name": "카페라떼 ",
-        "temperature": "ICED",
-        "price": 5000,
-        "image": "/assets/banilalatte.png"
-      },
-      {
-        "name": "카라메마끼아또",
-        "temperature": "HOT",
-        "price": 5900,
-        "image": "/assets/caramelmaciato.png"
-      },
-      {
-        "name": "카라메마끼아또",
-        "temperature": "ICED",
-        "price": 5900,
-        "image": "/assets/caramelmaciato.png"
-      },
-      {
-        "name": "카페모카",
-        "temperature": "HOT",
-        "price": 5500,
-        "image": "/assets/cafemoca.png"
-      },
-      {
-        "name": "카페모카",
-        "temperature": "ICED",
-        "price": 5500,
-        "image": "/assets/cafemoca.png"
-      },
-      {
-        "name": "에스프레소",
-        "temperature": "HOT",
-        "price": 4000,
-        "image": "/assets/espresso.png"
-      }
-    ],
-    "차": [
-      {
-        "name": "녹차",
-        "temperature": "HOT",
-        "price": 4000,
-        "image": ""
-      },
-      {
-        "name": "녹차",
-        "temperature": "ICED",
-        "price": 4000,
-        "image": ""
-      },
-      {
-        "name": "캐모마일",
-        "temperature": "HOT",
-        "price": 5500,
-        "image": "/assets/camomile.png"
-      },
-      {
-        "name": "캐모마일",
-        "temperature": "ICED",
-        "price": 5500,
-        "image": "/assets/camomile.png"
-      },
-      {
-        "name": "얼그레이",
-        "temperature": "HOT",
-        "price": 5500,
-        "image": "/assets/earlgrey.png"
-      },
-      {
-        "name": "얼그레이",
-        "temperature": "ICED",
-        "price": 5500,
-        "image": "/assets/earlgrey.png"
-      },
-      {
-        "name": "밀크티",
-        "temperature": "HOT",
-        "price": 6000,
-        "image": "/assets/milktea.png"
-      },
-      {
-        "name": "밀크티",
-        "temperature": "ICED",
-        "price": 6000,
-        "image": "/assets/milktea.png"
-      }
-      
-    ],
-    "스무디": [
-      {
-        "name": "요거트스무디",
-        "price": 4500,
-        "image": "/assets/yogurtsmoothie.png"
-      },
-      {
-        "name": "망고스무디",
-        "price": 5000,
-        "image": "/assets/mangosmothie.png"
-      },
-      {
-        "name": "청포도스무디",
-        "price": 5000,
-        "image": "/assets/grapesmothie.png"
-      },
-      {
-        "name": "초코스무디",
-        "price": 5000,
-        "image": "/assets/chocosmothie.png"
-      }
-    ],
-    "주스": [
-      {
-        "name": "오렌지주스",
-        "temperature": "ICED",
-        "price": 6500,
-        "image": "/assets/carrotjuice.png"
-      },
-      {
-        "name": "사과주스",
-        "temperature": "ICED",
-        "price": 6500,
-        "image": "/assets/applejuice.png"
-      },
-      {
-        "name": "수박주스",
-        "temperature": "ICED",
-        "price": 6500,
-        "image": "/assets/watermelonjuice.png"
-      },
-      {
-        "name": "딸기라떼",
-        "temperature": "ICED",
-        "price": 6300,
-        "image": "/assets/strawberrylatte.png"
-      }
-    ]
-  }  
+  "coffee": [
+    {
+      "id": 1,
+      "name": "아메리카노",
+      "temperature": "HOT",
+      "price": 4500,
+      "image": "/assets/americano.png"
+    },
+    {
+      "id": 2,
+      "name": "아이스아메리카노",
+      "temperature": "ICED",
+      "price": 4000,
+      "image": "/assets/americano.png"
+    },
+    {
+      "id": 3,
+      "name": "카페라떼",
+      "temperature": "HOT",
+      "price": 5000,
+      "image": "/assets/banilalatte.png"
+    },
+    {
+      "id": 4,
+      "name": "카페라떼",
+      "temperature": "ICED",
+      "price": 5000,
+      "image": "/assets/banilalatte.png"
+    },
+    {
+      "id": 5,
+      "name": "카라멜마끼아또",
+      "temperature": "HOT",
+      "price": 5900,
+      "image": "/assets/caramelmaciato.png"
+    },
+    {
+      "id": 6,
+      "name": "카라멜 마끼아또",
+      "temperature": "ICED",
+      "price": 5900,
+      "image": "/assets/caramelmaciato.png"
+    },
+    {
+      "id": 7,
+      "name": "카페모카",
+      "temperature": "HOT",
+      "price": 5500,
+      "image": "/assets/cafemoca.png"
+    },
+    {
+      "id": 8,
+      "name": "카페 모카",
+      "temperature": "ICED",
+      "price": 5500,
+      "image": "/assets/cafemoca.png"
+    },
+    {
+      "id": 9,
+      "name": "에스프레소",
+      "temperature": "HOT",
+      "price": 4000,
+      "image": "/assets/espresso.png"
+    }
+  ],
+  "tea": [
+    {
+      "id": 10,
+      "name": "녹차",
+      "temperature": "HOT",
+      "price": 4000,
+      "image": ""
+    },
+    {
+      "id": 11,
+      "name": "녹 차",
+      "temperature": "ICED",
+      "price": 4000,
+      "image": ""
+    },
+    {
+      "id": 12,
+      "name": "캐모 마일",
+      "temperature": "HOT",
+      "price": 5500,
+      "image": "/assets/camomile.png"
+    },
+    {
+      "id": 13,
+      "name": "캐모마일",
+      "temperature": "ICED",
+      "price": 5500,
+      "image": "/assets/camomile.png"
+    },
+    {
+      "id": 14,
+      "name": "얼그레이",
+      "temperature": "HOT",
+      "price": 5500,
+      "image": "/assets/earlgrey.png"
+    },
+    {
+      "id": 15,
+      "name": "얼 그레이",
+      "temperature": "ICED",
+      "price": 5500,
+      "image": "/assets/earlgrey.png"
+    },
+    {
+      "id": 16,
+      "name": "밀크티",
+      "temperature": "HOT",
+      "price": 6000,
+      "image": "/assets/milktea.png"
+    },
+    {
+      "id": 17,
+      "name": "밀크 티",
+      "temperature": "ICED",
+      "price": 6000,
+      "image": "/assets/milktea.png"
+    }
+  ],
+  "smoothie": [
+    {
+      "id": 18,
+      "name": "요거트스무디",
+      "price": 4500,
+      "image": "/assets/yogurtsmoothie.png"
+    },
+    {
+      "id": 19,
+      "name": "망고스무디",
+      "price": 5000,
+      "image": "/assets/mangosmothie.png"
+    },
+    {
+      "id": 20,
+      "name": "청포도스무디",
+      "price": 5000,
+      "image": "/assets/grapesmoothie.png"
+    },
+    {
+      "id": 21,
+      "name": "초코스무디",
+      "price": 5000,
+      "image": "/assets/chocosmoothie.png"
+    }
+  ],
+  "juice": [
+    {
+      "id": 22,
+      "name": "오렌지주스",
+      "temperature": "ICED",
+      "price": 6500,
+      "image": "/assets/carrotjuice.png"
+    },
+    {
+      "id": 23,
+      "name": "사과주스",
+      "temperature": "ICED",
+      "price": 6500,
+      "image": "/assets/applejuice.png"
+    },
+    {
+      "id": 24,
+      "name": "수박주스",
+      "temperature": "ICED",
+      "price": 6500,
+      "image": "/assets/watermelonjuice.png"
+    },
+    {
+      "id": 25,
+      "name": "딸기라떼",
+      "temperature": "ICED",
+      "price": 6300,
+      "image": "/assets/strawberrylatte.png"
+    }
+  ]
+}
