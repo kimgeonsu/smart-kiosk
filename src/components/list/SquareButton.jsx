@@ -8,7 +8,7 @@ const StyledButton = styled.div`
   border: none;
   background: #FFFFFF;
   cursor: pointer;
-  transition: border 0.3s ease-in-out; 
+  transition: border 0.1s ease-in-out; 
   &:hover {
     border: 3px solid #72A3FF;
   }
@@ -18,7 +18,7 @@ function Button(props) {
   const { svgfile, href } = props;
 
   return (
-      <StyledButton>{svgfile}</StyledButton>
+    <StyledButton>{svgfile}</StyledButton>
   );
 }
 

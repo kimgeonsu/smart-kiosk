@@ -17,39 +17,6 @@ const ImageContainer = styled.div`
     margin-left: 16px;
 `;
 
-// const Image = styled.svg`
-//     width: 157px;
-//     height: 159px;
-//     border: none;
-// `;
-
-const NoticeTag = styled.svg`
-
-`;
-
-
-const NameText = styled.p`
-    margin-left: 16px;
-    margin-top: 16px;
-    font-family: SF Pro Text;
-    font-size: 12px;
-    font-weight: 600;
-    line-height: 19px;
-    letter-spacing: 0px;
-    text-align: left;
-`;
-
-const PriceText = styled.p`
-    margin-left: 16px;
-    margin-top: 8px;
-    font-family: SF Pro Text;
-    font-size: 16px;
-    font-weight: 800;
-    line-height: 26px;
-    letter-spacing: 0px;
-    text-align: left;
-`;
-
 const MenuListItem = (props) => {
     const { drink, onClick } = props;
     const [touchCount, setTouchCount] = useState(0);
@@ -61,21 +28,14 @@ const MenuListItem = (props) => {
             price: drink.price,
             touchCount: touchCount + 1,
         };
-      
+
         // localStorage에 데이터 저장
         localStorage.setItem(`menuData_${drink.name}`, JSON.stringify(dataToSave));
         console.log("Saved Data:", dataToSave);
         console.log("Clicked Drink:", drink);
-    };  
+    };
 
     return (
-        // <Wrapper>
-        //     <ImageContainer>
-        //         <Image src={drink.image} alt={drink.name} />
-        //         <NameText>{drink.name}</NameText>
-        //         <PriceText>{drink.price}</PriceText>
-        //     </ImageContainer>
-        // </Wrapper>
         <>
             <div className="wrapper" onClick={handleClick}>
                 <Image width={150} height={150} src={drink.image} />
@@ -91,6 +51,8 @@ const MenuListItem = (props) => {
                     justify-content: center;
                     align-items: center;
                     border: 1px solid #000;
+                    width: 220px;
+                    height: 240px;
                 }
 
                 hr {

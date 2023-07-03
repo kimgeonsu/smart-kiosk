@@ -2,65 +2,11 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Image from "next/image";
 import MenuList from "../src/components/list/MenuList";
-import CartList from "../src/components/list/CartList";
 import data1 from "../src/data/data1.json";
 import data2 from "../src/data/data2.json";
 
-const GrayText = styled.text`
-  font-family: SF Pro Text;
-  font-size: 12px;
-  font-weight: 600;
-  line-height: 19px;
-  letter-spacing: 0px;
-  text-align: left;
-  color: #666666;
-`;
-
-const ChangingText = styled.div`
-  width: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 64px;
-`;
-
-const SumTextContainer = styled.div`
-  margin-right: 0;
-`;
-
-const BlueText = styled.text`
-  font-size: 20px;
-  font-weight: 800;
-  line-height: 32px;
-  letter-spacing: 0px;
-  text-align: right;
-  color : #367CFF;
-`;
-
-const PayStarting = styled.div`
-  width: 30%;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-`;
-
-const PayStartingButton = styled.button`
-  width: ${props => props.width}px;
-  height: ${props => props.height}px;
-  font-family: "SF Pro Text", sans-serif;
-  font-size: 20px;
-  font-weight: 600;
-  line-height: 32px;
-  letter-spacing: 0px;
-  text-align: center;
-  background: #72A3FF;
-  color: white;
-  border: none;
-`;
-
 const Selectingmenu = () => {
   const [menuData, setMenuData] = useState([]);
-  const [cartRenderCount, setCartRenderCount] = useState(0);
 
   const handleTypeButtonClick = (type) => {
     setMenuData([]);
@@ -79,7 +25,6 @@ const Selectingmenu = () => {
   }, []);
 
   return (
-
     <>
       <div className="wrapper">
         <div className="upperBar">
@@ -106,38 +51,29 @@ const Selectingmenu = () => {
 
             <MenuList drinks={menuData} />
 
-            {/* 여기 안에를 채워봐~~
-                dw: 채웠슴둥~~~*/}
-            <div className="payContent">
-              <div className="cartlistContainer">
-                <div className="barContainer">
-                  <GrayText>주문내역</GrayText>
-                  <div className="ChangingText">
-                    <GrayText>수량</GrayText>
-                    <div className="SumTextContainer">
-                      <BlueText>15,000</BlueText>
-                      <GrayText>원</GrayText>
-                    </div>
-                  </div>
-                </div>
-                <CartList />
-                <CartList />
-              </div>
-              {/* 결제하기 버튼 */}
-              <PayStarting>
-                <PayStartingButton width={223} height={99}>결제 하기   </PayStartingButton>
-
-              </PayStarting>
-
-            </div>
-
           </div>
 
           <div className="imgContainer">
             <Image style={{ rotate: '180deg' }} width={13} height={26} src='/asset/prev.svg' />
           </div>
         </div>
-
+        <div className="payContent">
+          <div className="cart-wrapper">
+            <div className="pay-top">
+              <div style={{ flex: 3 }}>주문내역</div>
+              <div style={{ flex: 1 }}>수량</div>
+              <div style={{ flex: 1, fontSize: 24, color: '#367cff', fontWeight: 'bolder' }} >15,000원</div>
+            </div>
+            <div className="cart-list">
+              <div className="cart-item">
+                <div style={{ flex: 3 }}>아메리카노</div>
+                <div style={{ flex: 1 }}>1개</div>
+                <div style={{ flex: 1 }}>5,000원</div>
+              </div>
+            </div>
+          </div>
+          <button className="pay-btn">결제 하기</button>
+        </div>
       </div>
       <style jsx>{`
         .wrapper {
@@ -167,7 +103,6 @@ const Selectingmenu = () => {
         }
 
         .content {
-          /*height: 1180px;*/
         }
 
         .categoryWrapper {
@@ -220,10 +155,34 @@ const Selectingmenu = () => {
         }
         
         .payContent{
-          align-items: flex-start;
-          border: 1px;
+          margin-top: 10px;
+          width: 100%;
           display: flex;
           justify-content: space-between;
+        }
+
+        .pay-top {
+          display: flex;
+          width: 100%;
+        }
+
+        .cart-item {
+          display: flex;
+          width: 100%;
+        }
+
+        .cart-wrapper {
+          width: 100%;
+        }
+
+        .pay-btn {
+          width: 223px;
+          height: 99px;
+          background-color: #72A3FF;
+          color: #FFF;
+          font-size: 20px;
+          font-weight: 600;
+          border: none;
         }
 
         .GrayText{
@@ -262,21 +221,6 @@ const Selectingmenu = () => {
             align-items: center;
             justify-content: flex-end;
         }
-
-        PayStartingButton {
-          width: ${props => props.width}px;
-          height: ${props => props.height}px;
-          font-family: SF Pro Text;
-          font-size: 20px;
-          font-weight: 600;
-          line-height: 32px;
-          letter-spacing: 0px;
-          text-align: center;
-          background: #72A3FF;
-          color: white;
-          border: none;
-      }
-
       `}</style>
     </>
   );
