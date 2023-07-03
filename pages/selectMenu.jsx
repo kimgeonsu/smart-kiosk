@@ -74,9 +74,6 @@ const Selectingmenu = () => {
               <div style={{ flex: 1, fontSize: 24, color: '#367cff', fontWeight: 'bolder' }} >15,000원</div>
             </div>
             <div className="cart-list">
-              {/* <div style={{ flex: 3 }}>아메리카노</div>
-                <div style={{ flex: 1 }}>1개</div>
-                <div style={{ flex: 1 }}>5,000원</div> */}
               {
                 selectedMenu.map((item) =>
                   <div className="cart-item">
@@ -180,6 +177,11 @@ const Selectingmenu = () => {
         .pay-top {
           display: flex;
           width: 100%;
+        }
+
+        .cart-list {
+          max-height: 69px;
+          overflow-y: scroll;
         }
 
         .cart-item {
