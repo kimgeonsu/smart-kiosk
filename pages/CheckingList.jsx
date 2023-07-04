@@ -1,9 +1,5 @@
 import React, { useEffect, useState } from "react";
-import styled, { keyframes } from "styled-components";
 import Image from "next/image";
-import BackSvg from '../public/asset/back.svg';
-
-
 import { useRouter } from 'next/router';
 import menu from "../src/data/menu.json";
 
@@ -29,13 +25,18 @@ const CheckingList=()=>{
           <div></div>
         </div>
 
+      -
         <div className="cart-list">
               {
                 selectedMenu.map((item) =>
                   <div className="cart-item">
-                    <div style={{ flex: 3 }}>{item.name}</div>
-                    <div style={{ flex: 0.8 }}>{item.quantity}</div>
-                    <div style={{ flex: 1 }}>{item.price * item.quantity}</div>
+                    <div style={{ flex: 3, fontSize: 16, color:'#000000',fontWeight: 'bolder'  }}>{item.name}</div>
+                    <div style={{ flex: 1.5, fontSize: 16, color:'#000000',fontWeight: 'bolder'  }}> <MinusButton handleMinusClick={() => handleMinusClick(item.name)} drink={item.name} />
+                                               {item.quantity}개
+                                               <PlusButton handlePlusClick={handlePlusClick} drink={item.name}/>
+                    </div>
+                    <div style={{ flex: 0.7 , fontSize: 16, color:'#000000',fontWeight: 'bolder' }}>{item.price * item.quantity}원</div>
+                      <DeleteButton handleDeleteClick={()=>handleDeleteClick(item.name)} drink={item.name}/>
                   </div>
                 )
               }

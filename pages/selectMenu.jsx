@@ -3,6 +3,9 @@ import styled from "styled-components";
 import Image from "next/image";
 import MenuList from "../src/components/list/MenuList";
 import menu from "../src/data/menu.json";
+import PlusButton from "../src/components/ui/PlusButton";
+import MinusButton from "../src/components/ui/MinusButton";
+import DeleteButton from "../src/components/ui/DeleteButton";
 
 const Selectingmenu = () => {
   const [menuData, setMenuData] = useState([]);
@@ -49,6 +52,47 @@ const Selectingmenu = () => {
     localStorage.setItem('order', JSON.stringify(selectedMenu));
   }
 
+  //수량 -1
+  const handleMinusClick = (drink) => {
+    setSelectedMenu((prevMenu) => {
+      const updatedMenu = prevMenu.map((item) => {
+        if (item.name === drink) {
+          if (item.quantity === 1) {
+            // quantity가 0이 되었을 때 해당 음료를 제외하고 필터링
+            return { ...item, quantity: item.quantity};
+          } else {
+            return { ...item, quantity: item.quantity - 1 };
+          }
+        }
+        return item;
+      });
+      return updatedMenu.filter(Boolean); // null 값을 제거하여 새로운 배열 반환
+    });
+  };
+  
+  //카트에서 삭제
+  const handleDeleteClick = (drink) => {
+    setSelectedMenu((prevMenu) => {
+      const updatedMenu = prevMenu.filter((item) => item.name !== drink); //해당 음료 이름 필터링
+      return updatedMenu;
+    });
+  };
+  
+//수량 +1
+  const handlePlusClick = (drink) => {
+    setSelectedMenu((prevMenu) => {
+    
+      const updatedMenu = prevMenu.map((item) => {
+        if (item.name === drink) {
+         
+          return { ...item, quantity: item.quantity + 1 };
+        }
+        return item;
+      });
+      return updatedMenu;
+    });
+  };
+
   return (
     <>
       <div className="wrapper">
@@ -72,23 +116,21 @@ const Selectingmenu = () => {
               <button onClick={() => handleTypeButtonClick("차")}>차</button>
               <button onClick={() => handleTypeButtonClick("스무디")}>스무디</button>
               <button onClick={() => handleTypeButtonClick("주스")}>주스</button>
-
             </div>
-
             <MenuList selectedMenu={selectedMenu} setSelectedMenu={setSelectedMenu} drinks={menuData} />
-
           </div>
 
           <div className="imgContainer">
             <Image style={{ rotate: '180deg' }} width={13} height={26} src='/asset/prev.svg' />
           </div>
+
         </div>
         <div className="payContent">
           <div className="cart-wrapper">
             <div className="pay-top">
-              <div style={{ flex: 3 }}>주문내역</div>
-              <div style={{ flex: 0.8 }}>수량</div>
-              <div style={{ flex: 1, fontSize: 24, color: '#367cff', fontWeight: 'bolder' }}>
+              <div style={{ flex: 3, fontSize: 16, color:'#666666',fontWeight: 'bolder' }}>주문내역</div>
+              <div style={{ flex: 1, fontSize: 16, color:'#666666',fontWeight: 'bolder'  }}>수량</div>
+              <div style={{ flex: 1.1, fontSize: 25, color: '#367cff', fontWeight: 'bolder' }}>
                 {selectedMenu.reduce((sum, item) => sum + item.price * item.quantity, 0).toLocaleString()}원
               </div>
 
@@ -97,9 +139,13 @@ const Selectingmenu = () => {
               {
                 selectedMenu.map((item) =>
                   <div className="cart-item">
-                    <div style={{ flex: 3 }}>{item.name}</div>
-                    <div style={{ flex: 0.8 }}>{item.quantity}</div>
-                    <div style={{ flex: 1 }}>{item.price * item.quantity}</div>
+                    <div style={{ flex: 3, fontSize: 16, color:'#000000',fontWeight: 'bolder'  }}>{item.name}</div>
+                    <div style={{ flex: 1.5, fontSize: 16, color:'#000000',fontWeight: 'bolder'  }}> <MinusButton handleMinusClick={() => handleMinusClick(item.name)} drink={item.name} />
+                                               {item.quantity}개
+                                               <PlusButton handlePlusClick={handlePlusClick} drink={item.name}/>
+                    </div>
+                    <div style={{ flex: 0.7 , fontSize: 16, color:'#000000',fontWeight: 'bolder' }}>{item.price * item.quantity}원</div>
+                      <DeleteButton handleDeleteClick={()=>handleDeleteClick(item.name)} drink={item.name}/>
                   </div>
                 )
               }
