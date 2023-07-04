@@ -17,12 +17,12 @@ const Selectingmenu = () => {
     } else if (type === "차") {
       newData = menu.tea;
     }
-      else if (type === "스무디") {
-    newData = menu.smoothie;
+    else if (type === "스무디") {
+      newData = menu.smoothie;
     }
-      else if (type === "주스") {
-    newData = menu.juice;
-  }
+    else if (type === "주스") {
+      newData = menu.juice;
+    }
     setMenuData(newData);
 
   };
@@ -43,7 +43,7 @@ const Selectingmenu = () => {
     localStorage.setItem("totalPrice", JSON.stringify(totalPrice));
     console.log(totalPrice);
   }, [selectedMenu]);
-  
+
 
   const saveOrder = () => {
     localStorage.setItem('order', JSON.stringify(selectedMenu));
@@ -86,11 +86,11 @@ const Selectingmenu = () => {
         <div className="payContent">
           <div className="cart-wrapper">
             <div className="pay-top">
-              <div style={{ flex: 3}}>주문내역</div>
+              <div style={{ flex: 3 }}>주문내역</div>
               <div style={{ flex: 0.8 }}>수량</div>
               <div style={{ flex: 1, fontSize: 24, color: '#367cff', fontWeight: 'bolder' }}>
-              {selectedMenu.reduce((sum, item) => sum + item.price * item.quantity, 0).toLocaleString()}원
-</div>
+                {selectedMenu.reduce((sum, item) => sum + item.price * item.quantity, 0).toLocaleString()}원
+              </div>
 
             </div>
             <div className="cart-list">
