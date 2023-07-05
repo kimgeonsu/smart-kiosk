@@ -25,12 +25,19 @@ const CheckingList=()=>{
     const totalPrice = localStorage.getItem('totalPrice');
     if (totalPrice) {
       const parsedPrice = JSON.parse(totalPrice);
-      console.log(parsedPrice);
+      console.log("총합확인"+parsedPrice);
        setSumPrice(parsedPrice);
     }
-
     else console.log("데이터 없음");
   }, []);
+
+  useEffect(() => {
+    const totalPrice = selectedMenu.reduce(
+      (sum, item) => sum + item.price * item.quantity,  0);
+      setSumPrice(totalPrice);
+      console.log(totalPrice);
+  }, [selectedMenu]);
+
 
   const router = useRouter();
  
@@ -43,32 +50,48 @@ const CheckingList=()=>{
   };
 
   const handleMinusClick = (drink) => {
-   
+      setSelectedMenu((prevMenu) => {
+      const updatedMenu = prevMenu.map((item) => {
+        if (item.name === drink) {
+          if (item.quantity === 1) {
+            // quantity가 0이 되었을 때 해당 음료를 제외하고 필터링
+            return { ...item, quantity: item.quantity};
+          } else {
+            return { ...item, quantity: item.quantity - 1 };
+          }
+        }
+        return item;
+      });
+      return updatedMenu.filter(Boolean); // null 값을 제거하여 새로운 배열 반환
+    });
   };
   
   //카트에서 삭제
   const handleDeleteClick = (drink) => {
-    
+    setSelectedMenu((prevMenu) => {
+      const updatedMenu = prevMenu.filter((item) => item.name !== drink); //해당 음료 이름 필터링
+      return updatedMenu;
+    });
   };
   
 //수량 +1
   const handlePlusClick = (drink) => {
-   
+    setSelectedMenu((prevMenu) => {
+    
+      const updatedMenu = prevMenu.map((item) => {
+        if (item.name === drink) {
+          return { ...item, quantity: item.quantity + 1 };
+        }
+        return item;
+      });
+      return updatedMenu;
+    });
   };
 
-  const getOrder = () => {
-    const order = localStorage.getItem('order');
-    if (order) {
-      const parsedOrder = JSON.parse(order);
-      // 가져온 주문 내역 활용하기
-      console.log(parsedOrder);
-      // 또는 state에 저장할 수도 있습니다.
-       setSelectedMenu(parsedOrder);
-    }
-
-    else console.log("데이터 없음");
+  const saveOrder = () => {
+    localStorage.setItem('order', JSON.stringify(selectedMenu));
+    localStorage.setItem("totalPrice", JSON.stringify(totalPrice));
   }
-
     return (
       <>
         <div className="wrapper">
@@ -81,16 +104,16 @@ const CheckingList=()=>{
       
         <div className="cart-list">
         {selectedMenu.map((item) => {
-            const menuArray = Object.values(menu);
-            const menuItem = menuArray.find((menuItem) => menuItem.name === item.name);
-            const imageUrl=menuItem?.image;
+          const menuArray = Object.values(menu);
+          const menuItem = menuArray.find((menuItem) => menuItem.name === item.name);
+          const imageUrl = menuItem?.image;
             return (
-                  <div className="cart-item" key={item.id}>
-                     <div className="image">
-                  <Image width={128} height={128} src={"/assets/camomile.png"} alt={item.name} />
+              <div className="cart-item" key={item.id}>
+                <div className="image">
+                  <Image width={128} height={128}  src={item.image} alt={item.name} />
                 </div>
-                    <div style={{ flex: 2, fontSize: 20, color:'#666666',fontWeight: 'bolder'  }}>{item.name}</div>
-                    <div style={{ flex: 1, fontSize: 17, color:'#666666',fontWeight: 'bolder'  }}> 
+                    <div style={{ flex: 2, fontSize: 20, color:'#666666',fontWeight: 'bolder' }}>{item.name}</div>
+                    <div style={{ flex: 1, fontSize: 20, color:'#666666',fontWeight: 'bolder' }}> 
                                 <MinusButton handleMinusClick={() => handleMinusClick(item.name)} drink={item.name} />
                                    {item.quantity}개
                                 <PlusButton handlePlusClick={handlePlusClick} drink={item.name}/>
@@ -101,13 +124,17 @@ const CheckingList=()=>{
                 );
               })}
           </div>
+
           <div className="paycontainer">
           <div className="sumContent">
-          <div style={{ fontSize: 20, color:'#666666',fontWeight: 'bolder'  }}>{"총 결제금액"}</div>
-                  
+          <div style={{ flex: 0.2, fontSize: 20, color: '#666666', fontWeight: 'bolder', marginBottom: '32px' }}>총 결제금액</div>
+          <div style={{ fontSize: 30, color: '#367cff', fontWeight: 'bolder', marginTop: '-10px' }}>{sumPrice.toLocaleString()}</div>
+
+             < div style={{ fontSize: 20, color:'#666666',fontWeight: 'bolder'  }}>원</div>    
           </div>
-          <button className="pay-btn"> 결제하기 </button>
+              <button className="pay-btn" onClick={saveOrder}> 결제하기 </button>
           </div>
+
         <style jsx>{`
         .wrapper {
           padding: 40px 40px;
@@ -184,7 +211,7 @@ const CheckingList=()=>{
           align-items: center;
         
           height: 144px;
-          border: 1px solid #000000;
+          border: 1px solid #367cff;
           margin: 16px;
         }
        

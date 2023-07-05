@@ -1,5 +1,4 @@
 import React, { use, useEffect, useState } from "react";
-import styled from "styled-components";
 import Image from "next/image";
 import MenuList from "../src/components/list/MenuList";
 import menu from "../src/data/menu.json";
@@ -12,6 +11,7 @@ const Selectingmenu = () => {
   const [selectedMenu, setSelectedMenu] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
 
+  //음료 종류 선택 버튼 동작
   const handleTypeButtonClick = (type) => {
     setMenuData([]);
     let newData;
@@ -40,19 +40,18 @@ const Selectingmenu = () => {
 
   useEffect(() => {
     const totalPrice = selectedMenu.reduce(
-      (sum, item) => sum + item.price * item.quantity,
-      0
-    );
-    localStorage.setItem("totalPrice", JSON.stringify(totalPrice));
+      (sum, item) => sum + item.price * item.quantity,  0);
+      setTotalPrice(totalPrice);
     console.log(totalPrice);
   }, [selectedMenu]);
 
 
   const saveOrder = () => {
     localStorage.setItem('order', JSON.stringify(selectedMenu));
+    localStorage.setItem("totalPrice", JSON.stringify(totalPrice));
   }
 
-  //수량 -1
+  //수량 - 1
   const handleMinusClick = (drink) => {
     setSelectedMenu((prevMenu) => {
       const updatedMenu = prevMenu.map((item) => {
@@ -84,7 +83,6 @@ const Selectingmenu = () => {
     
       const updatedMenu = prevMenu.map((item) => {
         if (item.name === drink) {
-         
           return { ...item, quantity: item.quantity + 1 };
         }
         return item;
@@ -140,9 +138,10 @@ const Selectingmenu = () => {
                 selectedMenu.map((item) =>
                   <div className="cart-item">
                     <div style={{ flex: 3, fontSize: 16, color:'#000000',fontWeight: 'bolder'  }}>{item.name}</div>
-                    <div style={{ flex: 1.5, fontSize: 16, color:'#000000',fontWeight: 'bolder'  }}> <MinusButton handleMinusClick={() => handleMinusClick(item.name)} drink={item.name} />
-                                               {item.quantity}개
-                                               <PlusButton handlePlusClick={handlePlusClick} drink={item.name}/>
+                    <div style={{ flex: 1.5, fontSize: 16, color:'#000000',fontWeight: 'bolder'  }}>
+                       <MinusButton handleMinusClick={() => handleMinusClick(item.name)} drink={item.name} />
+                         {item.quantity}개
+                       <PlusButton handlePlusClick={handlePlusClick} drink={item.name}/>
                     </div>
                     <div style={{ flex: 0.7 , fontSize: 16, color:'#000000',fontWeight: 'bolder' }}>{item.price * item.quantity}원</div>
                       <DeleteButton handleDeleteClick={()=>handleDeleteClick(item.name)} drink={item.name}/>
@@ -152,6 +151,7 @@ const Selectingmenu = () => {
             </div>
           </div>
           <button onClick={saveOrder} className="pay-btn">결제 하기</button>
+
         </div>
       </div>
       <style jsx>{`
