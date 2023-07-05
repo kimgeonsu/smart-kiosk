@@ -70,14 +70,14 @@
       "name": "녹차",
       "temperature": "HOT",
       "price": 4000,
-      "image": ""
+      "image": "/assets/camomile.png"
     },
     {
       "id": 11,
       "name": "녹 차",
       "temperature": "ICED",
       "price": 4000,
-      "image": ""
+      "image": "/assets/camomile.png"
     },
     {
       "id": 12,

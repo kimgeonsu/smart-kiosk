@@ -2,12 +2,38 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { useRouter } from 'next/router';
 import menu from "../src/data/menu.json";
-
+import MinusButton from "../src/components/ui/MinusButton";
+import DeleteButton2 from "../src/components/ui/DeleteButton2";
+import PlusButton from "../src/components/ui/PlusButton";
 
 const CheckingList=()=>{
+  const [menuData, setMenuData] = useState([]);
+  const [selectedMenu, setSelectedMenu] = useState([]);
+  const [sumPrice, setSumPrice] = useState([]);
+  useEffect(() => {
+    const order = localStorage.getItem('order');
+    if (order) {
+      const parsedOrder = JSON.parse(order);
+      console.log(parsedOrder);
+       setSelectedMenu(parsedOrder);
+    }
+
+    else console.log("데이터 없음");
+  }, []);
+
+  useEffect(() => {
+    const totalPrice = localStorage.getItem('totalPrice');
+    if (totalPrice) {
+      const parsedPrice = JSON.parse(totalPrice);
+      console.log(parsedPrice);
+       setSumPrice(parsedPrice);
+    }
+
+    else console.log("데이터 없음");
+  }, []);
 
   const router = useRouter();
-  const [selectedMenu, setSelectedMenu] = useState([]);
+ 
   const handlePage = () => {
     router.push("/checkingList");
   };
@@ -15,6 +41,33 @@ const CheckingList=()=>{
   const handlePreviousPage = () => {
       
   };
+
+  const handleMinusClick = (drink) => {
+   
+  };
+  
+  //카트에서 삭제
+  const handleDeleteClick = (drink) => {
+    
+  };
+  
+//수량 +1
+  const handlePlusClick = (drink) => {
+   
+  };
+
+  const getOrder = () => {
+    const order = localStorage.getItem('order');
+    if (order) {
+      const parsedOrder = JSON.parse(order);
+      // 가져온 주문 내역 활용하기
+      console.log(parsedOrder);
+      // 또는 state에 저장할 수도 있습니다.
+       setSelectedMenu(parsedOrder);
+    }
+
+    else console.log("데이터 없음");
+  }
 
     return (
       <>
@@ -25,27 +78,39 @@ const CheckingList=()=>{
           <div></div>
         </div>
 
-      -
+      
         <div className="cart-list">
-              {
-                selectedMenu.map((item) =>
-                  <div className="cart-item">
-                    <div style={{ flex: 3, fontSize: 16, color:'#000000',fontWeight: 'bolder'  }}>{item.name}</div>
-                    <div style={{ flex: 1.5, fontSize: 16, color:'#000000',fontWeight: 'bolder'  }}> <MinusButton handleMinusClick={() => handleMinusClick(item.name)} drink={item.name} />
-                                               {item.quantity}개
-                                               <PlusButton handlePlusClick={handlePlusClick} drink={item.name}/>
+        {selectedMenu.map((item) => {
+            const menuArray = Object.values(menu);
+            const menuItem = menuArray.find((menuItem) => menuItem.name === item.name);
+            const imageUrl=menuItem?.image;
+            return (
+                  <div className="cart-item" key={item.id}>
+                     <div className="image">
+                  <Image width={128} height={128} src={"/assets/camomile.png"} alt={item.name} />
+                </div>
+                    <div style={{ flex: 2, fontSize: 20, color:'#666666',fontWeight: 'bolder'  }}>{item.name}</div>
+                    <div style={{ flex: 1, fontSize: 17, color:'#666666',fontWeight: 'bolder'  }}> 
+                                <MinusButton handleMinusClick={() => handleMinusClick(item.name)} drink={item.name} />
+                                   {item.quantity}개
+                                <PlusButton handlePlusClick={handlePlusClick} drink={item.name}/>
                     </div>
-                    <div style={{ flex: 0.7 , fontSize: 16, color:'#000000',fontWeight: 'bolder' }}>{item.price * item.quantity}원</div>
-                      <DeleteButton handleDeleteClick={()=>handleDeleteClick(item.name)} drink={item.name}/>
+                    <div style={{ flex: 1 , fontSize: 20, color:'#000000',fontWeight: 'bolder' }}>{item.price * item.quantity}원</div>
+                      <DeleteButton2 handleDeleteClick={()=>handleDeleteClick(item.name)} drink={item.name}/>
                   </div>
-                )
-              }
+                );
+              })}
           </div>
-
-        <hr />
+          <div className="paycontainer">
+          <div className="sumContent">
+          <div style={{ fontSize: 20, color:'#666666',fontWeight: 'bolder'  }}>{"총 결제금액"}</div>
+                  
+          </div>
+          <button className="pay-btn"> 결제하기 </button>
+          </div>
         <style jsx>{`
         .wrapper {
-          padding: 40px 30px;
+          padding: 40px 40px;
           width: 100%;
           height: 1180px;
           display: flex;
@@ -73,14 +138,7 @@ const CheckingList=()=>{
         .content {
         }
 
-        .categoryWrapper {
-          margin-top: 24px;
-          display: flex;
-          gap: 16px;
-          margin-bottom: 16px;
-        }
-
-        .imgContainer {
+        .image {
           display: flex;
           align-items: center;
           padding: 16px;
@@ -92,7 +150,7 @@ const CheckingList=()=>{
           justify-content: space-between;
           height: 18px;
           border-bottom: 1px solid #CACACA;
-          padding: 16px;
+          padding:16px;
           width: 100%;
         }
 
@@ -102,12 +160,9 @@ const CheckingList=()=>{
           align-items: column;
         }
         
-        .payContent{
-          margin-left:32px;
-          margin-top: 10px;
-          width: 100%;
+        .sumContent{
           display: flex;
-          justify-content: space-between;
+          justify-content: flex-end;
         }
 
         .pay-top {
@@ -117,49 +172,39 @@ const CheckingList=()=>{
         }
 
         .cart-list {
-          max-height: 69px;
+          max-height: 75%;
+          width: 702px;
           overflow-y: scroll;
+          overflow-x: hidden;
         }
 
         .cart-item {
           display: flex;
-          width: 100%;
+          justify-content: center;
+          align-items: center;
+        
+          height: 144px;
+          border: 1px solid #000000;
+          margin: 16px;
         }
-
-        .cart-wrapper {
-          width: 100%;
+       
+        .paycontainer{
+          position: absolute;
+          bottom: 0;
+          width: 90%;
+          margin: 0 0 8px;
+          padding: 16px;
         }
 
         .pay-btn {
-          margin-right:32px;
-          width: 223px;
+          width: 100%;
           height: 99px;
           background-color: #72A3FF;
           color: #FFF;
           font-size: 20px;
           font-weight: 600;
           border: none;
-        }
-
-        .GrayText{
-          font-family: SF Pro Text;
-          font-size: 12px;
-          font-weight: 600;
-          line-height: 19px;
-          letter-spacing: 0px;
-          text-align: left;
-          color: #666666;
-        }
-        .ChangingText{
-            width: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 64px;
-        }
-
-        .SumTextContainer{
-            margin-right: 0;
+          justify-content: center;
         }
 
         .BlueText{
@@ -169,14 +214,7 @@ const CheckingList=()=>{
             letter-spacing: 0px;
             text-align: right;
             color : #367CFF;
-          }
-
-        .PayStarting{
-            width: 30%;
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-        }
+          }       
       `}</style>
       </div>
       </>
