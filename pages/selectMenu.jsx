@@ -147,7 +147,7 @@ const Selectingmenu = () => {
             <div className="pay-top">
               <div style={{ flex: 3, fontSize: 16, color:'#666666',fontWeight: 'bolder' }}>주문내역</div>
               <div style={{ flex: 1, fontSize: 16, color:'#666666',fontWeight: 'bolder'  }}>수량</div>
-              <div style={{ flex: 1.1, fontSize: 25, color: '#367cff', fontWeight: 'bolder' }}>
+              <div style={{ flex: 1.5, fontSize: 25, color: '#367cff', fontWeight: 'bolder' }}>
                 {selectedMenu.reduce((sum, item) => sum + item.price * item.quantity, 0).toLocaleString()}원
               </div>
 
@@ -162,7 +162,7 @@ const Selectingmenu = () => {
                          {item.quantity}개
                        <PlusButton handlePlusClick={handlePlusClick} drink={item.name}/>
                     </div>
-                    <div style={{ flex: 0.7 , fontSize: 16, color:'#000000',fontWeight: 'bolder' }}>{item.price * item.quantity}원</div>
+                    <div style={{ flex: 1.2 , fontSize: 16, color:'#000000',fontWeight: 'bolder' }}>{item.price * item.quantity}원</div>
                       <DeleteButton handleDeleteClick={()=>handleDeleteClick(item.name)} drink={item.name}/>
                   </div>
                 )
@@ -256,20 +256,23 @@ const Selectingmenu = () => {
         }
         
         .payContent{
+         
           margin-left:32px;
           margin-top: 10px;
-          width: 100%;
+          width: 671px;
           display: flex;
           justify-content: space-between;
         }
 
         .pay-top {
+          
           display: flex;
           width: 100%;
           border-bottom: 1px solid #CACACA;
         }
 
         .cart-list {
+          width:100%;
           max-height: 69px;
           overflow-y: scroll;
         }
@@ -284,8 +287,9 @@ const Selectingmenu = () => {
         }
 
         .pay-btn {
-          margin-right:32px;
-          width: 223px;
+          
+         
+          width: 321px;
           height: 99px;
           background-color: #72A3FF;
           color: #FFF;
