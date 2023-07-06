@@ -31,7 +31,6 @@ const MenuListItem = (props) => {
             };
             setSelectedMenu([dataToSave, ...selectedMenu]);
         } else {
-            // selectedMenu[idx]['quantity'] = selectedMenu[idx]['quantity'] + 1;
             const updateArr = selectedMenu.map(item => {
                 if (item.name == drink.name) {
                     return { ...item, quantity: selectedMenu[idx]['quantity'] + 1 }

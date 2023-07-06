@@ -14,12 +14,9 @@ const DeleteButton = ({ handleDeleteClick, drink }) => {
       </button>
     </div>
       <style jsx>{`
-                .wrapper {
-                  
-                 
+                .wrapper {   
                     justify-content: center;
                     align-items: center;
-                   
                 }
 
                 
