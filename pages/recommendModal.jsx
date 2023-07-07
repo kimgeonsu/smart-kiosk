@@ -50,7 +50,7 @@ const RecommendModal = ({ setModalOpen, drinks }) => {
       display: flex;
       flex-direction: column;
       align-items: center;
-      background-color: rgba(128, 128, 128,0.3);
+      background-color: rgba(128, 128, 128,0.5);
       backdrop-filter: blur(2px);
     }
         .wrapper {

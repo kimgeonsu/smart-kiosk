@@ -22,7 +22,7 @@ const AskingList = (props) => {
     return null; // Return null or display an alternative content if drinks is not a valid array
   }
 
-  const top4Drinks = drinks.slice(0, 4); // Get the top 4 drinks from the array
+  const top4Drinks = drinks.slice(0, 3); // Get the top 4 drinks from the array
 
   return (
     <Wrapper>

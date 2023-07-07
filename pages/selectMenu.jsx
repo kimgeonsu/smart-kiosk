@@ -286,9 +286,7 @@ const Selectingmenu = () => {
           width: 100%;
         }
 
-        .pay-btn {
-          
-         
+        .pay-btn { 
           width: 321px;
           height: 99px;
           background-color: #72A3FF;

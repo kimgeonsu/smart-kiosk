@@ -44,10 +44,14 @@ const MenuListItem = (props) => {
     return (
         <>
             <div className="wrapper" onClick={handleClick}>
+            <div className="imgcontainer">
                 <Image width={150} height={150} alt="음료" src={drink.image} />
+            </div>   
                 <hr />
+                <div className="imfcontainer">
                 <div className="name">{drink.name}</div>
                 <div className="price">{drink.price}원</div>
+                </div>
             </div>
             <style jsx>{`
                 .wrapper {
@@ -55,7 +59,7 @@ const MenuListItem = (props) => {
                     display: flex;
                     flex-direction: column;
                     justify-content: center;
-                    align-items: center;
+                    align-items: flex;
                     border: 1px solid #000;
                     width: 220px;
                     height: 240px;
@@ -67,12 +71,30 @@ const MenuListItem = (props) => {
                 }
                 
                 .name {
-                    font-size: 16px;
-                    font-weight: 600;
+                 
+                    margin-top:6px;
+                    font-size: 12px;
+                    font-weight: 800;   
+                    letter-spacing: 0.01em;                  
                 }
                 .price {
-                    font-size: 12px;
-                    font-weight: 800;
+                   
+                    margin-top:6px;
+                    font-size: 16px;
+                    font-weight: 700;
+                    letter-spacing: 0.04em;
+                }
+
+                .infcontainer{
+                    text-align: left;
+                    display: flex;
+                    flex-direction: column;
+                }
+
+                .imgcontainer{
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
                 }
             `}</style>
         </>

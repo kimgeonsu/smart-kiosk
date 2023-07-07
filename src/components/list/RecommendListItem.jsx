@@ -69,13 +69,14 @@ const RecommendListItem = (props) => {
                 
                 .name {
                     font-size: 12px;
-                    font-weight: 600;
+                    font-weight: 800;
 
                     color: #666666;
                 }
                 .price {
-                    font-size: 12px;
-                    font-weight: 800;
+                    font-size: 1px;
+                    font-weight: 500;
+                    letter-spacing: 0.02em;
                 }
 
                 .miniwrapper{
