@@ -162,7 +162,7 @@ const Selectingmenu = () => {
                          {item.quantity}개
                        <PlusButton handlePlusClick={handlePlusClick} drink={item.name}/>
                     </div>
-                    <div style={{ flex: 1.2 , fontSize: 16, color:'#000000',fontWeight: 'bolder' }}>{item.price * item.quantity}원</div>
+                    <div style={{ flex: 1.2 , fontSize: 16, color:'#000000',fontWeight: 'bolder' }}>   {`${(item.price * item.quantity).toLocaleString()}원`}</div>
                       <DeleteButton handleDeleteClick={()=>handleDeleteClick(item.name)} drink={item.name}/>
                   </div>
                 )

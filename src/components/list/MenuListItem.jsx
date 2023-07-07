@@ -50,7 +50,8 @@ const MenuListItem = (props) => {
                 <hr />
                 <div className="imfcontainer">
                 <div className="name">{drink.name}</div>
-                <div className="price">{drink.price}원</div>
+                <div className="price">{(drink.price).toLocaleString()}원</div>
+              
                 </div>
             </div>
             <style jsx>{`

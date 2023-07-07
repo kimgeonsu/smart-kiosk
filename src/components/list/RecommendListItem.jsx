@@ -47,7 +47,7 @@ const RecommendListItem = (props) => {
                 <Image width={104} height={106} alt="음료" src={drink.image} />
                 <div className="miniwrapper">
                 <div className="name">{drink.name}</div>
-                <div className="price">{drink.price}원</div>
+                <div className="price">{(drink.price).toLocaleString()}원</div>
                 </div>
             </div>
             <style jsx>{`
