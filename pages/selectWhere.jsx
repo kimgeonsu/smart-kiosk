@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 
 const selectWhere = () => {
   const router = useRouter();
@@ -9,6 +10,10 @@ const selectWhere = () => {
     localStorage.setItem('where', where);
     console.log(where);
   };
+
+  useEffect(() => {
+    speak("안녕하세요 주문을 도와드릴게요!");
+  }, [])
 
   return (
     <>
