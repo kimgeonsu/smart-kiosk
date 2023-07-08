@@ -9,15 +9,15 @@ const Wrapper = styled.div`
 `;
 
 const ImageContainer = styled.div`
-    width: 162px;
-    height: 163px;
+    width: 150px;
+    height: 152px;
     border-bottom: 1px solid #CACACA;
     width: 191px;
     margin-top: 1px;
     margin-left: 16px;
 `;
 
-const MenuListItem = (props) => {
+const RecommendListItem = (props) => {
     const { drink, selectedMenu, setSelectedMenu } = props;
 
     const handleClick = () => {
@@ -44,26 +44,22 @@ const MenuListItem = (props) => {
     return (
         <>
             <div className="wrapper" onClick={handleClick}>
-            <div className="imgcontainer">
-                <Image width={150} height={150} alt="음료" src={drink.image} />
-            </div>   
-                <hr />
-                <div className="imfcontainer">
+                <Image width={104} height={106} alt="음료" src={drink.image} />
+                <div className="miniwrapper">
                 <div className="name">{drink.name}</div>
                 <div className="price">{(drink.price).toLocaleString()}원</div>
-              
                 </div>
             </div>
             <style jsx>{`
                 .wrapper {
-                    padding: 16px;
+                    padding: 8px;
                     display: flex;
                     flex-direction: column;
                     justify-content: center;
-                    align-items: flex;
-                    border: 1px solid #000;
-                    width: 220px;
-                    height: 240px;
+                    align-items: center;
+                    border: 1px solid #666666;
+                    width: 155px;
+                    height: 155px;
                 }
 
                 hr {
@@ -72,34 +68,26 @@ const MenuListItem = (props) => {
                 }
                 
                 .name {
-                 
-                    margin-top:6px;
                     font-size: 12px;
-                    font-weight: 800;   
-                    letter-spacing: 0.01em;                  
+                    font-weight: 800;
+
+                    color: #666666;
                 }
                 .price {
-                   
-                    margin-top:6px;
-                    font-size: 16px;
-                    font-weight: 700;
-                    letter-spacing: 0.04em;
+                    font-size: 1px;
+                    font-weight: 500;
+                    letter-spacing: 0.02em;
                 }
 
-                .infcontainer{
-                    text-align: left;
+                .miniwrapper{
                     display: flex;
-                    flex-direction: column;
-                }
-
-                .imgcontainer{
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
+                    flex-direction: row;
+                    justify-content: space-between;
+                    width:100%;
                 }
             `}</style>
         </>
     );
 }
 
-export default MenuListItem;
+export default RecommendListItem;

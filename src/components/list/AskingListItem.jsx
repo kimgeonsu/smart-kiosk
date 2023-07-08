@@ -17,7 +17,7 @@ const ImageContainer = styled.div`
     margin-left: 16px;
 `;
 
-const MenuListItem = (props) => {
+const AskingListItem = (props) => {
     const { drink, selectedMenu, setSelectedMenu } = props;
 
     const handleClick = () => {
@@ -44,15 +44,14 @@ const MenuListItem = (props) => {
     return (
         <>
             <div className="wrapper" onClick={handleClick}>
-            <div className="imgcontainer">
+               <div className="imgcontainer">
                 <Image width={150} height={150} alt="음료" src={drink.image} />
-            </div>   
+                </div>
                 <hr />
-                <div className="imfcontainer">
+            <div className="infcontainer">
                 <div className="name">{drink.name}</div>
                 <div className="price">{(drink.price).toLocaleString()}원</div>
-              
-                </div>
+            </div>
             </div>
             <style jsx>{`
                 .wrapper {
@@ -63,43 +62,40 @@ const MenuListItem = (props) => {
                     align-items: flex;
                     border: 1px solid #000;
                     width: 220px;
-                    height: 240px;
+                    height: 222px;
                 }
 
                 hr {
+                    margin-top:-8px;
                     width: 100%;
                     color: #CACACA;
                 }
                 
-                .name {
-                 
-                    margin-top:6px;
-                    font-size: 12px;
-                    font-weight: 800;   
-                    letter-spacing: 0.01em;                  
-                }
-                .price {
-                   
-                    margin-top:6px;
-                    font-size: 16px;
-                    font-weight: 700;
-                    letter-spacing: 0.04em;
-                }
-
-                .infcontainer{
-                    text-align: left;
-                    display: flex;
-                    flex-direction: column;
-                }
-
                 .imgcontainer{
                     display: flex;
                     align-items: center;
                     justify-content: center;
+                }
+
+                .name {
+                    margin-top:-6px;
+                    font-size: 14px;
+                    font-weight: 800;
+                }
+                .price {
+                    margin-top:6px;
+                    font-size: 17px;
+                    font-weight: 700;
+                    letter-spacing: 0.04em;
+                }
+                .infcontainer{
+                    text-align: left;
+                    display: flex;
+                    flex-direction: column;
                 }
             `}</style>
         </>
     );
 }
 
-export default MenuListItem;
+export default AskingListItem;

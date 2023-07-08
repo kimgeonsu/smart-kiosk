@@ -25,7 +25,6 @@ const CheckingList=()=>{
     const totalPrice = localStorage.getItem('totalPrice');
     if (totalPrice) {
       const parsedPrice = JSON.parse(totalPrice);
-      console.log("총합확인"+parsedPrice);
        setSumPrice(parsedPrice);
     }
     else console.log("데이터 없음");
@@ -92,6 +91,22 @@ const CheckingList=()=>{
     localStorage.setItem('order', JSON.stringify(selectedMenu));
     localStorage.setItem("totalPrice", JSON.stringify(totalPrice));
   }
+
+  const getMenuByName=(name)=> {
+    const menuArray = Object.values(menu);
+
+    for (const category of menuArray) {
+      const menuItem = category.find((item) => item.name === name);
+  
+      if (menuItem) {
+        return menuItem;
+      }
+    }
+  
+    return null;
+  }
+  
+
     return (
       <>
         <div className="wrapper">
@@ -101,16 +116,14 @@ const CheckingList=()=>{
           <div></div>
         </div>
 
-      
         <div className="cart-list">
         {selectedMenu.map((item) => {
-          const menuArray = Object.values(menu);
-          const menuItem = menuArray.find((menuItem) => menuItem.name === item.name);
+          const menuItem = getMenuByName(item.name);
           const imageUrl = menuItem?.image;
             return (
               <div className="cart-item" key={item.id}>
                 <div className="image">
-                  <Image width={128} height={128}  src={item.image} alt={item.name} />
+                  <Image width={128} height={128}  src={imageUrl} alt={item.name} />
                 </div>
                     <div style={{ flex: 2, fontSize: 20, color:'#666666',fontWeight: 'bolder' }}>{item.name}</div>
                     <div style={{ flex: 1, fontSize: 20, color:'#666666',fontWeight: 'bolder' }}> 
@@ -211,7 +224,7 @@ const CheckingList=()=>{
           align-items: center;
         
           height: 144px;
-          border: 1px solid #367cff;
+          border: 1px solid #696969;
           margin: 16px;
         }
        

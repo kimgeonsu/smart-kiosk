@@ -5,11 +5,23 @@ import menu from "../src/data/menu.json";
 import PlusButton from "../src/components/ui/PlusButton";
 import MinusButton from "../src/components/ui/MinusButton";
 import DeleteButton from "../src/components/ui/DeleteButton";
+import RecommendModal from "./recommendModal"; 
 
 const Selectingmenu = () => {
   const [menuData, setMenuData] = useState([]);
   const [selectedMenu, setSelectedMenu] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
+  const [isModalOpen, setModalOpen] = useState(false);
+
+  const handleSpeechBubbleClick = () => {
+    
+    if (!isModalOpen) {
+      setModalOpen(true);
+    }
+    };
+  
+
+  const blurClass = isModalOpen ? "blur" : "";
 
   //음료 종류 선택 버튼 동작
   const handleTypeButtonClick = (type) => {
@@ -93,6 +105,7 @@ const Selectingmenu = () => {
 
   return (
     <>
+      <RecommendModal setModalOpen={isModalOpen}/>
       <div className="wrapper">
         <div className="upperBar">
           <Image width={16} height={32} src='/asset/back.svg' />
@@ -106,7 +119,12 @@ const Selectingmenu = () => {
           </div>
 
           <div className="content">
-            <Image width={671} height={55} src='/asset/speechbubble.svg' />
+        
+
+            <Image width={671} height={55} src='/asset/speechbubble.svg' onClick={handleSpeechBubbleClick}/>
+            
+          
+           
             <hr />
 
             <div className="categoryWrapper">
@@ -119,7 +137,8 @@ const Selectingmenu = () => {
           </div>
 
           <div className="imgContainer">
-            <Image style={{ rotate: '180deg' }} width={13} height={26} src='/asset/prev.svg' />
+          <Image style={{ rotate: '180deg', zIndex: -1 }} width={13} height={26} src='/asset/prev.svg' />
+
           </div>
 
         </div>
@@ -128,7 +147,7 @@ const Selectingmenu = () => {
             <div className="pay-top">
               <div style={{ flex: 3, fontSize: 16, color:'#666666',fontWeight: 'bolder' }}>주문내역</div>
               <div style={{ flex: 1, fontSize: 16, color:'#666666',fontWeight: 'bolder'  }}>수량</div>
-              <div style={{ flex: 1.1, fontSize: 25, color: '#367cff', fontWeight: 'bolder' }}>
+              <div style={{ flex: 1.5, fontSize: 25, color: '#367cff', fontWeight: 'bolder' }}>
                 {selectedMenu.reduce((sum, item) => sum + item.price * item.quantity, 0).toLocaleString()}원
               </div>
 
@@ -143,7 +162,7 @@ const Selectingmenu = () => {
                          {item.quantity}개
                        <PlusButton handlePlusClick={handlePlusClick} drink={item.name}/>
                     </div>
-                    <div style={{ flex: 0.7 , fontSize: 16, color:'#000000',fontWeight: 'bolder' }}>{item.price * item.quantity}원</div>
+                    <div style={{ flex: 1.2 , fontSize: 16, color:'#000000',fontWeight: 'bolder' }}>   {`${(item.price * item.quantity).toLocaleString()}원`}</div>
                       <DeleteButton handleDeleteClick={()=>handleDeleteClick(item.name)} drink={item.name}/>
                   </div>
                 )
@@ -154,7 +173,9 @@ const Selectingmenu = () => {
 
         </div>
       </div>
+      
       <style jsx>{`
+        
         .wrapper {
           padding: 40px 30px;
           width: 100%;
@@ -235,20 +256,23 @@ const Selectingmenu = () => {
         }
         
         .payContent{
+         
           margin-left:32px;
           margin-top: 10px;
-          width: 100%;
+          width: 671px;
           display: flex;
           justify-content: space-between;
         }
 
         .pay-top {
+          
           display: flex;
           width: 100%;
           border-bottom: 1px solid #CACACA;
         }
 
         .cart-list {
+          width:100%;
           max-height: 69px;
           overflow-y: scroll;
         }
@@ -262,9 +286,8 @@ const Selectingmenu = () => {
           width: 100%;
         }
 
-        .pay-btn {
-          margin-right:32px;
-          width: 223px;
+        .pay-btn { 
+          width: 321px;
           height: 99px;
           background-color: #72A3FF;
           color: #FFF;
