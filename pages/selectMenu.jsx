@@ -115,16 +115,16 @@ const Selectingmenu = () => {
 
         <div className="contentWrapper">
           <div className="imgContainer">
+            
             <Image width={13} height={26} src='/asset/prev.svg' />
           </div>
 
           <div className="content">
         
-
-            <Image width={671} height={55} src='/asset/speechbubble.svg' onClick={handleSpeechBubbleClick}/>
+          <div className="speechBubbleContainer">
+              <Image width={671} height={55} src="/asset/speechbubble.svg" onClick={handleSpeechBubbleClick}/>
             
-          
-           
+            </div>
             <hr />
 
             <div className="categoryWrapper">
@@ -332,6 +332,27 @@ const Selectingmenu = () => {
             align-items: center;
             justify-content: flex-end;
         }
+        .contentWrapper {
+          display: flex;
+          justify-content: center;
+          width: 100%;
+          height: 100%;
+        }
+
+        .speechBubbleContainer {
+          position: relative;
+          justify-content: center;
+          align-items: center;
+        }
+
+        .personImage {
+          position: absolute;
+          top: 0;
+          left: 0;
+          z-index: 99; /* speechBubble 이미지보다 상위에 쌓임 */
+        }
+
+
       `}</style>
     </>
   );
