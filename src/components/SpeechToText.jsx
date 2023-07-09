@@ -31,7 +31,7 @@ const SpeechToText = ({ children }) => {
         // socket.on('speechtotext', (data) => {
         //   console.log("speechtotext", data);
         // })
-        axios.post('http://localhost:5001/kiosk/gpt', { 'data': transcript })
+        axios.post('http://localhost:5001/kiosk/order', { data: transcript })
           .then((response) => {
             console.log(response)
           })
