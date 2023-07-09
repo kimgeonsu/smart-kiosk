@@ -1,6 +1,7 @@
+import axios from 'axios';
 import React, { useEffect, useRef, useState } from 'react';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
-
+// import { io } from 'socket.io-client';
 
 const SpeechToText = ({ children }) => {
   const {
@@ -26,6 +27,14 @@ const SpeechToText = ({ children }) => {
     timeoutRef.current = setTimeout(() => {
       if (transcript.length > 0) {
         console.log("2 seconds");
+        // const socket = io('http://localhost:5001');
+        // socket.on('speechtotext', (data) => {
+        //   console.log("speechtotext", data);
+        // })
+        axios.post('http://localhost:5001/kiosk/gpt', { 'data': transcript })
+          .then((response) => {
+            console.log(response)
+          })
       }
 
       resetTranscript();
