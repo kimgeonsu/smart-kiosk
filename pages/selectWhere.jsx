@@ -12,7 +12,6 @@ const selectWhere = () => {
   };
 
   useEffect(() => {
-    speak("안녕하세요 주문을 도와드릴게요!");
   }, [])
 
   return (
