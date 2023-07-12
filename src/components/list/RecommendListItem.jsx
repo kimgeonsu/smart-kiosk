@@ -3,9 +3,19 @@ import styled from "styled-components";
 import Image from "next/image";
 
 const Wrapper = styled.div`
-    /* width: 223px; */
-    height: 240px;
-    border : 1px solid #000000;
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #666666;
+    width: 155px;
+    height: 155px;
+    
+      &.clicked {
+          border: 3px solid #72a3ff;
+          background-color: rgba(114, 163, 255, 0.3);
+       }
 `;
 
 const ImageContainer = styled.div`
@@ -19,8 +29,10 @@ const ImageContainer = styled.div`
 
 const RecommendListItem = (props) => {
     const { drink, selectedMenu, setSelectedMenu } = props;
+    const [isClicked, setIsClicked] = useState(false);
 
     const handleClick = () => {
+        setIsClicked(!isClicked);
         let names = selectedMenu.map(e => e.name);
         let idx = names.indexOf(drink.name);
         if (idx == -1) {
@@ -37,21 +49,29 @@ const RecommendListItem = (props) => {
                 }
                 return item
             })
-            setSelectedMenu(updateArr);
+            if (!isClicked) {
+                setSelectedMenu(updateArr);
+              } else {
+                const filteredArr = updateArr.filter((item) => item.name !== drink.name);
+                setSelectedMenu(filteredArr);
+              } 
         }
     };
 
     return (
         <>
-            <div className="wrapper" onClick={handleClick}>
-                <Image width={104} height={106} alt="음료" src={drink.image} />
+            <Wrapper className={isClicked ? "clicked" : ""} onClick={handleClick}>
+            <div className="imgcontainer">
+                <Image width={104} height={106} zIndex={1} alt="음료" src={drink.image} />
+                </div>
                 <div className="miniwrapper">
                 <div className="name">{drink.name}</div>
                 <div className="price">{(drink.price).toLocaleString()}원</div>
                 </div>
-            </div>
+            </Wrapper>
             <style jsx>{`
                 .wrapper {
+                    
                     padding: 8px;
                     display: flex;
                     flex-direction: column;
@@ -60,6 +80,11 @@ const RecommendListItem = (props) => {
                     border: 1px solid #666666;
                     width: 155px;
                     height: 155px;
+                    }
+
+                .wrapper.clicked {
+                    border-color: #72a3ff;
+                    background-color: rgba(114, 163, 255, 0.3);
                 }
 
                 hr {
@@ -84,6 +109,13 @@ const RecommendListItem = (props) => {
                     flex-direction: row;
                     justify-content: space-between;
                     width:100%;
+                }
+
+                .imgcontainer {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    z-index:-1;
                 }
             `}</style>
         </>

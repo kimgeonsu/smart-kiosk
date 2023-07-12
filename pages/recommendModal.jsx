@@ -1,18 +1,42 @@
 import React, { useEffect, useState } from "react";
 import Image from 'next/image';
-import MenuList from "../src/components/list/MenuList";
 import menu from "../src/data/menu.json";
 import AskingList from "../src/components/list/AskingList";
 import RecommendList from "../src/components/list/RecommendList";
 
-const RecommendModal = ({ setModalOpen, drinks }) => {
+const RecommendModal = ({ setModalOpen, setSelectedMenu,selectedMenu, drinks  }) => {
   const [isModalOpen, setIsModalOpen] = useState(true);
-  const [selectedMenu, setSelectedMenu] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
 
+  useEffect(() => {
+    console.log("모달에서 선택한 음료 모음",selectedMenu);
+  }, [selectedMenu])
 
+  const handleCloseModal = () => {
+    // 모달 창이 닫힐 때 선택한 메뉴를 전달하고 closeModal 함수 호출
+    closeModal(selectedMenu);
+  };
+  
   const onClose = () => {
+   
     setIsModalOpen(false);
+  };
+//모달 내에 selectedMenu추가 될떄마다 이거
+  useEffect(() => {
+  //  const existingTotalPrice = JSON.parse(localStorage.getItem("totalPrice")) || 0;
+    const totalPrice = selectedMenu.reduce(
+     (sum, item) => sum + item.price * item.quantity,  0);
+     setTotalPrice(totalPrice);
+     console.log("모달 버튼누르는게 문제인가??",totalPrice);
+  
+  }, [selectedMenu]);
+
+  const saveOrder = () => {
+    localStorage.setItem("order", JSON.stringify(selectedMenu));
+    localStorage.setItem("totalPrice", JSON.stringify(totalPrice));
+    console.log("모달 저장하는게 문제인가",totalPrice);
+    setIsModalOpen(false);
+        
   };
 
   if (!isModalOpen || !setModalOpen) return null;
@@ -27,15 +51,15 @@ const RecommendModal = ({ setModalOpen, drinks }) => {
         </div>
         <div className="queryContainer">
           말씀하신 메뉴가 맞으신가요?
-          <AskingList drinks={menu.smoothie}></AskingList>
+          <AskingList selectedMenu={selectedMenu} setSelectedMenu={setSelectedMenu} drinks={menu.smoothie}></AskingList>
         </div>
         <div className="miniwrapper">
-        <button className="yes-btn">장바구니 추가</button>
+        <button className="yes-btn" onClick={() => saveOrder()}>장바구니 추가</button>
         <button className="no-btn" onClick={onClose}>취소</button>
         </div>
         <div className="underContainer">추천메뉴
         
-        <RecommendList drinks={menu.coffee}></RecommendList>
+         <RecommendList selectedMenu={selectedMenu} setSelectedMenu={setSelectedMenu} drinks={menu.coffee}></RecommendList>
         </div>
       </div>
       </div>
@@ -55,10 +79,11 @@ const RecommendModal = ({ setModalOpen, drinks }) => {
     }
         .wrapper {
           position: fixed;
-          top: 12%;
+          top: 10%;
           left: 8%;
+          right: 8%;
           width: 84%;
-          height: 78%;
+          height: 81%;
           background-color: rgb(255, 255, 255);
           z-index: 999;
           display: flex;
@@ -76,18 +101,17 @@ const RecommendModal = ({ setModalOpen, drinks }) => {
 
         .underContainer {
           position: fixed;
-          bottom:11%;  
+  
           flex-direction: column;
           display: flex;
           justify-content: flex;
-          padding:4px;
           font-size: 20px;
           font-weight: 600;
+          position: relative;
         }
 
 
         .queryContainer {
-          
           display: flex;
           justify-content: center;
           align-items: center;
