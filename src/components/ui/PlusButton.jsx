@@ -8,7 +8,7 @@ const PlusButton = ({ handlePlusClick, drink }) => {
   
     return (
       <button onClick={handleClick}>
-        <Image width={10} height={10} src="/asset/plus.svg" />
+        <Image width={10} height={10} src="/asset/plus.svg"  alt="+"  />
       </button>
     );
   };  

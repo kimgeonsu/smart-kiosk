@@ -1,4 +1,5 @@
 import React, { use, useEffect, useState } from "react";
+import { useRouter } from 'next/router';
 import Image from "next/image";
 import MenuList from "../src/components/list/MenuList";
 import menu from "../src/data/menu.json";
@@ -16,7 +17,7 @@ const Selectingmenu = () => {
   const [isModalOpen, setModalOpen] = useState(false);
   const [currentSentenceIndex, setCurrentSentenceIndex] = useState(0);
   const [currentSentence, setCurrentSentence] = useState("");
-
+  const router = useRouter();
   /*useEffect(() => {
     const listenForSignal = async () => {
       try {
@@ -93,13 +94,22 @@ useEffect(() => {
 
 // 장바구니 내역 저장
   const saveOrder = () => {
-
+    if(totalPrice){
     localStorage.setItem('totalPrice', JSON.stringify(totalPrice));
     localStorage.setItem('order', JSON.stringify(selectedMenu));
    //총가격 저장 부분 삭제함
+    router.push("/checkingList");
     console.log("가격 저장은 어케되니",totalPrice);
     console.log("메뉴 저장은 어케되니",selectedMenu);
+    }
+    console.log("메뉴를 클릭해주세요",selectedMenu);
   }
+
+  const handlePreviousPage = () => {
+    localStorage.setItem('totalPrice', JSON.stringify(0));
+    localStorage.setItem('order', JSON.stringify([]));
+    router.push("/selectWhere");
+  };
 
   //음료 수량 - 1
   const handleMinusClick = (drink) => {
@@ -155,7 +165,7 @@ useEffect(() => {
       {isModalOpen && <RecommendModal setModalOpen={setModalOpen} selectedMenu={selectedMenu} setSelectedMenu={setSelectedMenu} closeModal={closeModal} />}
       <div className="wrapper">
         <div className="upperBar">
-          <Image width={16} height={32} src='/asset/back.svg'  alt= "이미지" />
+          <Image width={16} height={32} src='/asset/back.svg'  alt= "이미지" onClick={handlePreviousPage} />
           <h1>주문하기</h1>
           <div></div>
         </div>
@@ -376,6 +386,7 @@ useEffect(() => {
             letter-spacing: 0px;
             text-align: right;
             color : #367CFF;
+            display: flex;
           }
 
         .PayStarting{

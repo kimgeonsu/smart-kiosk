@@ -4,8 +4,8 @@ import menu from "../src/data/menu.json";
 import AskingList from "../src/components/list/AskingList";
 import RecommendList from "../src/components/list/RecommendList";
 
-const RecommendModal = ({ setModalOpen, setSelectedMenu,selectedMenu, drinks  }) => {
-  const [isModalOpen, setIsModalOpen] = useState(true);
+const RecommendModal = ({setSelectedMenu,selectedMenu,closeModal  }) => {
+ 
   const [totalPrice, setTotalPrice] = useState(0);
 
   useEffect(() => {
@@ -17,10 +17,7 @@ const RecommendModal = ({ setModalOpen, setSelectedMenu,selectedMenu, drinks  })
     closeModal(selectedMenu);
   };
   
-  const onClose = () => {
-   
-    setIsModalOpen(false);
-  };
+ 
 //모달 내에 selectedMenu추가 될떄마다 이거
   useEffect(() => {
   //  const existingTotalPrice = JSON.parse(localStorage.getItem("totalPrice")) || 0;
@@ -35,11 +32,10 @@ const RecommendModal = ({ setModalOpen, setSelectedMenu,selectedMenu, drinks  })
     localStorage.setItem("order", JSON.stringify(selectedMenu));
     localStorage.setItem("totalPrice", JSON.stringify(totalPrice));
     console.log("모달 저장하는게 문제인가",totalPrice);
-    setIsModalOpen(false);
-        
+    closeModal();
   };
 
-  if (!isModalOpen || !setModalOpen) return null;
+
 
   return (
     <>
@@ -47,15 +43,15 @@ const RecommendModal = ({ setModalOpen, setSelectedMenu,selectedMenu, drinks  })
     <div className="modalBackground">
       <div className="wrapper">
         <div className="upperBar">
-          <Image width={32} height={32} src='/asset/delete.svg' alt='deny' onClick={onClose} />
+          <Image width={32} height={32} src='/asset/delete.svg' alt='deny' onClick={closeModal} />
         </div>
         <div className="queryContainer">
           말씀하신 메뉴가 맞으신가요?
           <AskingList selectedMenu={selectedMenu} setSelectedMenu={setSelectedMenu} drinks={menu.smoothie}></AskingList>
         </div>
         <div className="miniwrapper">
-        <button className="yes-btn" onClick={() => saveOrder()}>장바구니 추가</button>
-        <button className="no-btn" onClick={onClose}>취소</button>
+        <button className="yes-btn" onClick={() => saveOrder()} >장바구니 추가</button>
+        <button className="no-btn" onClick={closeModal}>취소</button>
         </div>
         <div className="underContainer">추천메뉴
         

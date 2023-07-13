@@ -3,20 +3,20 @@ import styled from "styled-components";
 import Image from "next/image";
 
 const Wrapper = styled.div`
-padding: 16px;
-display: flex;
-flex-direction: column;
-justify-content: center;
-align-items: flex;
-border: 1px solid #000;
-width: 240px;
-height: 242px;
-transition: border-color 0.3s, background-color 0.3s;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex;
+  border: 1px solid #000;
+  width: 240px;
+  height: 242px;
+  transition: border-color 0.3s, background-color 0.3s;
 
-&.clicked {
-    border: 3px solid #72a3ff;
-    background-color: rgba(114, 163, 255, 0.3);
-  }
+  &.clicked {
+      border: 3px solid #72a3ff;
+      background-color: rgba(114, 163, 255, 0.3);
+    }
 `;
 
 const ImageContainer = styled.div`
@@ -134,7 +134,8 @@ const AskingListItem = (props) => {
         .name {
           margin-top: -6px;
           font-size: 14px;
-          font-weight: 800;
+          font-weight: 1000;
+          
         }
         .price {
           margin-top: 6px;

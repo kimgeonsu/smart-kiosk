@@ -5,13 +5,26 @@ import menu from "../src/data/menu.json";
 import MinusButton from "../src/components/ui/MinusButton";
 import DeleteButton2 from "../src/components/ui/DeleteButton2";
 import PlusButton from "../src/components/ui/PlusButton";
+import NotationModal from "./notationModal"
 
 const checkingList=()=>{
   const [menuData, setMenuData] = useState([]);
   const [selectedMenu, setSelectedMenu] = useState([]);
-
   const [totalPrice, setTotalPrice] = useState(0);
+  const [isModalOpen, setModalOpen] = useState(false);
+
+  const openModal = () => {
+    setModalOpen(true);
+  };
+
+  const closeModal = () => {
   
+    setModalOpen(false);
+    localStorage.setItem('totalPrice', JSON.stringify(0));
+    localStorage.setItem('order', JSON.stringify([]));
+    router.push("/WaitingPage");
+  };
+
   useEffect(() => {
     const order = localStorage.getItem('order');
     if (order) {
@@ -34,10 +47,6 @@ const checkingList=()=>{
   //  }
   }, []);
 
-
-//메뉴판으로 돌아가기 버튼을 눌렀을 때 setselectedmenu 저장하는 과정 필요할듯!
-
-
   const router = useRouter();
  
   const handlePage = () => {
@@ -45,7 +54,9 @@ const checkingList=()=>{
   };
   
   const handlePreviousPage = () => {
-      
+    localStorage.setItem('totalPrice', JSON.stringify(totalPrice));
+    localStorage.setItem('order', JSON.stringify(selectedMenu));
+    router.push("/selectMenu");
   };
 
   const handleMinusClick = (drink) => {
@@ -122,10 +133,11 @@ const checkingList=()=>{
 
     return (
       <>
+        {isModalOpen && <NotationModal onClose={closeModal} />} 
         <div className="wrapper">
         <div className="upperBar">
-          <Image width={16} height={32} src='/asset/back.svg' alt="이미지" />
-          <h1>주문내역</h1>
+          <Image width={16} height={32} src='/asset/back.svg' alt="이미지" onClick={handlePreviousPage} />
+          <h1>결제하기</h1>
           <div></div>
         </div>
 
@@ -134,7 +146,7 @@ const checkingList=()=>{
           const menuItem = getMenuByName(item.name);
           const imageUrl = menuItem?.image;
             return (
-              <div key={item.id} className="cart-item">
+              <div key={item.name} className="cart-item">
                 <div className="image">
                   <Image width={128} height={128}  src={imageUrl} alt={item.name} />
                 </div>
@@ -158,7 +170,8 @@ const checkingList=()=>{
 
              < div style={{ fontSize: 20, color:'#666666',fontWeight: 'bolder'  }}>원</div>    
           </div>
-              <button className="pay-btn" > 결제하기 </button>
+              <button  onClick={openModal} className="pay-btn" > 결제 완료 </button>
+          
           </div>
 
         <style jsx>{`
