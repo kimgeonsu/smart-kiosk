@@ -8,7 +8,7 @@ const MinusButton = ({ handleMinusClick, drink }) => {
   
     return (
       <button onClick={handleClick}>
-        <Image width={10} height={10} src="/asset/minus.svg" alt="-" />
+        <Image width={15} height={15} src="/asset/minus.svg" alt="-" />
       </button>
     );
   };  

@@ -74,17 +74,7 @@ const MenuListItem = (props) => {
         </div>
       </Wrapper>
       <style jsx>{`
-        .Wrapper {
-          padding: 16px;
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          align-items: flex;
-          border: 1px solid #000;
-          width: 220px;
-          height: 240px;
-          transition: border-color 0.3s, background-color 0.3s;
-        }
+
         hr {
           width: 100%;
           color: #cacaca;

@@ -50,10 +50,11 @@ const CloseButton = styled.button`
 `;
 
 const Text = styled.text`
+    margin-top:8px;
     display: flex;
     justify-content: center;
-    font-size: 30px;
-    font-weight: 600;
+    font-size: 25px;
+    font-weight: bolder;
     width: 100%;
     border-bottom: 1px solid #cccccc;
   
@@ -62,6 +63,9 @@ const Text = styled.text`
 
 
 const Modal = ({ onClose }) => {
+
+
+    
   return (
     <ModalOverlay>
       <ModalContent>

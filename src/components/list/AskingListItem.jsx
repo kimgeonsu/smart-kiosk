@@ -29,9 +29,9 @@ const ImageContainer = styled.div`
 `;
 
 const AskingListItem = (props) => {
-  const { drink, selectedMenu, setSelectedMenu } = props;
+  const { drink, selectedMenu, setSelectedMenu,isChecked,setIsChecked } = props;
   const [isClicked, setIsClicked] = useState(false);
-
+  //const [isChecked,setIsChecked]=useState([]);
   const handleClick = () => {
     setIsClicked(!isClicked);
 
@@ -44,6 +44,7 @@ const AskingListItem = (props) => {
             quantity: 1,
           };
           setSelectedMenu([dataToSave, ...selectedMenu]);
+        
         } else {
           const updateArr = selectedMenu.map((item) => {
             if (item.name === drink.name) {
@@ -52,12 +53,16 @@ const AskingListItem = (props) => {
             return item;
           });
 
+     
+
           if (!isClicked) {
             setSelectedMenu(updateArr);
-           
+     
           } else {
             const filteredArr = updateArr.filter((item) => item.name !== drink.name);
+            const filteredAr = updateArr.filter((item) => item.name !== drink.name);
             setSelectedMenu(filteredArr);
+            setIsChecked(filteredAr);
           } 
         }
       

@@ -3,7 +3,6 @@ import styled from "styled-components";
 import AskingListItem from "./AskingListItem";
 
 const Wrapper = styled.div`
- 
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   grid-template-rows: repeat(2, minmax(240px, auto));
@@ -16,18 +15,18 @@ const Wrapper = styled.div`
 `;
 
 const AskingList = (props) => {
-  const { drinks, selectedMenu, setSelectedMenu  } = props;
+  const { drinks, selectedMenu, setSelectedMenu, isChecked,setIsChecked  } = props;
 
   if (!Array.isArray(drinks) || drinks.length === 0) {
     return null; // Return null or display an alternative content if drinks is not a valid array
   }
 
-  const top4Drinks = drinks.slice(0, 3); // Get the top 4 drinks from the array
+  const top4Drinks = drinks.slice(0, 4); // Get the top 4 drinks from the array
 
   return (
     <Wrapper>
       {top4Drinks.map((drink, index) => {
-        return <AskingListItem key={drink.name}  selectedMenu={selectedMenu} setSelectedMenu={setSelectedMenu}  drink={drink} />;
+        return <AskingListItem key={drink.name}  selectedMenu={selectedMenu} setSelectedMenu={setSelectedMenu} isChecked={isChecked} setIsChecked={setIsChecked}  drink={drink} />;
       })}
     </Wrapper>
   );

@@ -7,40 +7,28 @@ import DeleteButton2 from "../src/components/ui/DeleteButton2";
 import PlusButton from "../src/components/ui/PlusButton";
 import NotationModal from "./notationModal"
 
-const checkingList=()=>{
+const checkingList=(props)=>{
+  const {totalPrice, setTotalPrice, selectedMenu, setSelectedMenu, closeModal}=props;
   const [menuData, setMenuData] = useState([]);
-  const [selectedMenu, setSelectedMenu] = useState([]);
-  const [totalPrice, setTotalPrice] = useState(0);
+ 
+
   const [isModalOpen, setModalOpen] = useState(false);
 
   const openModal = () => {
     setModalOpen(true);
   };
 
-  const closeModal = () => {
-  
-    setModalOpen(false);
-    localStorage.setItem('totalPrice', JSON.stringify(0));
-    localStorage.setItem('order', JSON.stringify([]));
-    router.push("/WaitingPage");
-  };
+
 
   useEffect(() => {
-    const order = localStorage.getItem('order');
-    if (order) {
-      const parsedOrder = JSON.parse(order);
-      console.log(parsedOrder);
-      setSelectedMenu(parsedOrder);
-    }
-
-    else console.log("데이터 없음");
+   if(!totalPrice){return null};
+      setSelectedMenu(selectedMenu);
+   
   }, []);
 
   useEffect(() => {
-    const totalPrice = localStorage.getItem('totalPrice');
-    //if (totalPrice) {
-      const parsedPrice = JSON.parse(totalPrice);
-      setTotalPrice(parsedPrice)
+
+      setTotalPrice(totalPrice)
 
 
        console.log("체킹 페이지 검거!!!!!?",totalPrice);
@@ -52,12 +40,7 @@ const checkingList=()=>{
   const handlePage = () => {
     router.push("/checkingList");
   };
-  
-  const handlePreviousPage = () => {
-    localStorage.setItem('totalPrice', JSON.stringify(totalPrice));
-    localStorage.setItem('order', JSON.stringify(selectedMenu));
-    router.push("/selectMenu");
-  };
+
 
   const handleMinusClick = (drink) => {
       setSelectedMenu((prevMenu) => {
@@ -134,11 +117,12 @@ const checkingList=()=>{
     return (
       <>
         {isModalOpen && <NotationModal onClose={closeModal} />} 
-        <div className="wrapper">
+        <div className="Wrapper">
+          <div className="wrapper">
         <div className="upperBar">
-          <Image width={16} height={32} src='/asset/back.svg' alt="이미지" onClick={handlePreviousPage} />
-          <h1>결제하기</h1>
-          <div></div>
+        <div></div>
+          <h1>장바구니</h1> 
+          <Image width={30} height={30} src='/asset/delete.svg' alt="이미지" onClick={closeModal} />         
         </div>
 
         <div className="cart-list">
@@ -168,29 +152,49 @@ const checkingList=()=>{
           <div style={{ flex: 0.2, fontSize: 20, color: '#666666', fontWeight: 'bolder', marginBottom: '32px' }}>총 결제금액</div>
           <div style={{ fontSize: 30, color: '#367cff', fontWeight: 'bolder', marginTop: '-10px' }}>{totalPrice.toLocaleString()}</div>
 
-             < div style={{ fontSize: 20, color:'#666666',fontWeight: 'bolder'  }}>원</div>    
+            < div style={{ fontSize: 20, color:'#666666',fontWeight: 'bolder'  }}>원</div>    
           </div>
-              <button  onClick={openModal} className="pay-btn" > 결제 완료 </button>
-          
+              <button  onClick={openModal} className="pay-btn" > 주문 완료 </button>
+              </div>
           </div>
 
         <style jsx>{`
-        .wrapper {
-          padding: 40px 40px;
+        .Wrapper {
+          position: fixed;
+          wrap: wrap;
           width: 100%;
           height: 1180px;
           display: flex;
           flex-direction: column;
           align-items: center;
+          backdrop-filter: blur(3px);
+        }
+        .wrapper {
+          position: fixed;
+          top: 5%;
+          left: 8%;
+          right: 8%;
+          width: 84%;
+          height: 85%;
+          background-color: rgb(255, 255, 255);
+          border: 1px solid #72A3FF;
+          border-radius: 5px;
+          box-shadow: 0px 0px 20px #666;
+          z-index: 999;
+          display: flex;
+          flex-direction: column;
         }
         .upperBar {
           display: flex;
           justify-content: space-between;
           align-items: center;
+          gap: 8px;
+          padding: 10px;
           width: 100%;
         }
+
         hr {
-          width: 671px;
+         width: 671px;
           margin-top: 24px;
         }
 
@@ -221,7 +225,6 @@ const checkingList=()=>{
         }
 
         .cartlistContainer{
-          
           width: 100%;
           align-items: column;
         }
@@ -238,8 +241,8 @@ const checkingList=()=>{
         }
 
         .cart-list {
-          max-height: 75%;
-          width: 702px;
+          max-height: 70%;
+          width: 100%;
           overflow-y: scroll;
           overflow-x: hidden;
         }
@@ -257,7 +260,7 @@ const checkingList=()=>{
         .paycontainer{
           position: absolute;
           bottom: 0;
-          width: 90%;
+          width: 100%;
           margin: 0 0 8px;
           padding: 16px;
         }

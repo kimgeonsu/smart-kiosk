@@ -3,6 +3,7 @@
     {
       "id": 1,
       "name": "아메리카노",
+      "name2": "따뜻한 아메리카노",
       "temperature": "HOT",
       "price": 4500,
       "image": "/assets/americano.png",
@@ -11,6 +12,7 @@
     {
       "id": 2,
       "name": "아이스아메리카노",
+      "name2": "시원한 아메리카노",
       "temperature": "ICED",
       "price": 4000,
       "image": "/assets/americano.png",
@@ -19,6 +21,7 @@
     {
       "id": 3,
       "name": "카페라떼",
+      "name2": "따뜻한 카페라떼",
       "temperature": "HOT",
       "price": 5000,
       "image": "/assets/banilalatte.png",
@@ -27,6 +30,7 @@
     {
       "id": 4,
       "name": "카페라떼 ",
+      "name2": "시원한 카페라떼",
       "temperature": "ICED",
       "price": 5000,
       "image": "/assets/banilalatte.png",
@@ -35,6 +39,7 @@
     {
       "id": 5,
       "name": "카라멜마끼아또",
+      "name2": "따뜻한 카라멜마끼아또",
       "temperature": "HOT",
       "price": 5900,
       "image": "/assets/caramelmaciato.png",
@@ -43,6 +48,7 @@
     {
       "id": 6,
       "name": "카라멜마끼아또 ",
+      "name2": "시원한 카라멜마끼아또",
       "temperature": "ICED",
       "price": 5900,
       "image": "/assets/caramelmaciato.png",
@@ -51,6 +57,7 @@
     {
       "id": 7,
       "name": "카페모카",
+      "name2": "따뜻한 카페모카",
       "temperature": "HOT",
       "price": 5500,
       "image": "/assets/cafemoca.png",
@@ -59,6 +66,7 @@
     {
       "id": 8,
       "name": "카페모카 ",
+      "name2": "시원한 카페모카",
       "temperature": "ICED",
       "price": 5500,
       "image": "/assets/cafemoca.png",
@@ -67,6 +75,7 @@
     {
       "id": 9,
       "name": "에스프레소",
+      "name2": "따뜻한 에스프레소",
       "temperature": "HOT",
       "price": 4000,
       "image": "/assets/espresso.png",

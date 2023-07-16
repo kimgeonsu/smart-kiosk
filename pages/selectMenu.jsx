@@ -8,7 +8,10 @@ import MinusButton from "../src/components/ui/MinusButton";
 import DeleteButton from "../src/components/ui/DeleteButton";
 import RecommendModal from "./recommendModal"; 
 import sentence from "../src/data/inducementsentence.json";
+import CheckingList from "./checkingList";
+import CartModal from "./cartModal"
 import axios from "axios";
+
 
 const Selectingmenu = () => {
   const [menuData, setMenuData] = useState([]);
@@ -17,8 +20,24 @@ const Selectingmenu = () => {
   const [isModalOpen, setModalOpen] = useState(false);
   const [currentSentenceIndex, setCurrentSentenceIndex] = useState(0);
   const [currentSentence, setCurrentSentence] = useState("");
+  const [isChecked,setIsChecked]=useState([]);
+  const [isAlertModal, setIsAlertModal] = useState(false);
+  const [isPutByServer,setIsPutByServer]= useState([]);
+  
   const router = useRouter();
-  /*useEffect(() => {
+
+  const alertModal = () => {
+    setIsAlertModal(true);
+
+
+
+   setTimeout(()=>{
+      setIsAlertModal(false)},2500)
+      
+  };
+
+  /*
+  useEffect(() => {
     const listenForSignal = async () => {
       try {
         const response = await axios.get("http://localhost:5000/kiosk/recommend");
@@ -71,11 +90,7 @@ const Selectingmenu = () => {
     setMenuData(menu.coffee);
   }, []);
 
-  /*useEffect(() => {
-    const existingselectedMenu = JSON.parse(localStorage.getItem("totalPrice")) || 0;
-    console.log(selectedMenu);
-  }, [selectedMenu])
-*/
+ 
 useEffect(() => {
   const existingOrder = JSON.parse(localStorage.getItem("order")) || [];
   setSelectedMenu(existingOrder instanceof Array ? existingOrder : []);
@@ -98,7 +113,7 @@ useEffect(() => {
     localStorage.setItem('totalPrice', JSON.stringify(totalPrice));
     localStorage.setItem('order', JSON.stringify(selectedMenu));
    //총가격 저장 부분 삭제함
-    router.push("/checkingList");
+
     console.log("가격 저장은 어케되니",totalPrice);
     console.log("메뉴 저장은 어케되니",selectedMenu);
     }
@@ -117,7 +132,7 @@ useEffect(() => {
       const updatedMenu = prevMenu.map((item) => {
         if (item.name === drink) {
           if (item.quantity === 1) {
-            // quantity가 0이 되었을 때 해당 음료를 제외하고 필터링
+         
             return { ...item, quantity: item.quantity};
           } else {
             return { ...item, quantity: item.quantity - 1 };
@@ -152,17 +167,25 @@ useEffect(() => {
   };
 ////나중에 비동기 작업으로 모달창 열 예정,, 일단 버튼으로 열수 있도록 닮
   const openModal = () => {
+ 
     setModalOpen(true);
   };
 
   const closeModal = () => {
+//여기에
+    setIsChecked([]);
     setModalOpen(false);
   };
-
+//  {isModalOpen && <RecommendModal setModalOpen={setModalOpen} selectedMenu={selectedMenu} setSelectedMenu={setSelectedMenu}  isChecked={isChecked} setIsChecked={setIsChecked} closeModal={closeModal} />}
   return (
     <>
      <button onClick={openModal}>Open Modal</button>
-      {isModalOpen && <RecommendModal setModalOpen={setModalOpen} selectedMenu={selectedMenu} setSelectedMenu={setSelectedMenu} closeModal={closeModal} />}
+     <button isPutByServer={isPutByServer} setIsPutByServer={setIsPutByServer} onClick={alertModal}>Cart Modal</button>
+      {isAlertModal && <CartModal drinks={menu.coffee} />}
+      {isModalOpen&&totalPrice && <CheckingList  selectedMenu={selectedMenu} setSelectedMenu={setSelectedMenu} totalPrice={totalPrice} setTotalPrice={setTotalPrice}  closeModal={closeModal}/>}
+
+
+    
       <div className="wrapper">
         <div className="upperBar">
           <Image width={16} height={32} src='/asset/back.svg'  alt= "이미지" onClick={handlePreviousPage} />
@@ -206,7 +229,7 @@ useEffect(() => {
         </div>
         <div className="payContent">
           <div className="cart-wrapper">
-            <div className="pay-top">
+            <div className="pay-top"  onClick={openModal}>
               <div style={{ flex: 3, fontSize: 16, color:'#666666',fontWeight: 'bolder' }}>주문내역</div>
               <div style={{ flex: 1, fontSize: 16, color:'#666666',fontWeight: 'bolder'  }}>수량</div>
               <div style={{ flex: 1.5, fontSize: 25, color: '#367cff', fontWeight: 'bolder' }}>
@@ -217,7 +240,7 @@ useEffect(() => {
             <div className="cart-list">
               
               {
-                selectedMenu.map((item) =>
+                selectedMenu.map((item) =>item.quantity>0?(
                   <div className="cart-item">
                     <div style={{ flex: 3, fontSize: 16, color:'#000000',fontWeight: 'bolder'  }}>{item.name}</div>
                     <div style={{ flex: 1.5, fontSize: 16, color:'#000000',fontWeight: 'bolder'  }}>
@@ -228,8 +251,8 @@ useEffect(() => {
                     <div style={{ flex: 1.2 , fontSize: 16, color:'#000000',fontWeight: 'bolder' }}>   {`${(item.price * item.quantity).toLocaleString()}원`}</div>
                       <DeleteButton handleDeleteClick={()=>handleDeleteClick(item.name)} drink={item.name}/>
                   </div>
-                )
-              }
+                ):null
+                )}
             </div>
           </div>
           <button onClick={() => saveOrder(totalPrice)} className="pay-btn">결제 하기</button>

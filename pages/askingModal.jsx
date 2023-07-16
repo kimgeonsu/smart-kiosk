@@ -4,7 +4,7 @@ import menu from "../src/data/menu.json";
 import AskingList from "../src/components/list/AskingList";
 import RecommendList from "../src/components/list/RecommendList";
 
-const RecommendModal = ({
+const AskingModal = ({
   setSelectedMenu,
   selectedMenu,
   closeModal,
@@ -71,7 +71,7 @@ const RecommendModal = ({
             />
           </div>
           <div className="queryContainer">
-            말씀하신 음료의 온도를 선택해주세요
+            말씀하신 메뉴가 맞으신가요?
             <AskingList
               selectedMenu={selectedMenu}
               setSelectedMenu={setSelectedMenu}
@@ -108,7 +108,8 @@ const RecommendModal = ({
           display: flex;
           flex-direction: column;
           align-items: center;
-       
+          background-color: rgba(128, 128, 128, 0.5);
+          backdrop-filter: blur(2px);
         }
         .wrapper {
           position: fixed;
@@ -118,9 +119,6 @@ const RecommendModal = ({
           width: 84%;
           height: 81%;
           background-color: rgb(255, 255, 255);
-          border: 1px solid #72A3FF;
-          border-radius: 5px;
-          box-shadow: 0px 0px 20px #72A3FF;
           z-index: 999;
           display: flex;
           flex-direction: column;
@@ -194,4 +192,4 @@ const RecommendModal = ({
   );
 };
 
-export default RecommendModal;
+export default AskingModal;
