@@ -18,7 +18,7 @@ const MenuList = (props) => {
 
   return (
     <Wrapper>
-      {drinks.map((drink, index) => {
+      {drinks.map((drink) => {
         return <MenuListItem selectedMenu={selectedMenu} setSelectedMenu={setSelectedMenu} key={drink.name} drink={drink} />;
       })}
     </Wrapper>

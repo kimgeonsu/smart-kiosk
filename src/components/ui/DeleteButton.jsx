@@ -10,7 +10,7 @@ const DeleteButton = ({ handleDeleteClick, drink }) => {
     <>
     <div className="wrapper">
       <button onClick={handleClick}>
-        <Image width={16} height={16} src="/asset/deleteall.svg" />
+        <Image width={16} height={16} src="/asset/deleteall.svg"  alt="이미지" />
       </button>
     </div>
       <style jsx>{`

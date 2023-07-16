@@ -1,4 +1,5 @@
 import React, { use, useEffect, useState } from "react";
+import { useRouter } from 'next/router';
 import Image from "next/image";
 import MenuList from "../src/components/list/MenuList";
 import menu from "../src/data/menu.json";
@@ -6,24 +7,48 @@ import PlusButton from "../src/components/ui/PlusButton";
 import MinusButton from "../src/components/ui/MinusButton";
 import DeleteButton from "../src/components/ui/DeleteButton";
 import RecommendModal from "./recommendModal"; 
+import sentence from "../src/data/inducementsentence.json";
+import axios from "axios";
 
 const Selectingmenu = () => {
   const [menuData, setMenuData] = useState([]);
   const [selectedMenu, setSelectedMenu] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
   const [isModalOpen, setModalOpen] = useState(false);
+  const [currentSentenceIndex, setCurrentSentenceIndex] = useState(0);
+  const [currentSentence, setCurrentSentence] = useState("");
+  const router = useRouter();
+  /*useEffect(() => {
+    const listenForSignal = async () => {
+      try {
+        const response = await axios.get("http://localhost:5000/kiosk/recommend");
+        const data = response.data;
 
-  const handleSpeechBubbleClick = () => {
-    
-    if (!isModalOpen) {
-      setModalOpen(true);
-    }
+        if (data.signal === "openModal") {
+          setModalOpen(true);
+        }
+      } catch (error) {
+        console.error("서버 통신 중 에러 발생:", error);
+      }
     };
+    listenForSignal();
+  }, []);
+  */
+   
+  //5초마다 추천 문구 바뀜
+    useEffect(() => {
+      const interval = setInterval(() => {
+        setCurrentSentenceIndex((prevIndex) => (prevIndex + 1) % sentence.length);
+      }, 5000);
   
+      return () => clearInterval(interval);
+    }, []);
+  
+    useEffect(() => {
+      setCurrentSentence(sentence[currentSentenceIndex].sentence);
+    }, [currentSentenceIndex]);
 
-  const blurClass = isModalOpen ? "blur" : "";
-
-  //음료 종류 선택 버튼 동작
+  //음료 TYPE 버튼 동작
   const handleTypeButtonClick = (type) => {
     setMenuData([]);
     let newData;
@@ -46,24 +71,47 @@ const Selectingmenu = () => {
     setMenuData(menu.coffee);
   }, []);
 
-  useEffect(() => {
+  /*useEffect(() => {
+    const existingselectedMenu = JSON.parse(localStorage.getItem("totalPrice")) || 0;
     console.log(selectedMenu);
   }, [selectedMenu])
+*/
+useEffect(() => {
+  const existingOrder = JSON.parse(localStorage.getItem("order")) || [];
+  setSelectedMenu(existingOrder instanceof Array ? existingOrder : []);
+  console.log("메뉴판 눌렀을때 저장~", existingOrder);
+}, []);
 
+
+  //장바구니 금액 총합 계산
   useEffect(() => {
+    //const existingTotalPrice = JSON.parse(localStorage.getItem("totalPrice")) || 0;
     const totalPrice = selectedMenu.reduce(
-      (sum, item) => sum + item.price * item.quantity,  0);
+      (sum, item) => sum + item.price * item.quantity ,  0);
       setTotalPrice(totalPrice);
-    console.log(totalPrice);
+    console.log("셀렉트메뉴가 문제니?",totalPrice);
   }, [selectedMenu]);
 
-
+// 장바구니 내역 저장
   const saveOrder = () => {
+    if(totalPrice){
+    localStorage.setItem('totalPrice', JSON.stringify(totalPrice));
     localStorage.setItem('order', JSON.stringify(selectedMenu));
-    localStorage.setItem("totalPrice", JSON.stringify(totalPrice));
+   //총가격 저장 부분 삭제함
+    router.push("/checkingList");
+    console.log("가격 저장은 어케되니",totalPrice);
+    console.log("메뉴 저장은 어케되니",selectedMenu);
+    }
+    console.log("메뉴를 클릭해주세요",selectedMenu);
   }
 
-  //수량 - 1
+  const handlePreviousPage = () => {
+    localStorage.setItem('totalPrice', JSON.stringify(0));
+    localStorage.setItem('order', JSON.stringify([]));
+    router.push("/selectWhere");
+  };
+
+  //음료 수량 - 1
   const handleMinusClick = (drink) => {
     setSelectedMenu((prevMenu) => {
       const updatedMenu = prevMenu.map((item) => {
@@ -81,7 +129,7 @@ const Selectingmenu = () => {
     });
   };
   
-  //카트에서 삭제
+  //장바구니에서 삭제
   const handleDeleteClick = (drink) => {
     setSelectedMenu((prevMenu) => {
       const updatedMenu = prevMenu.filter((item) => item.name !== drink); //해당 음료 이름 필터링
@@ -102,13 +150,22 @@ const Selectingmenu = () => {
       return updatedMenu;
     });
   };
+////나중에 비동기 작업으로 모달창 열 예정,, 일단 버튼으로 열수 있도록 닮
+  const openModal = () => {
+    setModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalOpen(false);
+  };
 
   return (
     <>
-      <RecommendModal setModalOpen={isModalOpen}/>
+     <button onClick={openModal}>Open Modal</button>
+      {isModalOpen && <RecommendModal setModalOpen={setModalOpen} selectedMenu={selectedMenu} setSelectedMenu={setSelectedMenu} closeModal={closeModal} />}
       <div className="wrapper">
         <div className="upperBar">
-          <Image width={16} height={32} src='/asset/back.svg' />
+          <Image width={16} height={32} src='/asset/back.svg'  alt= "이미지" onClick={handlePreviousPage} />
           <h1>주문하기</h1>
           <div></div>
         </div>
@@ -116,15 +173,20 @@ const Selectingmenu = () => {
         <div className="contentWrapper">
           <div className="imgContainer">
             
-            <Image width={13} height={26} src='/asset/prev.svg' />
+            <Image width={13} height={26} src='/asset/prev.svg' alt= "이미지" />
           </div>
 
           <div className="content">
         
-          <div className="speechBubbleContainer">
-              <Image width={671} height={55} src="/asset/speechbubble.svg" onClick={handleSpeechBubbleClick}/>
-            
-            </div>
+          <div className="speechBubbleContainer" >
+            <Image width={671} height={55} src="/asset/speechbubble.svg" alt= "이미지"/>
+          <div className="personImageContainer">
+          <div className="personImage">
+            <Image  width={44} height={36} src="/asset/person.svg" alt= "이미지" />
+         <div className="inducesentenceContainer">{currentSentence}</div>
+        </div>
+    </div>
+  </div>
             <hr />
 
             <div className="categoryWrapper">
@@ -137,7 +199,7 @@ const Selectingmenu = () => {
           </div>
 
           <div className="imgContainer">
-          <Image style={{ rotate: '180deg', zIndex: -1 }} width={13} height={26} src='/asset/prev.svg' />
+          <Image style={{ rotate: '180deg', zIndex: -1 }} width={13} height={26} src='/asset/prev.svg' alt= "이미지" />
 
           </div>
 
@@ -148,11 +210,12 @@ const Selectingmenu = () => {
               <div style={{ flex: 3, fontSize: 16, color:'#666666',fontWeight: 'bolder' }}>주문내역</div>
               <div style={{ flex: 1, fontSize: 16, color:'#666666',fontWeight: 'bolder'  }}>수량</div>
               <div style={{ flex: 1.5, fontSize: 25, color: '#367cff', fontWeight: 'bolder' }}>
-                {selectedMenu.reduce((sum, item) => sum + item.price * item.quantity, 0).toLocaleString()}원
+                {totalPrice.toLocaleString()}원
               </div>
 
             </div>
             <div className="cart-list">
+              
               {
                 selectedMenu.map((item) =>
                   <div className="cart-item">
@@ -169,7 +232,7 @@ const Selectingmenu = () => {
               }
             </div>
           </div>
-          <button onClick={saveOrder} className="pay-btn">결제 하기</button>
+          <button onClick={() => saveOrder(totalPrice)} className="pay-btn">결제 하기</button>
 
         </div>
       </div>
@@ -256,7 +319,6 @@ const Selectingmenu = () => {
         }
         
         .payContent{
-         
           margin-left:32px;
           margin-top: 10px;
           width: 671px;
@@ -324,6 +386,7 @@ const Selectingmenu = () => {
             letter-spacing: 0px;
             text-align: right;
             color : #367CFF;
+            display: flex;
           }
 
         .PayStarting{
@@ -340,18 +403,36 @@ const Selectingmenu = () => {
         }
 
         .speechBubbleContainer {
-          position: relative;
+            position: relative;
+            justify-content: center;
+            align-items: center;
+            z-index: -1;
+          }
+
+        .personImageContainer {
+          position: absolute;
+          align-items: column;
+          top: 10px;
+          left: 100px;
+          z-index: 1;
+        }
+
+       .inducesentenceContainer {
+          font-size: 17px;
+          font-weight: 600;
+          line-height: 19px;
+          letter-spacing: 0px;
+          color: #FFFFFF;
           justify-content: center;
           align-items: center;
-        }
-
-        .personImage {
-          position: absolute;
-          top: 0;
-          left: 0;
-          z-index: 99; /* speechBubble 이미지보다 상위에 쌓임 */
-        }
-
+          position: relative;
+          bottom: 31px;
+          left: 20%;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          width: 385px;
+      }
 
       `}</style>
     </>

@@ -15,7 +15,7 @@ background: white;
 cursor: pointer;
 transition: background-color 0.3s;
 
-&:hover {
+&:clicked {
   background-color: #666666;
   color: #ffffff;
   border: none;

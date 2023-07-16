@@ -5,17 +5,32 @@ import menu from "../src/data/menu.json";
 import MinusButton from "../src/components/ui/MinusButton";
 import DeleteButton2 from "../src/components/ui/DeleteButton2";
 import PlusButton from "../src/components/ui/PlusButton";
+import NotationModal from "./notationModal"
 
-const CheckingList=()=>{
+const checkingList=()=>{
   const [menuData, setMenuData] = useState([]);
   const [selectedMenu, setSelectedMenu] = useState([]);
-  const [sumPrice, setSumPrice] = useState([]);
+  const [totalPrice, setTotalPrice] = useState(0);
+  const [isModalOpen, setModalOpen] = useState(false);
+
+  const openModal = () => {
+    setModalOpen(true);
+  };
+
+  const closeModal = () => {
+  
+    setModalOpen(false);
+    localStorage.setItem('totalPrice', JSON.stringify(0));
+    localStorage.setItem('order', JSON.stringify([]));
+    router.push("/WaitingPage");
+  };
+
   useEffect(() => {
     const order = localStorage.getItem('order');
     if (order) {
       const parsedOrder = JSON.parse(order);
       console.log(parsedOrder);
-       setSelectedMenu(parsedOrder);
+      setSelectedMenu(parsedOrder);
     }
 
     else console.log("데이터 없음");
@@ -23,20 +38,14 @@ const CheckingList=()=>{
 
   useEffect(() => {
     const totalPrice = localStorage.getItem('totalPrice');
-    if (totalPrice) {
+    //if (totalPrice) {
       const parsedPrice = JSON.parse(totalPrice);
-       setSumPrice(parsedPrice);
-    }
-    else console.log("데이터 없음");
+      setTotalPrice(parsedPrice)
+
+
+       console.log("체킹 페이지 검거!!!!!?",totalPrice);
+  //  }
   }, []);
-
-  useEffect(() => {
-    const totalPrice = selectedMenu.reduce(
-      (sum, item) => sum + item.price * item.quantity,  0);
-      setSumPrice(totalPrice);
-      console.log(totalPrice);
-  }, [selectedMenu]);
-
 
   const router = useRouter();
  
@@ -45,7 +54,9 @@ const CheckingList=()=>{
   };
   
   const handlePreviousPage = () => {
-      
+    localStorage.setItem('totalPrice', JSON.stringify(totalPrice));
+    localStorage.setItem('order', JSON.stringify(selectedMenu));
+    router.push("/selectMenu");
   };
 
   const handleMinusClick = (drink) => {
@@ -61,17 +72,26 @@ const CheckingList=()=>{
         }
         return item;
       });
-      return updatedMenu.filter(Boolean); // null 값을 제거하여 새로운 배열 반환
+      const totalPrice = updatedMenu.reduce(
+        (sum, item) => sum + item.price * item.quantity, 0
+      );
+      setTotalPrice(totalPrice);
+      return updatedMenu.filter(Boolean);
     });
   };
   
   //카트에서 삭제
   const handleDeleteClick = (drink) => {
     setSelectedMenu((prevMenu) => {
-      const updatedMenu = prevMenu.filter((item) => item.name !== drink); //해당 음료 이름 필터링
+      const updatedMenu = prevMenu.filter((item) => item.name !== drink);
+      const totalPrice = updatedMenu.reduce(
+        (sum, item) => sum + item.price * item.quantity, 0
+      );
+      setTotalPrice(totalPrice);
       return updatedMenu;
     });
   };
+  
   
 //수량 +1
   const handlePlusClick = (drink) => {
@@ -83,14 +103,18 @@ const CheckingList=()=>{
         }
         return item;
       });
-      return updatedMenu;
+      const totalPrice = updatedMenu.reduce(
+        (sum, item) => sum + item.price * item.quantity, 0
+      );
+      setTotalPrice(totalPrice);
+      return updatedMenu.filter(Boolean);
     });
   };
-
-  const saveOrder = () => {
+//서버에 바로 보내는걸로 바꿀 예정
+/*  const saveOrder = () => {
     localStorage.setItem('order', JSON.stringify(selectedMenu));
     localStorage.setItem("totalPrice", JSON.stringify(totalPrice));
-  }
+  }*/
 
   const getMenuByName=(name)=> {
     const menuArray = Object.values(menu);
@@ -109,10 +133,11 @@ const CheckingList=()=>{
 
     return (
       <>
+        {isModalOpen && <NotationModal onClose={closeModal} />} 
         <div className="wrapper">
         <div className="upperBar">
-          <Image width={16} height={32} src='/asset/back.svg' />
-          <h1>주문내역</h1>
+          <Image width={16} height={32} src='/asset/back.svg' alt="이미지" onClick={handlePreviousPage} />
+          <h1>결제하기</h1>
           <div></div>
         </div>
 
@@ -121,7 +146,7 @@ const CheckingList=()=>{
           const menuItem = getMenuByName(item.name);
           const imageUrl = menuItem?.image;
             return (
-              <div className="cart-item" key={item.id}>
+              <div key={item.name} className="cart-item">
                 <div className="image">
                   <Image width={128} height={128}  src={imageUrl} alt={item.name} />
                 </div>
@@ -131,7 +156,7 @@ const CheckingList=()=>{
                                    {item.quantity}개
                                 <PlusButton handlePlusClick={handlePlusClick} drink={item.name}/>
                     </div>
-                    <div style={{ flex: 1 , fontSize: 20, color:'#000000',fontWeight: 'bolder' }}>{item.price * item.quantity}원</div>
+                    <div style={{ flex: 1 , fontSize: 20, color:'#000000',fontWeight: 'bolder' }}>{`${(item.price * item.quantity).toLocaleString()}원`}</div>
                       <DeleteButton2 handleDeleteClick={()=>handleDeleteClick(item.name)} drink={item.name}/>
                   </div>
                 );
@@ -141,11 +166,12 @@ const CheckingList=()=>{
           <div className="paycontainer">
           <div className="sumContent">
           <div style={{ flex: 0.2, fontSize: 20, color: '#666666', fontWeight: 'bolder', marginBottom: '32px' }}>총 결제금액</div>
-          <div style={{ fontSize: 30, color: '#367cff', fontWeight: 'bolder', marginTop: '-10px' }}>{sumPrice.toLocaleString()}</div>
+          <div style={{ fontSize: 30, color: '#367cff', fontWeight: 'bolder', marginTop: '-10px' }}>{totalPrice.toLocaleString()}</div>
 
              < div style={{ fontSize: 20, color:'#666666',fontWeight: 'bolder'  }}>원</div>    
           </div>
-              <button className="pay-btn" onClick={saveOrder}> 결제하기 </button>
+              <button  onClick={openModal} className="pay-btn" > 결제 완료 </button>
+          
           </div>
 
         <style jsx>{`
@@ -262,4 +288,4 @@ const CheckingList=()=>{
 
 }
 
-export default CheckingList;
+export default checkingList;
