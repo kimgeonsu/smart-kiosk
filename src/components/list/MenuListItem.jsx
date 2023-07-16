@@ -32,6 +32,8 @@ const MenuListItem = (props) => {
   const { drink, selectedMenu, setSelectedMenu } = props;
   const [isClicked, setIsClicked] = useState(false);
 
+  
+
   const handleClick = () => {
     setIsClicked(true);
     let names = selectedMenu.map((e) => e.id);
@@ -39,13 +41,14 @@ const MenuListItem = (props) => {
     if (idx === -1) {
       const dataToSave = {
         name: drink.name,
+        id: drink.id,
         price: drink.price,
         quantity: 1,
       };
       setSelectedMenu([dataToSave, ...selectedMenu]);
     } else {
       const updateArr = selectedMenu.map((item) => {
-        if (item.name === drink.name) {
+        if (item.id === drink.id) {
           return { ...item, quantity: selectedMenu[idx]["quantity"] + 1 };
         }
         return item;
