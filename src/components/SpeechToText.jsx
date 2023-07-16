@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useRef, useState } from 'react';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
-
+import { GptContext, gptContext } from '../context/gptContext';
 
 const SpeechToText = ({ children }) => {
   const {
@@ -12,6 +12,7 @@ const SpeechToText = ({ children }) => {
   const timeoutRef = useRef(null);
   const [isOk, setIsOk] = useState(true); // GPT한테 답을 듣기 전에 또 요청을 보내는 것을 방지
   const [isEnd, setIsEnd] = useState(true); // 인공지능이 말하는 것이 끝났는지 확인
+  const [answer, setAnswer] = useState(null);
 
   useEffect(() => {
     if (!browserSupportsSpeechRecognition) {
@@ -30,6 +31,7 @@ const SpeechToText = ({ children }) => {
         axios.post('http://localhost:5001/kiosk/order', { data: transcript })
           .then((response) => {
             setIsOk(true);
+            setAnswer(response['data']);
 
             // 추천 문구일 때
             if (response['data']['type'] == 'recommend') {
@@ -73,7 +75,9 @@ const SpeechToText = ({ children }) => {
 
   return (
     <>
-      {children}
+      <GptContext.Provider value={{ answer, setAnswer }}>
+        {children}
+      </GptContext.Provider>
     </>
   );
 };

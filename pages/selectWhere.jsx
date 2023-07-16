@@ -1,7 +1,8 @@
+import { Howl } from 'howler';
 import Image from 'next/image';
-import React, { useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
+import { GptContext } from '../src/context/gptContext';
 import styled from "styled-components";
 const Button = styled.button`
   border: 1px solid #72A3FF;
@@ -18,6 +19,12 @@ const Button = styled.button`
 
 const selectWhere = () => {
   const router = useRouter();
+  const { answer, setAnswer } = useContext(GptContext);
+
+  // 포장 여부에 포장이 들어가면 다음 페이지로 고고
+  useEffect(() => {
+
+  }, [answer]);
   const [isClicked, setIsClicked] = useState(false);
 
   const handlePage = (where) => {
@@ -33,12 +40,22 @@ const selectWhere = () => {
 
 
   useEffect(() => {
+    let sound = new Howl({
+      src: ['/assets/isToGO.mp3'],
+      html5: true
+    });
+
+    sound.play();
     const timeout = setTimeout(() => {
       router.push("/WaitingPage"); // 페이지를 변경할 URL로 변경해주세요
     }, 15000); // 15초를 밀리초 단위로 설정
 
-    return () => clearTimeout(timeout); 
+    return () => clearTimeout(timeout);
   }, [])
+
+  useEffect(() => {
+    console.log(data);
+  }, [data])
 
   return (
     <>
