@@ -1,0 +1,23 @@
+[
+  {
+    "name": "케모마일",
+    "price": 3000,
+    "image": "/espresso.png"
+  },
+  {
+    "name": "밀크티",
+    "price": 4000,
+    "image": "/espresso.png"
+  },
+  {
+    "name": "녹차",
+    "price": 4500,
+    "image": "/espresso.png"
+  },
+  {
+    "name": "감귤",
+    "price": 4500,
+    "image": "/espresso.png"
+  }
+]
+
