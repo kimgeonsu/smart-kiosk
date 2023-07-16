@@ -95,7 +95,6 @@ const Selectingmenu = () => {
     const totalPrice = selectedMenu.reduce(
       (sum, item) => sum + item.price * item.quantity, 0);
     setTotalPrice(totalPrice);
-    console.log("셀렉트메뉴가 문제니?", totalPrice);
   }, [selectedMenu]);
 
   // 장바구니 내역 저장
@@ -105,10 +104,7 @@ const Selectingmenu = () => {
       localStorage.setItem('order', JSON.stringify(selectedMenu));
       //총가격 저장 부분 삭제함
       router.push("/checkingList");
-      console.log("가격 저장은 어케되니", totalPrice);
-      console.log("메뉴 저장은 어케되니", selectedMenu);
     }
-    console.log("메뉴를 클릭해주세요", selectedMenu);
   }
 
   const handlePreviousPage = () => {

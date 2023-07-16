@@ -7,10 +7,10 @@ import DeleteButton2 from "../src/components/ui/DeleteButton2";
 import PlusButton from "../src/components/ui/PlusButton";
 import NotationModal from "./notationModal"
 
-const checkingList=(props)=>{
-  const {totalPrice, setTotalPrice, selectedMenu, setSelectedMenu, closeModal}=props;
+const checkingList = (props) => {
+  const { totalPrice, setTotalPrice, selectedMenu, setSelectedMenu, closeModal } = props;
   const [menuData, setMenuData] = useState([]);
- 
+
 
   const [isModalOpen, setModalOpen] = useState(false);
 
@@ -21,34 +21,34 @@ const checkingList=(props)=>{
 
 
   useEffect(() => {
-   if(!totalPrice){return null};
-      setSelectedMenu(selectedMenu);
-   
+    if (!totalPrice) { return null };
+    setSelectedMenu(selectedMenu);
+
   }, []);
 
   useEffect(() => {
 
-      setTotalPrice(totalPrice)
+    setTotalPrice(totalPrice)
 
 
-       console.log("체킹 페이지 검거!!!!!?",totalPrice);
-  //  }
+    console.log("체킹 페이지 검거!!!!!?", totalPrice);
+    //  }
   }, []);
 
   const router = useRouter();
- 
+
   const handlePage = () => {
     router.push("/checkingList");
   };
 
 
   const handleMinusClick = (drink) => {
-      setSelectedMenu((prevMenu) => {
+    setSelectedMenu((prevMenu) => {
       const updatedMenu = prevMenu.map((item) => {
         if (item.name === drink) {
           if (item.quantity === 1) {
             // quantity가 0이 되었을 때 해당 음료를 제외하고 필터링
-            return { ...item, quantity: item.quantity};
+            return { ...item, quantity: item.quantity };
           } else {
             return { ...item, quantity: item.quantity - 1 };
           }
@@ -62,7 +62,7 @@ const checkingList=(props)=>{
       return updatedMenu.filter(Boolean);
     });
   };
-  
+
   //카트에서 삭제
   const handleDeleteClick = (drink) => {
     setSelectedMenu((prevMenu) => {
@@ -74,12 +74,12 @@ const checkingList=(props)=>{
       return updatedMenu;
     });
   };
-  
-  
-//수량 +1
+
+
+  //수량 +1
   const handlePlusClick = (drink) => {
     setSelectedMenu((prevMenu) => {
-    
+
       const updatedMenu = prevMenu.map((item) => {
         if (item.name === drink) {
           return { ...item, quantity: item.quantity + 1 };
@@ -93,70 +93,70 @@ const checkingList=(props)=>{
       return updatedMenu.filter(Boolean);
     });
   };
-//서버에 바로 보내는걸로 바꿀 예정
-/*  const saveOrder = () => {
-    localStorage.setItem('order', JSON.stringify(selectedMenu));
-    localStorage.setItem("totalPrice", JSON.stringify(totalPrice));
-  }*/
+  //서버에 바로 보내는걸로 바꿀 예정
+  /*  const saveOrder = () => {
+      localStorage.setItem('order', JSON.stringify(selectedMenu));
+      localStorage.setItem("totalPrice", JSON.stringify(totalPrice));
+    }*/
 
-  const getMenuByName=(name)=> {
+  const getMenuByName = (name) => {
     const menuArray = Object.values(menu);
 
     for (const category of menuArray) {
       const menuItem = category.find((item) => item.name === name);
-  
+
       if (menuItem) {
         return menuItem;
       }
     }
-  
+
     return null;
   }
-  
 
-    return (
-      <>
-        {isModalOpen && <NotationModal onClose={closeModal} />} 
-        <div className="Wrapper">
-          <div className="wrapper">
-        <div className="upperBar">
-        <div></div>
-          <h1>장바구니</h1> 
-          <Image width={30} height={30} src='/asset/delete.svg' alt="이미지" onClick={closeModal} />         
-        </div>
 
-        <div className="cart-list">
-        {selectedMenu.map((item) => {
-          const menuItem = getMenuByName(item.name);
-          const imageUrl = menuItem?.image;
-            return (
-              <div key={item.name} className="cart-item">
-                <div className="image">
-                  <Image width={128} height={128}  src={imageUrl} alt={item.name} />
-                </div>
-                    <div style={{ flex: 2, fontSize: 20, color:'#666666',fontWeight: 'bolder' }}>{item.name}</div>
-                    <div style={{ flex: 1, fontSize: 20, color:'#666666',fontWeight: 'bolder' }}> 
-                                <MinusButton handleMinusClick={() => handleMinusClick(item.name)} drink={item.name} />
-                                   {item.quantity}개
-                                <PlusButton handlePlusClick={handlePlusClick} drink={item.name}/>
-                    </div>
-                    <div style={{ flex: 1 , fontSize: 20, color:'#000000',fontWeight: 'bolder' }}>{`${(item.price * item.quantity).toLocaleString()}원`}</div>
-                      <DeleteButton2 handleDeleteClick={()=>handleDeleteClick(item.name)} drink={item.name}/>
+  return (
+    <>
+      {isModalOpen && <NotationModal onClose={closeModal} />}
+      <div className="Wrapper">
+        <div className="wrapper">
+          <div className="upperBar">
+            <div></div>
+            <h1>장바구니</h1>
+            <Image width={30} height={30} src='/asset/delete.svg' alt="이미지" onClick={closeModal} />
+          </div>
+
+          <div className="cart-list">
+            {selectedMenu.map((item, idx) => {
+              const menuItem = getMenuByName(item.name);
+              const imageUrl = menuItem?.image;
+              return (
+                <div key={idx} className="cart-item">
+                  <div className="image">
+                    <Image width={128} height={128} src={imageUrl} alt={item.name} />
                   </div>
-                );
-              })}
+                  <div style={{ flex: 2, fontSize: 20, color: '#666666', fontWeight: 'bolder' }}>{item.name}</div>
+                  <div style={{ flex: 1, fontSize: 20, color: '#666666', fontWeight: 'bolder' }}>
+                    <MinusButton handleMinusClick={() => handleMinusClick(item.name)} drink={item.name} />
+                    {item.quantity}개
+                    <PlusButton handlePlusClick={handlePlusClick} drink={item.name} />
+                  </div>
+                  <div style={{ flex: 1, fontSize: 20, color: '#000000', fontWeight: 'bolder' }}>{`${(item.price * item.quantity).toLocaleString()}원`}</div>
+                  <DeleteButton2 handleDeleteClick={() => handleDeleteClick(item.name)} drink={item.name} />
+                </div>
+              );
+            })}
           </div>
 
           <div className="paycontainer">
-          <div className="sumContent">
-          <div style={{ flex: 0.2, fontSize: 20, color: '#666666', fontWeight: 'bolder', marginBottom: '32px' }}>총 결제금액</div>
-          <div style={{ fontSize: 30, color: '#367cff', fontWeight: 'bolder', marginTop: '-10px' }}>{totalPrice.toLocaleString()}</div>
+            <div className="sumContent">
+              <div style={{ flex: 0.2, fontSize: 20, color: '#666666', fontWeight: 'bolder', marginBottom: '32px' }}>총 결제금액</div>
+              <div style={{ fontSize: 30, color: '#367cff', fontWeight: 'bolder', marginTop: '-10px' }}>{totalPrice.toLocaleString()}</div>
 
-            < div style={{ fontSize: 20, color:'#666666',fontWeight: 'bolder'  }}>원</div>    
+              < div style={{ fontSize: 20, color: '#666666', fontWeight: 'bolder' }}>원</div>
+            </div>
+            <button onClick={openModal} className="pay-btn" > 주문 완료 </button>
           </div>
-              <button  onClick={openModal} className="pay-btn" > 주문 완료 </button>
-              </div>
-          </div>
+        </div>
 
         <style jsx>{`
         .Wrapper {
@@ -286,8 +286,8 @@ const checkingList=(props)=>{
           }       
       `}</style>
       </div>
-      </>
-      );
+    </>
+  );
 
 }
 

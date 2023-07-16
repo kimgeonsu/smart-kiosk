@@ -34,8 +34,8 @@ const MenuListItem = (props) => {
 
   const handleClick = () => {
     setIsClicked(true);
-    let names = selectedMenu.map((e) => e.name);
-    let idx = names.indexOf(drink.name);
+    let names = selectedMenu.map((e) => e.id);
+    let idx = names.indexOf(drink.id);
     if (idx === -1) {
       const dataToSave = {
         name: drink.name,

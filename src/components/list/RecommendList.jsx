@@ -26,7 +26,7 @@ const RecommendList = (props) => {
   return (
     <Wrapper>
       {top4Drinks.map((drink, index) => {
-        return <RecommendListItem key={drink.name}  selectedMenu={selectedMenu} setSelectedMenu={setSelectedMenu} drink={drink} />;
+        return <RecommendListItem key={index} selectedMenu={selectedMenu} setSelectedMenu={setSelectedMenu} drink={drink} />;
       })}
     </Wrapper>
   );

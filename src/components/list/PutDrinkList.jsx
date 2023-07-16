@@ -16,20 +16,20 @@ const Cartlist = styled.div`
    
 `;
 
-const PutDrinkList=(props)=> {
-  const { drinks} = props;
+const PutDrinkList = (props) => {
+  const { drinks } = props;
 
   if (!Array.isArray(drinks) || drinks.length === 0) {
-    return "원하는 음료를 터치해주세요"; 
+    return "원하는 음료를 터치해주세요";
   }
-  const top4Drinks = drinks.slice(0, 3); 
+  const top4Drinks = drinks.slice(0, 3);
 
   return (
     <Wrapper>
-        
-        {top4Drinks.map((drink) => {
-                return <PutDrinkItem key={drink.name} drink={drink} />;
-            })}
+
+      {top4Drinks.map((drink, idx) => {
+        return <PutDrinkItem key={idx} drink={drink} />;
+      })}
     </Wrapper>
   );
 }

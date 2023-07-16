@@ -13,13 +13,13 @@ const MenuList = (props) => {
   const { drinks, selectedMenu, setSelectedMenu } = props;
 
   if (!Array.isArray(drinks) || drinks.length === 0) {
-    return null; 
+    return null;
   }
 
   return (
     <Wrapper>
       {drinks.map((drink) => {
-        return <MenuListItem selectedMenu={selectedMenu} setSelectedMenu={setSelectedMenu} key={drink.name} drink={drink} />;
+        return <MenuListItem selectedMenu={selectedMenu} setSelectedMenu={setSelectedMenu} key={drink.id} drink={drink} />;
       })}
     </Wrapper>
   );

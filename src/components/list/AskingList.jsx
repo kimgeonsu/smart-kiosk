@@ -15,7 +15,7 @@ const Wrapper = styled.div`
 `;
 
 const AskingList = (props) => {
-  const { drinks, selectedMenu, setSelectedMenu, isChecked,setIsChecked  } = props;
+  const { drinks, selectedMenu, setSelectedMenu, isChecked, setIsChecked } = props;
 
   if (!Array.isArray(drinks) || drinks.length === 0) {
     return null; // Return null or display an alternative content if drinks is not a valid array
@@ -26,7 +26,7 @@ const AskingList = (props) => {
   return (
     <Wrapper>
       {top4Drinks.map((drink, index) => {
-        return <AskingListItem key={drink.name}  selectedMenu={selectedMenu} setSelectedMenu={setSelectedMenu} isChecked={isChecked} setIsChecked={setIsChecked}  drink={drink} />;
+        return <AskingListItem key={index} selectedMenu={selectedMenu} setSelectedMenu={setSelectedMenu} isChecked={isChecked} setIsChecked={setIsChecked} drink={drink} />;
       })}
     </Wrapper>
   );

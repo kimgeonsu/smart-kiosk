@@ -11,7 +11,7 @@
     },
     {
       "id": 2,
-      "name": "아이스아메리카노",
+      "name": "아이스 q아메리카노",
       "name2": "시원한 아메리카노",
       "temperature": "ICED",
       "price": 4000,
@@ -29,7 +29,7 @@
     },
     {
       "id": 4,
-      "name": "카페라떼 ",
+      "name": "카페라떼",
       "name2": "시원한 카페라떼",
       "temperature": "ICED",
       "price": 5000,
