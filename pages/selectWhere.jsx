@@ -26,7 +26,7 @@ const selectWhere = () => {
   useEffect(() => {
     console.log(answer);
     if (answer !== null) {
-      if (answer['type'] == 'order' && answer['data']['포장여부'].length >= 2) {
+      if (answer['type'] == 'order' && answer['data'][0]['포장여부'].length >= 2) {
         console.log("good job!!!");
         router.push('/selectMenu');
       }

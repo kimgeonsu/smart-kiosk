@@ -6,6 +6,7 @@ import menu from "../src/data/menu.json";
 import PlusButton from "../src/components/ui/PlusButton";
 import MinusButton from "../src/components/ui/MinusButton";
 import DeleteButton from "../src/components/ui/DeleteButton";
+import CheckingList from "./checkingList";
 import RecommendModal from "./recommendModal";
 import sentence from "../src/data/inducementsentence.json";
 import axios from "axios";
@@ -18,8 +19,11 @@ const Selectingmenu = () => {
   const [isModalOpen, setModalOpen] = useState(false);
   const [currentSentenceIndex, setCurrentSentenceIndex] = useState(0);
   const [currentSentence, setCurrentSentence] = useState("");
+  const [isAlertModal, setIsAlertModal] = useState(false);
+  const [isPutByServer,setIsPutByServer]= useState([]);
   const router = useRouter();
   const { answer, setAnswer } = useContext(GptContext);
+
   /*useEffect(() => {
     const listenForSignal = async () => {
       try {
@@ -37,8 +41,17 @@ const Selectingmenu = () => {
   }, []);
   */
 
+  const alertModal = () => {
+    setIsAlertModal(true);
+   setTimeout(()=>{
+      setIsAlertModal(false)},2500)
+      
+  };
+
+
   //5초마다 추천 문구 바뀜
   useEffect(() => {
+    setMenuData(menu.coffee);
     const interval = setInterval(() => {
       setCurrentSentenceIndex((prevIndex) => (prevIndex + 1) % sentence.length);
     }, 5000);
@@ -47,8 +60,50 @@ const Selectingmenu = () => {
   }, []);
 
   useEffect(() => {
-    console.log(answer);
+    
+    console.log("사용자가 주문함",answer);
+    if(answer !== null){
+     if(answer["type"]=='order'){
+      let getid = selectedMenu.map((item) => item.id);
+    //아이디 값으로 selectedmenu 안에 저장되어 있는지 비교헤야함
+      answer.data.map((item)=>{
+
+        const myname=getMenuByName(item["상품명"]);
+        console.log("마이네임이즈",myname);
+        if (myname==null){
+          return null;
+        }
+
+        
+        const dataToSave = {
+          name: myname.name,
+          id: myname.id,
+          price: myname.price,
+          quantity: item["상품 수량"]
+        };
+
+        setSelectedMenu((prevMenu) => [dataToSave, ...prevMenu]);
+
+      
+      })
+    }
+  }
   }, [answer]);
+
+  const getMenuByName=(name)=> {
+    const menuArray = Object.values(menu);
+
+    for (const category of menuArray) {
+      const menuItem = category.find((item) => item.name === name);
+  
+      if (menuItem) {
+        return menuItem;
+      }
+    }
+  
+    return null;
+  }
+  
 
   useEffect(() => {
     setCurrentSentence(sentence[currentSentenceIndex].sentence);
@@ -73,10 +128,7 @@ const Selectingmenu = () => {
 
   };
 
-  useEffect(() => {
-    setMenuData(menu.coffee);
-  }, []);
-
+ 
   /*useEffect(() => {
     const existingselectedMenu = JSON.parse(localStorage.getItem("totalPrice")) || 0;
     console.log(selectedMenu);
@@ -100,16 +152,41 @@ const Selectingmenu = () => {
 
   // 장바구니 내역 저장
   const saveOrder = () => {
-    if (totalPrice) {
+  //  if (totalPrice) {
       localStorage.setItem('totalPrice', JSON.stringify(totalPrice));
       localStorage.setItem('order', JSON.stringify(selectedMenu));
-      //총가격 저장 부분 삭제함
-      router.push("/checkingList");
+   //   router.push("/notationModal");
       console.log("가격 저장은 어케되니", totalPrice);
       console.log("메뉴 저장은 어케되니", selectedMenu);
-    }
+ //   }
     console.log("메뉴를 클릭해주세요", selectedMenu);
   }
+
+  const handleAddToCart = (data) => {
+    const { '상품명': name, '상품 수량': quantity } = data;
+    
+    let names = selectedMenu.map((item) => item.name);
+    let idx = names.indexOf(name);
+    
+    if (idx === -1) {
+      
+      setSelectedMenu((prevMenu) => [dataToSave, ...prevMenu]);
+    } else {
+      setSelectedMenu((prevMenu) => {
+        const updatedMenu = prevMenu.map((item) => {
+          if (item.name === name) {
+            return {
+              ...item,
+              quantity: item.quantity + parseInt(quantity),
+            };
+          }
+          return item;
+        });
+        return updatedMenu;
+      });
+    }
+  };
+  
 
   const handlePreviousPage = () => {
     localStorage.setItem('totalPrice', JSON.stringify(0));
@@ -168,7 +245,10 @@ const Selectingmenu = () => {
   return (
     <>
       <button onClick={openModal}>Open Modal</button>
-      {isModalOpen && <RecommendModal setModalOpen={setModalOpen} selectedMenu={selectedMenu} setSelectedMenu={setSelectedMenu} closeModal={closeModal} />}
+      <button isPutByServer={isPutByServer} setIsPutByServer={setIsPutByServer} onClick={alertModal}>Cart Modal</button>
+     
+      {isModalOpen&&totalPrice && <CheckingList  selectedMenu={selectedMenu} setSelectedMenu={setSelectedMenu} totalPrice={totalPrice} setTotalPrice={setTotalPrice}  closeModal={closeModal}/>}
+
       <div className="wrapper">
         <div className="upperBar">
           <Image width={16} height={32} src='/asset/back.svg' alt="이미지" onClick={handlePreviousPage} />
@@ -212,7 +292,7 @@ const Selectingmenu = () => {
         </div>
         <div className="payContent">
           <div className="cart-wrapper">
-            <div className="pay-top">
+          <div className="pay-top"  onClick={openModal}>
               <div style={{ flex: 3, fontSize: 16, color: '#666666', fontWeight: 'bolder' }}>주문내역</div>
               <div style={{ flex: 1, fontSize: 16, color: '#666666', fontWeight: 'bolder' }}>수량</div>
               <div style={{ flex: 1.5, fontSize: 25, color: '#367cff', fontWeight: 'bolder' }}>

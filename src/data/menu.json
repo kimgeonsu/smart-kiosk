@@ -11,7 +11,7 @@
     },
     {
       "id": 2,
-      "name": "아이스아메리카노",
+      "name": "아이스 아메리카노",
       "name2": "시원한 아메리카노",
       "temperature": "ICED",
       "price": 4000,
@@ -29,7 +29,7 @@
     },
     {
       "id": 4,
-      "name": "카페라떼 ",
+      "name": "카페라떼",
       "name2": "시원한 카페라떼",
       "temperature": "ICED",
       "price": 5000,
@@ -47,7 +47,7 @@
     },
     {
       "id": 6,
-      "name": "카라멜마끼아또 ",
+      "name": "카라멜마끼아또",
       "name2": "시원한 카라멜마끼아또",
       "temperature": "ICED",
       "price": 5900,
@@ -65,7 +65,7 @@
     },
     {
       "id": 8,
-      "name": "카페모카 ",
+      "name": "카페모카",
       "name2": "시원한 카페모카",
       "temperature": "ICED",
       "price": 5500,
@@ -93,7 +93,7 @@
     },
     {
       "id": 11,
-      "name": "녹차 ",
+      "name": "녹차",
       "temperature": "ICED",
       "price": 4000,
       "image": "/assets/camomile.png",
@@ -109,7 +109,7 @@
     },
     {
       "id": 13,
-      "name": "캐모마일 ",
+      "name": "캐모마일",
       "temperature": "ICED",
       "price": 5500,
       "image": "/assets/camomile.png",
@@ -125,7 +125,7 @@
     },
     {
       "id": 15,
-      "name": "얼그레이 ",
+      "name": "얼그레이",
       "temperature": "ICED",
       "price": 5500,
       "image": "/assets/earlgrey.png",
@@ -141,7 +141,7 @@
     },
     {
       "id": 17,
-      "name": "밀크티 ",
+      "name": "밀크티",
       "temperature": "ICED",
       "price": 6000,
       "image": "/assets/milktea.png",

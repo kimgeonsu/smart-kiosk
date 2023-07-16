@@ -19,7 +19,7 @@ const MenuList = (props) => {
   return (
     <Wrapper>
       {drinks.map((drink) => {
-        return <MenuListItem selectedMenu={selectedMenu} setSelectedMenu={setSelectedMenu} key={drink.name} drink={drink} />;
+        return <MenuListItem selectedMenu={selectedMenu} setSelectedMenu={setSelectedMenu} key={drink.id} drink={drink} />;
       })}
     </Wrapper>
   );
