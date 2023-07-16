@@ -20,12 +20,18 @@ const Button = styled.button`
 const selectWhere = () => {
   const router = useRouter();
   const { answer, setAnswer } = useContext(GptContext);
+  const [isClicked, setIsClicked] = useState(false);
 
   // 포장 여부에 포장이 들어가면 다음 페이지로 고고
   useEffect(() => {
-
+    console.log(answer);
+    if (answer !== null) {
+      if (answer['type'] == 'order' && answer['data']['포장여부'].length >= 2) {
+        console.log("good job!!!");
+        router.push('/selectMenu');
+      }
+    }
   }, [answer]);
-  const [isClicked, setIsClicked] = useState(false);
 
   const handlePage = (where) => {
     setIsClicked(!isClicked);
@@ -46,16 +52,13 @@ const selectWhere = () => {
     });
 
     sound.play();
-    const timeout = setTimeout(() => {
-      router.push("/WaitingPage"); // 페이지를 변경할 URL로 변경해주세요
-    }, 15000); // 15초를 밀리초 단위로 설정
 
-    return () => clearTimeout(timeout);
+    // const timeout = setTimeout(() => {
+    //   router.push("/WaitingPage"); // 페이지를 변경할 URL로 변경해주세요
+    // }, 15000); // 15초를 밀리초 단위로 설정
+
+    // return () => clearTimeout(timeout);
   }, [])
-
-  useEffect(() => {
-    console.log(data);
-  }, [data])
 
   return (
     <>

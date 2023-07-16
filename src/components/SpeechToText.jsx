@@ -34,7 +34,7 @@ const SpeechToText = ({ children }) => {
             setAnswer(response['data']);
 
             // 추천 문구일 때
-            if (response['data']['type'] == 'recommend') {
+            if (response['data']['type'] == 'recommend' && response['data']['data'] !== null) {
               // 서버에서 받은 데이터 재생하기
               const decodedData = atob(response['data']['data']);
               const byteArray = new Uint8Array(decodedData.length);

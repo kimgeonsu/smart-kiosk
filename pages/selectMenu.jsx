@@ -1,4 +1,4 @@
-import React, { use, useEffect, useState } from "react";
+import React, { use, useContext, useEffect, useState } from "react";
 import { useRouter } from 'next/router';
 import Image from "next/image";
 import MenuList from "../src/components/list/MenuList";
@@ -6,9 +6,10 @@ import menu from "../src/data/menu.json";
 import PlusButton from "../src/components/ui/PlusButton";
 import MinusButton from "../src/components/ui/MinusButton";
 import DeleteButton from "../src/components/ui/DeleteButton";
-import RecommendModal from "./recommendModal"; 
+import RecommendModal from "./recommendModal";
 import sentence from "../src/data/inducementsentence.json";
 import axios from "axios";
+import { GptContext } from "../src/context/gptContext";
 
 const Selectingmenu = () => {
   const [menuData, setMenuData] = useState([]);
@@ -17,36 +18,26 @@ const Selectingmenu = () => {
   const [isModalOpen, setModalOpen] = useState(false);
   const [currentSentenceIndex, setCurrentSentenceIndex] = useState(0);
   const [currentSentence, setCurrentSentence] = useState("");
+  const { answer, setAnswer } = useContext(GptContext);
   const router = useRouter();
-  /*useEffect(() => {
-    const listenForSignal = async () => {
-      try {
-        const response = await axios.get("http://localhost:5000/kiosk/recommend");
-        const data = response.data;
 
-        if (data.signal === "openModal") {
-          setModalOpen(true);
-        }
-      } catch (error) {
-        console.error("서버 통신 중 에러 발생:", error);
-      }
-    };
-    listenForSignal();
-  }, []);
-  */
-   
   //5초마다 추천 문구 바뀜
-    useEffect(() => {
-      const interval = setInterval(() => {
-        setCurrentSentenceIndex((prevIndex) => (prevIndex + 1) % sentence.length);
-      }, 5000);
-  
-      return () => clearInterval(interval);
-    }, []);
-  
-    useEffect(() => {
-      setCurrentSentence(sentence[currentSentenceIndex].sentence);
-    }, [currentSentenceIndex]);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentSentenceIndex((prevIndex) => (prevIndex + 1) % sentence.length);
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    console.log(answer);
+
+  }, [answer]);
+
+  useEffect(() => {
+    setCurrentSentence(sentence[currentSentenceIndex].sentence);
+  }, [currentSentenceIndex]);
 
   //음료 TYPE 버튼 동작
   const handleTypeButtonClick = (type) => {
@@ -76,33 +67,33 @@ const Selectingmenu = () => {
     console.log(selectedMenu);
   }, [selectedMenu])
 */
-useEffect(() => {
-  const existingOrder = JSON.parse(localStorage.getItem("order")) || [];
-  setSelectedMenu(existingOrder instanceof Array ? existingOrder : []);
-  console.log("메뉴판 눌렀을때 저장~", existingOrder);
-}, []);
+  useEffect(() => {
+    const existingOrder = JSON.parse(localStorage.getItem("order")) || [];
+    setSelectedMenu(existingOrder instanceof Array ? existingOrder : []);
+    console.log("메뉴판 눌렀을때 저장~", existingOrder);
+  }, []);
 
 
   //장바구니 금액 총합 계산
   useEffect(() => {
     //const existingTotalPrice = JSON.parse(localStorage.getItem("totalPrice")) || 0;
     const totalPrice = selectedMenu.reduce(
-      (sum, item) => sum + item.price * item.quantity ,  0);
-      setTotalPrice(totalPrice);
-    console.log("셀렉트메뉴가 문제니?",totalPrice);
+      (sum, item) => sum + item.price * item.quantity, 0);
+    setTotalPrice(totalPrice);
+    console.log("셀렉트메뉴가 문제니?", totalPrice);
   }, [selectedMenu]);
 
-// 장바구니 내역 저장
+  // 장바구니 내역 저장
   const saveOrder = () => {
-    if(totalPrice){
-    localStorage.setItem('totalPrice', JSON.stringify(totalPrice));
-    localStorage.setItem('order', JSON.stringify(selectedMenu));
-   //총가격 저장 부분 삭제함
-    router.push("/checkingList");
-    console.log("가격 저장은 어케되니",totalPrice);
-    console.log("메뉴 저장은 어케되니",selectedMenu);
+    if (totalPrice) {
+      localStorage.setItem('totalPrice', JSON.stringify(totalPrice));
+      localStorage.setItem('order', JSON.stringify(selectedMenu));
+      //총가격 저장 부분 삭제함
+      router.push("/checkingList");
+      console.log("가격 저장은 어케되니", totalPrice);
+      console.log("메뉴 저장은 어케되니", selectedMenu);
     }
-    console.log("메뉴를 클릭해주세요",selectedMenu);
+    console.log("메뉴를 클릭해주세요", selectedMenu);
   }
 
   const handlePreviousPage = () => {
@@ -118,7 +109,7 @@ useEffect(() => {
         if (item.name === drink) {
           if (item.quantity === 1) {
             // quantity가 0이 되었을 때 해당 음료를 제외하고 필터링
-            return { ...item, quantity: item.quantity};
+            return { ...item, quantity: item.quantity };
           } else {
             return { ...item, quantity: item.quantity - 1 };
           }
@@ -128,7 +119,7 @@ useEffect(() => {
       return updatedMenu.filter(Boolean); // null 값을 제거하여 새로운 배열 반환
     });
   };
-  
+
   //장바구니에서 삭제
   const handleDeleteClick = (drink) => {
     setSelectedMenu((prevMenu) => {
@@ -136,11 +127,11 @@ useEffect(() => {
       return updatedMenu;
     });
   };
-  
-//수량 +1
+
+  //수량 +1
   const handlePlusClick = (drink) => {
     setSelectedMenu((prevMenu) => {
-    
+
       const updatedMenu = prevMenu.map((item) => {
         if (item.name === drink) {
           return { ...item, quantity: item.quantity + 1 };
@@ -150,7 +141,7 @@ useEffect(() => {
       return updatedMenu;
     });
   };
-////나중에 비동기 작업으로 모달창 열 예정,, 일단 버튼으로 열수 있도록 닮
+  ////나중에 비동기 작업으로 모달창 열 예정,, 일단 버튼으로 열수 있도록 닮
   const openModal = () => {
     setModalOpen(true);
   };
@@ -161,32 +152,32 @@ useEffect(() => {
 
   return (
     <>
-     <button onClick={openModal}>Open Modal</button>
+      <button onClick={openModal}>Open Modal</button>
       {isModalOpen && <RecommendModal setModalOpen={setModalOpen} selectedMenu={selectedMenu} setSelectedMenu={setSelectedMenu} closeModal={closeModal} />}
       <div className="wrapper">
         <div className="upperBar">
-          <Image width={16} height={32} src='/asset/back.svg'  alt= "이미지" onClick={handlePreviousPage} />
+          <Image width={16} height={32} src='/asset/back.svg' alt="이미지" onClick={handlePreviousPage} />
           <h1>주문하기</h1>
           <div></div>
         </div>
 
         <div className="contentWrapper">
           <div className="imgContainer">
-            
-            <Image width={13} height={26} src='/asset/prev.svg' alt= "이미지" />
+
+            <Image width={13} height={26} src='/asset/prev.svg' alt="이미지" />
           </div>
 
           <div className="content">
-        
-          <div className="speechBubbleContainer" >
-            <Image width={671} height={55} src="/asset/speechbubble.svg" alt= "이미지"/>
-          <div className="personImageContainer">
-          <div className="personImage">
-            <Image  width={44} height={36} src="/asset/person.svg" alt= "이미지" />
-         <div className="inducesentenceContainer">{currentSentence}</div>
-        </div>
-    </div>
-  </div>
+
+            <div className="speechBubbleContainer" >
+              <Image width={671} height={55} src="/asset/speechbubble.svg" alt="이미지" />
+              <div className="personImageContainer">
+                <div className="personImage">
+                  <Image width={44} height={36} src="/asset/person.svg" alt="이미지" />
+                  <div className="inducesentenceContainer">{currentSentence}</div>
+                </div>
+              </div>
+            </div>
             <hr />
 
             <div className="categoryWrapper">
@@ -199,7 +190,7 @@ useEffect(() => {
           </div>
 
           <div className="imgContainer">
-          <Image style={{ rotate: '180deg', zIndex: -1 }} width={13} height={26} src='/asset/prev.svg' alt= "이미지" />
+            <Image style={{ rotate: '180deg', zIndex: -1 }} width={13} height={26} src='/asset/prev.svg' alt="이미지" />
 
           </div>
 
@@ -207,26 +198,26 @@ useEffect(() => {
         <div className="payContent">
           <div className="cart-wrapper">
             <div className="pay-top">
-              <div style={{ flex: 3, fontSize: 16, color:'#666666',fontWeight: 'bolder' }}>주문내역</div>
-              <div style={{ flex: 1, fontSize: 16, color:'#666666',fontWeight: 'bolder'  }}>수량</div>
+              <div style={{ flex: 3, fontSize: 16, color: '#666666', fontWeight: 'bolder' }}>주문내역</div>
+              <div style={{ flex: 1, fontSize: 16, color: '#666666', fontWeight: 'bolder' }}>수량</div>
               <div style={{ flex: 1.5, fontSize: 25, color: '#367cff', fontWeight: 'bolder' }}>
                 {totalPrice.toLocaleString()}원
               </div>
 
             </div>
             <div className="cart-list">
-              
+
               {
                 selectedMenu.map((item) =>
                   <div className="cart-item">
-                    <div style={{ flex: 3, fontSize: 16, color:'#000000',fontWeight: 'bolder'  }}>{item.name}</div>
-                    <div style={{ flex: 1.5, fontSize: 16, color:'#000000',fontWeight: 'bolder'  }}>
-                       <MinusButton handleMinusClick={() => handleMinusClick(item.name)} drink={item.name} />
-                         {item.quantity}개
-                       <PlusButton handlePlusClick={handlePlusClick} drink={item.name}/>
+                    <div style={{ flex: 3, fontSize: 16, color: '#000000', fontWeight: 'bolder' }}>{item.name}</div>
+                    <div style={{ flex: 1.5, fontSize: 16, color: '#000000', fontWeight: 'bolder' }}>
+                      <MinusButton handleMinusClick={() => handleMinusClick(item.name)} drink={item.name} />
+                      {item.quantity}개
+                      <PlusButton handlePlusClick={handlePlusClick} drink={item.name} />
                     </div>
-                    <div style={{ flex: 1.2 , fontSize: 16, color:'#000000',fontWeight: 'bolder' }}>   {`${(item.price * item.quantity).toLocaleString()}원`}</div>
-                      <DeleteButton handleDeleteClick={()=>handleDeleteClick(item.name)} drink={item.name}/>
+                    <div style={{ flex: 1.2, fontSize: 16, color: '#000000', fontWeight: 'bolder' }}>   {`${(item.price * item.quantity).toLocaleString()}원`}</div>
+                    <DeleteButton handleDeleteClick={() => handleDeleteClick(item.name)} drink={item.name} />
                   </div>
                 )
               }
@@ -236,7 +227,7 @@ useEffect(() => {
 
         </div>
       </div>
-      
+
       <style jsx>{`
         
         .wrapper {
