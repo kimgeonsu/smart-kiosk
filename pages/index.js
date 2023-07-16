@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from 'next/router';
 import styled, { keyframes } from "styled-components";
 import Image from "next/image";
@@ -28,12 +28,12 @@ const WaitingPage = () => {
   const [showWaiting, setShowWaiting] = useState(false);
 
   const handleNextPage = () => {
-    router.push('/placequery');
+    router.push('/selectWhere');
   };
 
   useEffect(() => {
     // Socket.IO 클라이언트 초기화
-    const socket = io('http://localhost:5001');
+    const socket = io('http://localhost:5001'); // 서버 주소에 맞게 변경
 
     socket.on('connect', () => {
       // Socket.IO 서버에 연결된 후에 POST 요청을 보냅니다.
@@ -50,7 +50,7 @@ const WaitingPage = () => {
       // 사람 감지 이벤트 수신
       console.log("정보왔잉", data);
       if (data.event === 'person_detected') {
-        setShowWaiting(true);
+        handleNextPage();
         // 감지된 사람 정보를 받아서 화면 조작
         const personDetails = data.details; // 의미 없음
       }
@@ -66,7 +66,7 @@ const WaitingPage = () => {
   return (
     <>
       <Wrapper>
-        {showWaiting && <Image width={820} height={1180} src="/waiting.svg" alt="Waiting" />}
+        {<Image width={820} height={1180} src="/waiting.svg" alt="Waiting" />}
       </Wrapper>
     </>
   );
