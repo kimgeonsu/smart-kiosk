@@ -1,9 +1,18 @@
+import { Howl } from 'howler';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
+import { useContext, useEffect } from 'react';
+import { GptContext, gptContext } from '../src/context/gptContext';
 
 const selectWhere = () => {
+  const data = useContext(gptContext)
   const router = useRouter();
+  const { answer, setAnswer } = useContext(GptContext);
+
+  // 포장 여부에 포장이 들어가면 다음 페이지로 고고
+  useEffect(() => {
+
+  }, [answer]);
 
   const handlePage = (where) => {
     router.push("/SelectingMenuPage");
@@ -12,7 +21,17 @@ const selectWhere = () => {
   };
 
   useEffect(() => {
+    let sound = new Howl({
+      src: ['/assets/isToGO.mp3'],
+      html5: true
+    });
+
+    sound.play();
   }, [])
+
+  useEffect(() => {
+    console.log(data);
+  }, [data])
 
   return (
     <>
