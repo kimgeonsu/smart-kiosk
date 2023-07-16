@@ -9,7 +9,7 @@ width:100%;
 `;
 
 const CartList=(props)=> {
-  const { drinks, onClickItem } = props;
+  const { drinks} = props;
 
 
 

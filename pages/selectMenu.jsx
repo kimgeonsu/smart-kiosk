@@ -18,8 +18,24 @@ const Selectingmenu = () => {
   const [isModalOpen, setModalOpen] = useState(false);
   const [currentSentenceIndex, setCurrentSentenceIndex] = useState(0);
   const [currentSentence, setCurrentSentence] = useState("");
-  const { answer, setAnswer } = useContext(GptContext);
   const router = useRouter();
+  const { answer, setAnswer } = useContext(GptContext);
+  /*useEffect(() => {
+    const listenForSignal = async () => {
+      try {
+        const response = await axios.get("http://localhost:5000/kiosk/recommend");
+        const data = response.data;
+
+        if (data.signal === "openModal") {
+          setModalOpen(true);
+        }
+      } catch (error) {
+        console.error("서버 통신 중 에러 발생:", error);
+      }
+    };
+    listenForSignal();
+  }, []);
+  */
 
   //5초마다 추천 문구 바뀜
   useEffect(() => {
@@ -32,7 +48,6 @@ const Selectingmenu = () => {
 
   useEffect(() => {
     console.log(answer);
-
   }, [answer]);
 
   useEffect(() => {

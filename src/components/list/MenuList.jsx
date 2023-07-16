@@ -13,7 +13,7 @@ const MenuList = (props) => {
   const { drinks, selectedMenu, setSelectedMenu } = props;
 
   if (!Array.isArray(drinks) || drinks.length === 0) {
-    return null; // Return null or display an alternative content if drinks is not a valid array
+    return null; 
   }
 
   return (
