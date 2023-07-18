@@ -6,7 +6,8 @@ const Wrapper = styled.div`
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, minmax(240px, auto));
-    grid-gap: 16px;
+    grid-gap: 12px;
+    height: 700px;
 `;
 
 const MenuList = (props) => {

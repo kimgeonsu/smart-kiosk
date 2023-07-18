@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useRef, useState } from 'react';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 import { GptContext, gptContext } from '../context/gptContext';
+import Image from 'next/image';
 
 const SpeechToText = ({ children }) => {
   const {
@@ -77,7 +78,29 @@ const SpeechToText = ({ children }) => {
     <>
       <GptContext.Provider value={{ answer, setAnswer }}>
         {children}
+        <div className='wrapper'>
+          <Image width={60} height={60} src='/assets/cafeperson.svg' />
+          {(answer !== null && answer['type'] == 'recommend')
+            ? <div className='caption'>{answer['caption']}</div>
+            : <div className='caption'></div>
+          }
+        </div>
       </GptContext.Provider>
+      <style jsx>{`
+        .wrapper {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        .caption {
+          padding: 5px;
+          border-radius: 10px;
+          border: 1px solid #ddd;
+          height: 80px;
+          width: 100%;
+          font-size: 16px;
+        }  
+      `}</style>
     </>
   );
 };

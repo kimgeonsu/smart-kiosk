@@ -7,9 +7,7 @@ import PlusButton from "../src/components/ui/PlusButton";
 import MinusButton from "../src/components/ui/MinusButton";
 import DeleteButton from "../src/components/ui/DeleteButton";
 import CheckingList from "./checkingList";
-import RecommendModal from "./recommendModal";
 import sentence from "../src/data/inducementsentence.json";
-import axios from "axios";
 import { GptContext } from "../src/context/gptContext";
 
 const Selectingmenu = () => {
@@ -20,32 +18,15 @@ const Selectingmenu = () => {
   const [currentSentenceIndex, setCurrentSentenceIndex] = useState(0);
   const [currentSentence, setCurrentSentence] = useState("");
   const [isAlertModal, setIsAlertModal] = useState(false);
-  const [isPutByServer,setIsPutByServer]= useState([]);
+  const [isPutByServer, setIsPutByServer] = useState([]);
   const router = useRouter();
   const { answer, setAnswer } = useContext(GptContext);
 
-  /*useEffect(() => {
-    const listenForSignal = async () => {
-      try {
-        const response = await axios.get("http://localhost:5000/kiosk/recommend");
-        const data = response.data;
-
-        if (data.signal === "openModal") {
-          setModalOpen(true);
-        }
-      } catch (error) {
-        console.error("서버 통신 중 에러 발생:", error);
-      }
-    };
-    listenForSignal();
-  }, []);
-  */
-
   const alertModal = () => {
     setIsAlertModal(true);
-   setTimeout(()=>{
-      setIsAlertModal(false)},2500)
-      
+    setTimeout(() => {
+      setIsAlertModal(false)
+    }, 2500)
   };
 
 
@@ -60,50 +41,43 @@ const Selectingmenu = () => {
   }, []);
 
   useEffect(() => {
-    
-    console.log("사용자가 주문함",answer);
-    if(answer !== null){
-     if(answer["type"]=='order'){
-      let getid = selectedMenu.map((item) => item.id);
-    //아이디 값으로 selectedmenu 안에 저장되어 있는지 비교헤야함
-      answer.data.map((item)=>{
+    console.log("사용자가 주문함", answer);
+    if (answer !== null) {
+      if (answer["type"] == 'order') {
+        setSelectedMenu(selectedMenu.filter(e => !(e.hasOwnProperty('origin'))));
+        answer.data.forEach((item) => {
+          const myname = getMenuByName(item["product_name"]);
+          if (myname == null) {
+            return;
+          }
+          const dataToSave = {
+            name: myname.name,
+            price: parseInt(myname.price),
+            quantity: item["quantity"],
+            origin: 'gpt'
+          };
 
-        const myname=getMenuByName(item["상품명"]);
-        console.log("마이네임이즈",myname);
-        if (myname==null){
-          return null;
-        }
 
-        
-        const dataToSave = {
-          name: myname.name,
-          id: myname.id,
-          price: myname.price,
-          quantity: item["상품 수량"]
-        };
-
-        setSelectedMenu((prevMenu) => [dataToSave, ...prevMenu]);
-
-      
-      })
+          setSelectedMenu((prevMenu) => [dataToSave, ...prevMenu]);
+        })
+      }
     }
-  }
   }, [answer]);
 
-  const getMenuByName=(name)=> {
+  const getMenuByName = (name) => {
     const menuArray = Object.values(menu);
 
     for (const category of menuArray) {
       const menuItem = category.find((item) => item.name === name);
-  
+
       if (menuItem) {
         return menuItem;
       }
     }
-  
+
     return null;
   }
-  
+
 
   useEffect(() => {
     setCurrentSentence(sentence[currentSentenceIndex].sentence);
@@ -128,16 +102,9 @@ const Selectingmenu = () => {
 
   };
 
- 
-  /*useEffect(() => {
-    const existingselectedMenu = JSON.parse(localStorage.getItem("totalPrice")) || 0;
-    console.log(selectedMenu);
-  }, [selectedMenu])
-*/
   useEffect(() => {
     const existingOrder = JSON.parse(localStorage.getItem("order")) || [];
     setSelectedMenu(existingOrder instanceof Array ? existingOrder : []);
-    console.log("메뉴판 눌렀을때 저장~", existingOrder);
   }, []);
 
 
@@ -147,29 +114,22 @@ const Selectingmenu = () => {
     const totalPrice = selectedMenu.reduce(
       (sum, item) => sum + item.price * item.quantity, 0);
     setTotalPrice(totalPrice);
-    console.log("셀렉트메뉴가 문제니?", totalPrice);
+    console.log(selectedMenu);
   }, [selectedMenu]);
 
   // 장바구니 내역 저장
   const saveOrder = () => {
-  //  if (totalPrice) {
-      localStorage.setItem('totalPrice', JSON.stringify(totalPrice));
-      localStorage.setItem('order', JSON.stringify(selectedMenu));
-   //   router.push("/notationModal");
-      console.log("가격 저장은 어케되니", totalPrice);
-      console.log("메뉴 저장은 어케되니", selectedMenu);
- //   }
-    console.log("메뉴를 클릭해주세요", selectedMenu);
+    localStorage.setItem('totalPrice', JSON.stringify(totalPrice));
+    localStorage.setItem('order', JSON.stringify(selectedMenu));
   }
 
   const handleAddToCart = (data) => {
     const { '상품명': name, '상품 수량': quantity } = data;
-    
+
     let names = selectedMenu.map((item) => item.name);
     let idx = names.indexOf(name);
-    
+
     if (idx === -1) {
-      
       setSelectedMenu((prevMenu) => [dataToSave, ...prevMenu]);
     } else {
       setSelectedMenu((prevMenu) => {
@@ -186,7 +146,7 @@ const Selectingmenu = () => {
       });
     }
   };
-  
+
 
   const handlePreviousPage = () => {
     localStorage.setItem('totalPrice', JSON.stringify(0));
@@ -233,6 +193,7 @@ const Selectingmenu = () => {
       return updatedMenu;
     });
   };
+
   ////나중에 비동기 작업으로 모달창 열 예정,, 일단 버튼으로 열수 있도록 닮
   const openModal = () => {
     setModalOpen(true);
@@ -244,10 +205,10 @@ const Selectingmenu = () => {
 
   return (
     <>
-      <button onClick={openModal}>Open Modal</button>
-      <button isPutByServer={isPutByServer} setIsPutByServer={setIsPutByServer} onClick={alertModal}>Cart Modal</button>
-     
-      {isModalOpen&&totalPrice && <CheckingList  selectedMenu={selectedMenu} setSelectedMenu={setSelectedMenu} totalPrice={totalPrice} setTotalPrice={setTotalPrice}  closeModal={closeModal}/>}
+      {/* <button onClick={openModal}>Open Modal</button> */}
+      {/* <button isPutByServer={isPutByServer} setIsPutByServer={setIsPutByServer} onClick={alertModal}>Cart Modal</button> */}
+
+      {isModalOpen && totalPrice && <CheckingList selectedMenu={selectedMenu} setSelectedMenu={setSelectedMenu} totalPrice={totalPrice} setTotalPrice={setTotalPrice} closeModal={closeModal} />}
 
       <div className="wrapper">
         <div className="upperBar">
@@ -292,7 +253,7 @@ const Selectingmenu = () => {
         </div>
         <div className="payContent">
           <div className="cart-wrapper">
-          <div className="pay-top"  onClick={openModal}>
+            <div className="pay-top" onClick={openModal}>
               <div style={{ flex: 3, fontSize: 16, color: '#666666', fontWeight: 'bolder' }}>주문내역</div>
               <div style={{ flex: 1, fontSize: 16, color: '#666666', fontWeight: 'bolder' }}>수량</div>
               <div style={{ flex: 1.5, fontSize: 25, color: '#367cff', fontWeight: 'bolder' }}>
@@ -301,7 +262,6 @@ const Selectingmenu = () => {
 
             </div>
             <div className="cart-list">
-
               {
                 selectedMenu.map((item) =>
                   <div className="cart-item">
@@ -319,16 +279,15 @@ const Selectingmenu = () => {
             </div>
           </div>
           <button onClick={() => saveOrder(totalPrice)} className="pay-btn">결제 하기</button>
-
         </div>
       </div>
 
       <style jsx>{`
         
         .wrapper {
-          padding: 40px 30px;
+          padding: 10px 30px;
           width: 100%;
-          height: 1180px;
+          height: 1100px;
           display: flex;
           flex-direction: column;
           align-items: center;
@@ -338,6 +297,7 @@ const Selectingmenu = () => {
           justify-content: space-between;
           align-items: center;
           width: 100%;
+          height: 50px;
         }
         hr {
           width: 671px;
@@ -348,7 +308,6 @@ const Selectingmenu = () => {
           display: flex;
           justify-content: center;
           width: 100%;
-          height: 100%;
         }
 
         .content {
@@ -410,6 +369,7 @@ const Selectingmenu = () => {
           width: 671px;
           display: flex;
           justify-content: space-between;
+          border: 1px solid #ddd;
         }
 
         .pay-top {
