@@ -45,6 +45,7 @@ const Selectingmenu = () => {
     if (answer !== null) {
       if (answer["type"] == 'order') {
         setSelectedMenu(selectedMenu.filter(e => !(e.hasOwnProperty('origin'))));
+        if (answer.data == 'error') return;
         answer.data.forEach((item) => {
           const myname = getMenuByName(item["product_name"]);
           if (myname == null) {
