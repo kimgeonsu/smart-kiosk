@@ -5,7 +5,7 @@ import menu from "../src/data/menu.json";
 import MinusButton from "../src/components/ui/MinusButton";
 import DeleteButton2 from "../src/components/ui/DeleteButton2";
 import PlusButton from "../src/components/ui/PlusButton";
-import NotationModal from "./notationModal"
+
 
 const checkingList = (props) => {
   const { totalPrice, setTotalPrice, selectedMenu, setSelectedMenu, closeModal } = props;
@@ -116,7 +116,7 @@ const checkingList = (props) => {
 
   return (
     <>
-      {isModalOpen && <NotationModal onClose={closeModal} />}
+
       <div className="Wrapper">
         <div className="wrapper">
           <div className="upperBar">
