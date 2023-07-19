@@ -32,7 +32,7 @@ const MenuListItem = (props) => {
   const { drink, selectedMenu, setSelectedMenu } = props;
   const [isClicked, setIsClicked] = useState(false);
 
-  
+
 
   const handleClick = () => {
     setIsClicked(true);
@@ -43,6 +43,7 @@ const MenuListItem = (props) => {
         name: drink.name,
         id: drink.id,
         price: drink.price,
+        temperature: drink.temperature,
         quantity: 1,
       };
       setSelectedMenu([dataToSave, ...selectedMenu]);
@@ -72,7 +73,7 @@ const MenuListItem = (props) => {
         </div>
         <hr />
         <div className="imfcontainer">
-          <div className="name">{drink.name}</div>
+          <div className="name">{drink.name2}</div>
           <div className="price">{drink.price.toLocaleString()}원</div>
         </div>
       </Wrapper>

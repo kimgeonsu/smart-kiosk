@@ -55,6 +55,7 @@ const Selectingmenu = () => {
             name: myname.name,
             price: parseInt(myname.price),
             quantity: item["quantity"],
+            temperature: item['temperature'],
             origin: 'gpt'
           };
 
@@ -159,7 +160,7 @@ const Selectingmenu = () => {
   const handleMinusClick = (drink) => {
     setSelectedMenu((prevMenu) => {
       const updatedMenu = prevMenu.map((item) => {
-        if (item.name === drink) {
+        if (item.id === drink) {
           if (item.quantity === 1) {
             // quantity가 0이 되었을 때 해당 음료를 제외하고 필터링
             return { ...item, quantity: item.quantity };
@@ -176,7 +177,7 @@ const Selectingmenu = () => {
   //장바구니에서 삭제
   const handleDeleteClick = (drink) => {
     setSelectedMenu((prevMenu) => {
-      const updatedMenu = prevMenu.filter((item) => item.name !== drink); //해당 음료 이름 필터링
+      const updatedMenu = prevMenu.filter((item) => item.id !== drink); //해당 음료 이름 필터링
       return updatedMenu;
     });
   };
@@ -186,7 +187,7 @@ const Selectingmenu = () => {
     setSelectedMenu((prevMenu) => {
 
       const updatedMenu = prevMenu.map((item) => {
-        if (item.name === drink) {
+        if (item.id === drink) {
           return { ...item, quantity: item.quantity + 1 };
         }
         return item;
@@ -194,6 +195,23 @@ const Selectingmenu = () => {
       return updatedMenu;
     });
   };
+
+  const handleQuantity = (menu, action) => {
+    let idx = selectedMenu.findIndex(e => e.name === menu.name && e.temperature === menu.temperature)
+    if (action === 'plus') {
+      let update = [...selectedMenu];
+      update[idx]['quantity'] = update[idx]['quantity'] + 1;
+      setSelectedMenu(update);
+    } else {
+      let update = [...selectedMenu];
+      if (menu['quantity'] === 1) {
+        update.splice(idx, 1);
+      } else {
+        update[idx]['quantity'] = update[idx]['quantity'] - 1;
+      }
+      setSelectedMenu(update);
+    }
+  }
 
   ////나중에 비동기 작업으로 모달창 열 예정,, 일단 버튼으로 열수 있도록 닮
   const openModal = () => {
@@ -255,7 +273,8 @@ const Selectingmenu = () => {
         <div className="payContent">
           <div className="cart-wrapper">
             <div className="pay-top" onClick={openModal}>
-              <div style={{ flex: 3, fontSize: 16, color: '#666666', fontWeight: 'bolder' }}>주문내역</div>
+              <div style={{ flex: 2.5, fontSize: 16, color: '#666666', fontWeight: 'bolder' }}>주문내역</div>
+              <div style={{ flex: 1, fontSize: 16, color: '#666666', fontWeight: 'bolder' }}>온도</div>
               <div style={{ flex: 1, fontSize: 16, color: '#666666', fontWeight: 'bolder' }}>수량</div>
               <div style={{ flex: 1.5, fontSize: 25, color: '#367cff', fontWeight: 'bolder' }}>
                 {totalPrice.toLocaleString()}원
@@ -267,10 +286,11 @@ const Selectingmenu = () => {
                 selectedMenu.map((item) =>
                   <div className="cart-item">
                     <div style={{ flex: 3, fontSize: 16, color: '#000000', fontWeight: 'bolder' }}>{item.name}</div>
+                    <div style={{ flex: 1, fontSize: 16, color: '#000000', fontWeight: 'bolder' }}>{item.temperature}</div>
                     <div style={{ flex: 1.5, fontSize: 16, color: '#000000', fontWeight: 'bolder' }}>
-                      <MinusButton handleMinusClick={() => handleMinusClick(item.name)} drink={item.name} />
+                      <MinusButton handleMinusClick={() => handleQuantity(item, 'minus')} drink={item.name} />
                       {item.quantity}개
-                      <PlusButton handlePlusClick={handlePlusClick} drink={item.name} />
+                      <PlusButton handlePlusClick={() => handleQuantity(item, 'plus')} drink={item.name} />
                     </div>
                     <div style={{ flex: 1.2, fontSize: 16, color: '#000000', fontWeight: 'bolder' }}>   {`${(item.price * item.quantity).toLocaleString()}원`}</div>
                     <DeleteButton handleDeleteClick={() => handleDeleteClick(item.name)} drink={item.name} />
@@ -365,9 +385,8 @@ const Selectingmenu = () => {
         }
         
         .payContent{
-          margin-left:32px;
           margin-top: 10px;
-          width: 671px;
+          width: 690px;
           display: flex;
           justify-content: space-between;
           border: 1px solid #ddd;
@@ -396,7 +415,7 @@ const Selectingmenu = () => {
         }
 
         .pay-btn { 
-          width: 321px;
+          width: 200px;
           height: 99px;
           background-color: #72A3FF;
           color: #FFF;
