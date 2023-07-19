@@ -17,18 +17,8 @@ const Selectingmenu = () => {
   const [isModalOpen, setModalOpen] = useState(false);
   const [currentSentenceIndex, setCurrentSentenceIndex] = useState(0);
   const [currentSentence, setCurrentSentence] = useState("");
-  const [isAlertModal, setIsAlertModal] = useState(false);
-  const [isPutByServer, setIsPutByServer] = useState([]);
   const router = useRouter();
   const { answer, setAnswer } = useContext(GptContext);
-
-  const alertModal = () => {
-    setIsAlertModal(true);
-    setTimeout(() => {
-      setIsAlertModal(false)
-    }, 2500)
-  };
-
 
   //5초마다 추천 문구 바뀜
   useEffect(() => {
@@ -44,8 +34,15 @@ const Selectingmenu = () => {
     console.log("사용자가 주문함", answer);
     if (answer !== null) {
       if (answer["type"] == 'order') {
+        if (answer.data == '종료') {
+          router.push('/selectPayment');
+          return;
+        }
+
         setSelectedMenu(selectedMenu.filter(e => !(e.hasOwnProperty('origin'))));
+
         if (answer.data == 'error') return;
+
         answer.data.forEach((item) => {
           const myname = getMenuByName(item["product_name"]);
           if (myname == null) {
@@ -76,7 +73,6 @@ const Selectingmenu = () => {
         return menuItem;
       }
     }
-
     return null;
   }
 
@@ -101,7 +97,6 @@ const Selectingmenu = () => {
       newData = menu.juice;
     }
     setMenuData(newData);
-
   };
 
   useEffect(() => {
@@ -112,11 +107,9 @@ const Selectingmenu = () => {
 
   //장바구니 금액 총합 계산
   useEffect(() => {
-    //const existingTotalPrice = JSON.parse(localStorage.getItem("totalPrice")) || 0;
     const totalPrice = selectedMenu.reduce(
       (sum, item) => sum + item.price * item.quantity, 0);
     setTotalPrice(totalPrice);
-    console.log(selectedMenu);
   }, [selectedMenu]);
 
   // 장바구니 내역 저장
@@ -125,53 +118,10 @@ const Selectingmenu = () => {
     localStorage.setItem('order', JSON.stringify(selectedMenu));
   }
 
-  const handleAddToCart = (data) => {
-    const { '상품명': name, '상품 수량': quantity } = data;
-
-    let names = selectedMenu.map((item) => item.name);
-    let idx = names.indexOf(name);
-
-    if (idx === -1) {
-      setSelectedMenu((prevMenu) => [dataToSave, ...prevMenu]);
-    } else {
-      setSelectedMenu((prevMenu) => {
-        const updatedMenu = prevMenu.map((item) => {
-          if (item.name === name) {
-            return {
-              ...item,
-              quantity: item.quantity + parseInt(quantity),
-            };
-          }
-          return item;
-        });
-        return updatedMenu;
-      });
-    }
-  };
-
-
   const handlePreviousPage = () => {
     localStorage.setItem('totalPrice', JSON.stringify(0));
     localStorage.setItem('order', JSON.stringify([]));
     router.push("/selectWhere");
-  };
-
-  //음료 수량 - 1
-  const handleMinusClick = (drink) => {
-    setSelectedMenu((prevMenu) => {
-      const updatedMenu = prevMenu.map((item) => {
-        if (item.id === drink) {
-          if (item.quantity === 1) {
-            // quantity가 0이 되었을 때 해당 음료를 제외하고 필터링
-            return { ...item, quantity: item.quantity };
-          } else {
-            return { ...item, quantity: item.quantity - 1 };
-          }
-        }
-        return item;
-      });
-      return updatedMenu.filter(Boolean); // null 값을 제거하여 새로운 배열 반환
-    });
   };
 
   //장바구니에서 삭제
@@ -182,20 +132,7 @@ const Selectingmenu = () => {
     });
   };
 
-  //수량 +1
-  const handlePlusClick = (drink) => {
-    setSelectedMenu((prevMenu) => {
-
-      const updatedMenu = prevMenu.map((item) => {
-        if (item.id === drink) {
-          return { ...item, quantity: item.quantity + 1 };
-        }
-        return item;
-      });
-      return updatedMenu;
-    });
-  };
-
+  /**장바구니 음료 수량 변경 menu: selctedMenu 객체, action: 'minus' or 'plus' */
   const handleQuantity = (menu, action) => {
     let idx = selectedMenu.findIndex(e => e.name === menu.name && e.temperature === menu.temperature)
     if (action === 'plus') {

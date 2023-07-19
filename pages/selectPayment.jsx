@@ -31,46 +31,46 @@ const selectPayment = () => {
 
   const closeModal = () => {
     setModalOpen(false);
-    router.push("/WaitingPage");
+    router.push("/");
   };
   // 포장 여부에 포장이 들어가면 다음 페이지로 고고
- 
+
 
 
   const handleClick = (which) => {
     setIsClicked(!isClicked);
-    if (which=="soongsilpay"){
+    if (which == "soongsilpay") {
       openModal();
     }
-    if (which=="card"){
-      openModal(); 
+    if (which == "card") {
+      openModal();
     }
 
   };
 
   const handlePreviousPage = () => {
-    
+
     router.push("/selectMenu");
   };
 
   useEffect(() => {
-  //  let sound = new Howl({
-     // src: ['/assets/어쩌구.mp3'], 결제 방식을 선택해주세요 음성 넣어야해요
-     // html5: true
-   // });
+    //  let sound = new Howl({
+    // src: ['/assets/어쩌구.mp3'], 결제 방식을 선택해주세요 음성 넣어야해요
+    // html5: true
+    // });
 
-  //  sound.play();
+    //  sound.play();
 
   }, [])
 
   return (
     <>
       {isModalOpen && <NotationModal onClose={closeModal} />}
-  
+
       <div className="wrapper">
-      <div className="upperBar">
+        <div className="upperBar">
           <Image width={16} height={32} src='/asset/back.svg' alt="이미지" onClick={handlePreviousPage} />
-       
+
         </div>
         <h1>결제 방식을 선택해주세요</h1>
         <div className="buttonWrapper">
@@ -85,7 +85,7 @@ const selectPayment = () => {
               <Image width={120} height={110} src='/assets/cash.svg' alt='cash' />
               <div>
                 <span className="highlight">숭실페이</span>
-          
+
               </div>
             </div>
           </button>
