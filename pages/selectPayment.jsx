@@ -24,6 +24,7 @@ const selectPayment = () => {
 
   const [isClicked, setIsClicked] = useState(false);
   const [isModalOpen, setModalOpen] = useState(false);
+  const { answer, setAnswer } = useContext(GptContext);
 
   const openModal = () => {
     setModalOpen(true);
@@ -35,10 +36,23 @@ const selectPayment = () => {
   };
   // 포장 여부에 포장이 들어가면 다음 페이지로 고고
 
+  useEffect(() => {
+    console.log(answer);
+    if (answer !== null) {
+      if (answer["type"] == 'payment') {
+      if (answer.data == '카드') {console.log("????",answer.data); return;}
+      if (answer.data == '숭실페이') {console.log("봄봄",answer.data); return;}
+      }
+    }
+  }, [answer]);
 
 
   const handleClick = (which) => {
     setIsClicked(!isClicked);
+
+    localStorage.setItem('totalPrice', JSON.stringify(0));
+    localStorage.setItem('order', JSON.stringify([]));
+
     if (which == "soongsilpay") {
       openModal();
     }
@@ -46,20 +60,24 @@ const selectPayment = () => {
       openModal();
     }
 
+    const timeout = setTimeout(() => {
+      router.push("/"); 
+    }, 5000); // 15초를 밀리초 단위로 설정
+
+
   };
 
   const handlePreviousPage = () => {
-
     router.push("/selectMenu");
   };
 
   useEffect(() => {
-    //  let sound = new Howl({
-    // src: ['/assets/어쩌구.mp3'], 결제 방식을 선택해주세요 음성 넣어야해요
-    // html5: true
-    // });
+      let sound = new Howl({
+     src: ['/assets/payment.mp3'], 
+     html5: true
+     });
 
-    //  sound.play();
+      sound.play();
 
   }, [])
 
@@ -93,7 +111,7 @@ const selectPayment = () => {
       </div>
       <style jsx>{`
         .wrapper {
-          height: 1180px;
+          height: 1100px;
           display: flex;
           justify-content: center;
           align-items: center;

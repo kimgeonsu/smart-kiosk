@@ -11,7 +11,7 @@
     },
     {
       "id": 2,
-      "name": "아이스 아메리카노",
+      "name": "아메리카노",
       "name2": "시원한 아메리카노",
       "temperature": "Iced",
       "price": 4000,
@@ -86,6 +86,7 @@
     {
       "id": 10,
       "name": "녹차",
+      "name2": "따뜻한 녹차",
       "temperature": "Hot",
       "price": 4000,
       "image": "/assets/camomile.png",
@@ -94,6 +95,7 @@
     {
       "id": 11,
       "name": "녹차",
+       "name2": "시원한 녹차",
       "temperature": "Iced",
       "price": 4000,
       "image": "/assets/camomile.png",
@@ -102,6 +104,7 @@
     {
       "id": 12,
       "name": "캐모마일",
+      "name2": "따뜻한 캐모마일",
       "temperature": "Hot",
       "price": 5500,
       "image": "/assets/camomile.png",
@@ -110,6 +113,7 @@
     {
       "id": 13,
       "name": "캐모마일",
+      "name2": "시원한 캐모마일",
       "temperature": "Iced",
       "price": 5500,
       "image": "/assets/camomile.png",
@@ -118,6 +122,7 @@
     {
       "id": 14,
       "name": "얼그레이",
+      "name2": "따뜻한 얼그레이",
       "temperature": "Hot",
       "price": 5500,
       "image": "/assets/earlgrey.png",
@@ -126,6 +131,7 @@
     {
       "id": 15,
       "name": "얼그레이",
+      "name2": "시원한 얼그레이",
       "temperature": "Iced",
       "price": 5500,
       "image": "/assets/earlgrey.png",
@@ -134,6 +140,7 @@
     {
       "id": 16,
       "name": "밀크티",
+      "name2": "따뜻한 밀크티",
       "temperature": "Hot",
       "price": 6000,
       "image": "/assets/milktea.png",
@@ -142,6 +149,7 @@
     {
       "id": 17,
       "name": "밀크티",
+      "name2": "시원한 밀크티",
       "temperature": "Iced",
       "price": 6000,
       "image": "/assets/milktea.png",
@@ -152,6 +160,8 @@
     {
       "id": 18,
       "name": "요거트스무디",
+      "name2": "요거트스무디",
+      "temperature": "Iced",
       "price": 4500,
       "image": "/assets/yogurtsmoothie.png",
       "alt": "이미지"
@@ -159,6 +169,8 @@
     {
       "id": 19,
       "name": "망고스무디",
+      "name2": "망고스무디",
+      "temperature": "Iced",
       "price": 5000,
       "image": "/assets/mangosmothie.png",
       "alt": "이미지"
@@ -166,6 +178,8 @@
     {
       "id": 20,
       "name": "청포도스무디",
+      "name2": "청포도스무디",
+      "temperature": "Iced",
       "price": 5000,
       "image": "/assets/grapesmoothie.png",
       "alt": "이미지"
@@ -173,6 +187,8 @@
     {
       "id": 21,
       "name": "초코스무디",
+      "name2": "청포도스무디",
+      "temperature": "Iced",
       "price": 5000,
       "image": "/assets/chocosmoothie.png",
       "alt": "이미지"
@@ -182,6 +198,7 @@
     {
       "id": 22,
       "name": "오렌지주스",
+      "name2": "오렌지주스",
       "temperature": "Iced",
       "price": 6500,
       "image": "/assets/carrotjuice.png",
@@ -190,6 +207,7 @@
     {
       "id": 23,
       "name": "사과주스",
+      "name2": "사과주스",
       "temperature": "Iced",
       "price": 6500,
       "image": "/assets/applejuice.png",
@@ -198,6 +216,7 @@
     {
       "id": 24,
       "name": "수박주스",
+      "name2": "수박주스",
       "temperature": "Iced",
       "price": 6500,
       "image": "/assets/watermelonjuice.png",
@@ -206,6 +225,7 @@
     {
       "id": 25,
       "name": "딸기라떼",
+      "name2": "딸기라떼",
       "temperature": "Iced",
       "price": 6300,
       "image": "/assets/strawberrylatte.png",

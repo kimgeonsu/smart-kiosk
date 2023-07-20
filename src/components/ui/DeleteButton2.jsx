@@ -15,7 +15,7 @@ const DeleteButton2 = ({ handleDeleteClick, drink }) => {
     </div>
       <style jsx>{`
                 .wrapper {   
-                    padding:32px;
+                    padding:8px;
                     justify-content: center;
                     align-items: center;
                 }
