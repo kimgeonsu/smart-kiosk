@@ -5,6 +5,7 @@ import { useRouter } from 'next/router';
 import { GptContext } from '../src/context/gptContext';
 import styled from "styled-components";
 import NotationModal from "./notationModal"
+import axios from 'axios';
 
 const Button = styled.button`
   border: 6px solid #72A3FF;
@@ -28,7 +29,26 @@ const selectPayment = () => {
 
   const openModal = () => {
     setModalOpen(true);
+    refreshGPT();
+
+    localStorage.setItem('totalPrice', JSON.stringify(0));
+    localStorage.setItem('order', JSON.stringify([]));
+ 
+    setTimeout(() => {
+      router.push("/"); 
+    }, 5000); 
+
   };
+  
+  const refreshGPT=()=>{
+      axios.post('http://localhost:5001/kiosk/paying', { paying: true }) 
+    .then((response) => {
+      console.log("결제 완료, gpt 초기화바람", response.data); 
+    })
+    .catch((error) => {
+      console.error('땡떙떙실패:', error);
+    });
+  }
 
   const closeModal = () => {
     setModalOpen(false);
@@ -40,12 +60,11 @@ const selectPayment = () => {
     console.log(answer);
     if (answer !== null) {
       if (answer["type"] == 'payment') {
-      if (answer.data == '카드') {console.log("????",answer.data); return;}
-      if (answer.data == '숭실페이') {console.log("봄봄",answer.data); return;}
+      if (answer.data == '카드')  {openModal('카드'); return;}
+      if (answer.data == '숭실페이')  {openModal('숭실페이'); return;}
       }
     }
   }, [answer]);
-
 
   const handleClick = (which) => {
     setIsClicked(!isClicked);
@@ -76,9 +95,7 @@ const selectPayment = () => {
      src: ['/assets/payment.mp3'], 
      html5: true
      });
-
       sound.play();
-
   }, [])
 
   return (

@@ -1,5 +1,6 @@
 import React, { use, useContext, useEffect, useState } from "react";
 import { useRouter } from 'next/router';
+import { Howl } from 'howler';
 import Image from "next/image";
 import MenuList from "../src/components/list/MenuList";
 import menu from "../src/data/menu.json";
@@ -101,10 +102,19 @@ const Selectingmenu = () => {
   };
 
   useEffect(() => {
+
+
+    let sound = new Howl({
+      src: ['/assets/menu_guide.mp3'], 
+      html5: true
+      });
+       sound.play();
+
     const existingOrder = JSON.parse(localStorage.getItem("order")) || [];
     setSelectedMenu(existingOrder instanceof Array ? existingOrder : []);
-  }, []);
 
+
+  }, []);
 
   //장바구니 금액 총합 계산
   useEffect(() => {

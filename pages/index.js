@@ -62,7 +62,6 @@ const WaitingPage = () => {
     };
   }, []);
 
-
   return (
     <>
       <Wrapper>
