@@ -39,9 +39,9 @@ const Selectingmenu = () => {
           return;
         }
 
+        if (answer.data == 'error') return;
         setSelectedMenu(selectedMenu.filter(e => !(e.hasOwnProperty('origin'))));
 
-        if (answer.data == 'error') return;
 
         answer.data.forEach((item) => {
           const myname = getMenuByName(item["product_name"]);
