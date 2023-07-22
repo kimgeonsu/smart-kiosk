@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 import { GptContext, gptContext } from '../context/gptContext';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 
 const SpeechToText = ({ children }) => {
   const {
@@ -14,12 +15,16 @@ const SpeechToText = ({ children }) => {
   const [isOk, setIsOk] = useState(true); // GPT한테 답을 듣기 전에 또 요청을 보내는 것을 방지
   const [isEnd, setIsEnd] = useState(true); // 인공지능이 말하는 것이 끝났는지 확인
   const [answer, setAnswer] = useState(null);
+  const router = useRouter();
 
   useEffect(() => {
     if (!browserSupportsSpeechRecognition) {
       return <span>Browser doesn't support speech recognition.</span>;
     }
-    SpeechRecognition.startListening({ continuous: true, language: 'ko' })
+    SpeechRecognition.startListening({ continuous: true, language: 'ko' });
+    if (router.pathname == '/') {
+      SpeechRecognition.stopListening();
+    }
   }, []);
 
   useEffect(() => {
