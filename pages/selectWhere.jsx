@@ -4,6 +4,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { useRouter } from 'next/router';
 import { GptContext } from '../src/context/gptContext';
 import styled from "styled-components";
+
 const Button = styled.button`
   border: 1px solid #72A3FF;
   width: 243px;
@@ -29,6 +30,7 @@ const selectWhere = () => {
       if (answer['type'] == 'order' && answer['data'][0]['packaging'].length >= 2) {
         console.log("good job!!!");
         router.push('/selectMenu');
+      } else if (answer['data'] === 'error') {
       }
     }
   }, [answer]);
@@ -53,11 +55,11 @@ const selectWhere = () => {
 
     sound.play();
 
-    // const timeout = setTimeout(() => {
-    //   router.push("/WaitingPage"); // 페이지를 변경할 URL로 변경해주세요
-    // }, 15000); // 15초를 밀리초 단위로 설정
+    const timeout = setTimeout(() => {
+      router.push("/"); // 페이지를 변경할 URL로 변경해주세요
+    }, 15000); // 15초를 밀리초 단위로 설정
 
-    // return () => clearTimeout(timeout);
+     return () => clearTimeout(timeout);
   }, [])
 
   return (
@@ -85,7 +87,7 @@ const selectWhere = () => {
       </div>
       <style jsx>{`
         .wrapper {
-          height: 1180px;
+          height: 1100px;
           display: flex;
           justify-content: center;
           align-items: center;

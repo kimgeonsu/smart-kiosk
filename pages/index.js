@@ -16,7 +16,7 @@ const fadeInAnimation = keyframes`
 
 const Wrapper = styled.div`
   width: 100%;
-  height: 100%;
+  height: 1100px;
   animation: ${fadeInAnimation} 1s ease-in;
   display: flex;
   justify-content: center;
@@ -36,7 +36,7 @@ const WaitingPage = () => {
     const socket = io('http://localhost:5001'); // 서버 주소에 맞게 변경
 
     socket.on('connect', () => {
-      // Socket.IO 서버에 연결된 후에 POST 요청을 보냅니다.
+      
       axios.post('http://localhost:5001/kiosk/waiting', { waiting: true }) // API 엔드포인트에 맞게 변경
         .then((response) => {
           console.log("응답했다잉", response.data); // 응답 확인
@@ -61,7 +61,6 @@ const WaitingPage = () => {
       socket.disconnect();
     };
   }, []);
-
 
   return (
     <>

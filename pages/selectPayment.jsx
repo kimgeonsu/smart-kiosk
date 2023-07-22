@@ -5,6 +5,7 @@ import { useRouter } from 'next/router';
 import { GptContext } from '../src/context/gptContext';
 import styled from "styled-components";
 import NotationModal from "./notationModal"
+import axios from 'axios';
 
 const Button = styled.button`
   border: 6px solid #72A3FF;
@@ -24,10 +25,30 @@ const selectPayment = () => {
 
   const [isClicked, setIsClicked] = useState(false);
   const [isModalOpen, setModalOpen] = useState(false);
+  const { answer, setAnswer } = useContext(GptContext);
 
   const openModal = () => {
     setModalOpen(true);
+    refreshGPT();
+
+    localStorage.setItem('totalPrice', JSON.stringify(0));
+    localStorage.setItem('order', JSON.stringify([]));
+ 
+    setTimeout(() => {
+      router.push("/"); 
+    }, 5000); 
+
   };
+  
+  const refreshGPT=()=>{
+      axios.post('http://localhost:5001/kiosk/paying', { paying: true }) 
+    .then((response) => {
+      console.log("결제 완료, gpt 초기화바람", response.data); 
+    })
+    .catch((error) => {
+      console.error('땡떙떙실패:', error);
+    });
+  }
 
   const closeModal = () => {
     setModalOpen(false);
@@ -35,10 +56,22 @@ const selectPayment = () => {
   };
   // 포장 여부에 포장이 들어가면 다음 페이지로 고고
 
-
+  useEffect(() => {
+    console.log(answer);
+    if (answer !== null) {
+      if (answer["type"] == 'payment') {
+      if (answer.data == '카드')  {openModal('카드'); return;}
+      if (answer.data == '숭실페이')  {openModal('숭실페이'); return;}
+      }
+    }
+  }, [answer]);
 
   const handleClick = (which) => {
     setIsClicked(!isClicked);
+
+    localStorage.setItem('totalPrice', JSON.stringify(0));
+    localStorage.setItem('order', JSON.stringify([]));
+
     if (which == "soongsilpay") {
       openModal();
     }
@@ -46,21 +79,23 @@ const selectPayment = () => {
       openModal();
     }
 
+    const timeout = setTimeout(() => {
+      router.push("/"); 
+    }, 5000); // 15초를 밀리초 단위로 설정
+
+
   };
 
   const handlePreviousPage = () => {
-
     router.push("/selectMenu");
   };
 
   useEffect(() => {
-    //  let sound = new Howl({
-    // src: ['/assets/어쩌구.mp3'], 결제 방식을 선택해주세요 음성 넣어야해요
-    // html5: true
-    // });
-
-    //  sound.play();
-
+      let sound = new Howl({
+     src: ['/assets/payment.mp3'], 
+     html5: true
+     });
+      sound.play();
   }, [])
 
   return (
@@ -93,7 +128,7 @@ const selectPayment = () => {
       </div>
       <style jsx>{`
         .wrapper {
-          height: 1180px;
+          height: 1100px;
           display: flex;
           justify-content: center;
           align-items: center;
