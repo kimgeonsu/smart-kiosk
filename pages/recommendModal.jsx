@@ -18,10 +18,10 @@ const RecommendModal = ({
     console.log("삭제할 음료 모음", isChecked);
   }, [selectedMenu]);
 
-  const handleCloseModal = () => {
+/*  const handleCloseModal = () => {
     // 모달 창이 닫힐 때 선택한 메뉴를 전달하고 closeModal 함수 호출
     closeModal(selectedMenu);
-  };
+  };*/
 
   //모달 내에 selectedMenu 추가 될 때마다 이거
   useEffect(() => {
@@ -55,7 +55,6 @@ const RecommendModal = ({
     setIsChecked([]);
     closeModal();
   };
-  
 
   return (
     <>
@@ -188,7 +187,6 @@ const RecommendModal = ({
           padding: 16px;
         }
 
-      
       `}</style>
     </>
   );

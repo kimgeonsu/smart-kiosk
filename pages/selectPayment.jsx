@@ -83,7 +83,7 @@ const selectPayment = () => {
       router.push("/"); 
     }, 5000); // 15초를 밀리초 단위로 설정
 
-
+     return () => clearTimeout(timeout);
   };
 
   const handlePreviousPage = () => {
@@ -155,9 +155,6 @@ const selectPayment = () => {
           height: 236px;
           margin-top: 16px;
           transition: border-color 0.3s, background-color 0.3s;
-
-
-          
         }
 
         button:hover {
