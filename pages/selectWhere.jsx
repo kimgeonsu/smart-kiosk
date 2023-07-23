@@ -28,7 +28,6 @@ const selectWhere = () => {
     console.log(answer);
     if (answer !== null) {
       if (answer['type'] == 'order' && answer['data'][0]['packaging'].length >= 2) {
-        console.log("good job!!!");
         router.push('/selectMenu');
       } else if (answer['data'] === 'error') {
       }
@@ -54,12 +53,6 @@ const selectWhere = () => {
     });
 
     sound.play();
-
-    const timeout = setTimeout(() => {
-      router.push("/"); // 페이지를 변경할 URL로 변경해주세요
-    }, 15000); // 15초를 밀리초 단위로 설정
-
-     return () => clearTimeout(timeout);
   }, [])
 
   return (
@@ -67,14 +60,14 @@ const selectWhere = () => {
       <div className="wrapper">
         <h1>어디서 드시나요?</h1>
         <div className="buttonWrapper">
-          <Button onClick={() => handlePage('here')}>
+          <button className='' onClick={() => handlePage('here')}>
             <Image width={120} height={103} src='/assets/seatInHere.svg' alt='eatHere' />
             <div>
               <span className="highlight">매장</span>
               <span className="btn-text">에서 먹고 갈게요</span>
             </div>
-          </Button>
-          <Button onClick={() => handlePage('togo')}>
+          </button>
+          <button onClick={() => handlePage('togo')}>
             <div>
               <Image width={120} height={110} src='/assets/takeout.svg' alt='togo' />
               <div>
@@ -82,7 +75,7 @@ const selectWhere = () => {
                 <span className="btn-text">해서 가져갈게요</span>
               </div>
             </div>
-          </Button>
+          </button>
         </div>
       </div>
       <style jsx>{`
@@ -110,12 +103,6 @@ const selectWhere = () => {
           transition: border-color 0.3s, background-color 0.3s;
           
         }
-
-        button:hover {
-          border: 3px solid #72a3ff;
-          background-color: rgba(114, 163, 255, 0.3);
-        }
-
 
         .highlight {
           color : #72A3FF;
