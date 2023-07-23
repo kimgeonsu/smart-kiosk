@@ -1,4 +1,4 @@
-import React, { use, useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useRouter } from 'next/router';
 import Image from "next/image";
 import MenuList from "../src/components/list/MenuList";
