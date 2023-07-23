@@ -4,6 +4,7 @@ import styled, { keyframes } from "styled-components";
 import Image from "next/image";
 import io from 'socket.io-client';
 import axios from 'axios';
+import { Howl } from 'howler';
 
 const fadeInAnimation = keyframes`
   from {
@@ -30,6 +31,21 @@ const WaitingPage = () => {
   const handleNextPage = () => {
     router.push('/selectWhere');
   };
+
+  useEffect(() => {
+    const sound = new Howl({
+      src: ['/assets/kioskishere.mp3'],
+      html5: true
+    });
+
+    const interval = setInterval(() => {
+      sound.play();
+    }, 50000);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, []);
 
   useEffect(() => {
     // Socket.IO 클라이언트 초기화

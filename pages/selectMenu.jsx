@@ -18,8 +18,9 @@ const Selectingmenu = () => {
   const [isModalOpen, setModalOpen] = useState(false);
   const [currentSentenceIndex, setCurrentSentenceIndex] = useState(0);
   const [currentSentence, setCurrentSentence] = useState("");
-  const router = useRouter();
   const { answer, setAnswer } = useContext(GptContext);
+
+  const router = useRouter();
 
   //5초마다 추천 문구 바뀜
   useEffect(() => {
@@ -27,7 +28,6 @@ const Selectingmenu = () => {
     const interval = setInterval(() => {
       setCurrentSentenceIndex((prevIndex) => (prevIndex + 1) % sentence.length);
     }, 5000);
-
     return () => clearInterval(interval);
   }, []);
 
@@ -41,9 +41,9 @@ const Selectingmenu = () => {
         }
         if (answer.data == '카드'||answer.data =='숭실') return;
 
-        if (answer.data == 'error') return;
         setSelectedMenu(selectedMenu.filter(e => !(e.hasOwnProperty('origin'))));
 
+        if (answer.data == 'error') return;
 
         answer.data.forEach((item) => {
           const myname = getMenuByName(item["product_name"]);
@@ -57,9 +57,13 @@ const Selectingmenu = () => {
             temperature: item['temperature'],
             origin: 'gpt'
           };
-
-
           setSelectedMenu((prevMenu) => [dataToSave, ...prevMenu]);
+
+          let sound = new Howl({
+            src: ['/assets/cartchanged.mp3'],
+            html5: true
+          });
+          sound.play();
         })
       }
     }
@@ -78,7 +82,6 @@ const Selectingmenu = () => {
     return null;
   }
 
-
   useEffect(() => {
     setCurrentSentence(sentence[currentSentenceIndex].sentence);
   }, [currentSentenceIndex]);
@@ -87,33 +90,29 @@ const Selectingmenu = () => {
   const handleTypeButtonClick = (type) => {
     setMenuData([]);
     let newData;
-    if (type === "커피") {
+      if (type === "커피") {
       newData = menu.coffee;
     } else if (type === "차") {
       newData = menu.tea;
     }
-    else if (type === "스무디") {
+      else if (type === "스무디") {
       newData = menu.smoothie;
     }
-    else if (type === "주스") {
+      else if (type === "주스") {
       newData = menu.juice;
     }
     setMenuData(newData);
   };
 
   useEffect(() => {
-
-
     let sound = new Howl({
       src: ['/assets/menu_guide.mp3'], 
       html5: true
       });
        sound.play();
-
+       
     const existingOrder = JSON.parse(localStorage.getItem("order")) || [];
     setSelectedMenu(existingOrder instanceof Array ? existingOrder : []);
-
-
   }, []);
 
   //장바구니 금액 총합 계산
@@ -179,9 +178,6 @@ const handleDeleteClick = (drink) => {
 
   return (
     <>
-      {/* <button onClick={openModal}>Open Modal</button> */}
-      {/* <button isPutByServer={isPutByServer} setIsPutByServer={setIsPutByServer} onClick={alertModal}>Cart Modal</button> */}
-
       {totalPrice && isModalOpen && <CheckingList selectedMenu={selectedMenu} setSelectedMenu={setSelectedMenu} totalPrice={totalPrice} setTotalPrice={setTotalPrice} closeModal={closeModal} />}
 
       <div className="wrapper">
@@ -334,7 +330,6 @@ const handleDeleteClick = (drink) => {
         }
 
         .cartlistContainer{
-          
           width: 100%;
           align-items: column;
         }
@@ -454,7 +449,6 @@ const handleDeleteClick = (drink) => {
           justify-content: center;
           width: 385px;
       }
-
       `}</style>
     </>
   );
