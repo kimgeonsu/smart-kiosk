@@ -1,12 +1,13 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useRouter } from 'next/router';
+import { Howl } from 'howler';
 import Image from "next/image";
 import MenuList from "../src/components/list/MenuList";
 import menu from "../src/data/menu.json";
 import PlusButton from "../src/components/ui/PlusButton";
 import MinusButton from "../src/components/ui/MinusButton";
 import DeleteButton from "../src/components/ui/DeleteButton";
-import CheckingList from "./checkingList";
+import CheckingList from "../src/components/CheckingList";
 import sentence from "../src/data/inducementsentence.json";
 import { GptContext } from "../src/context/gptContext";
 
@@ -38,6 +39,7 @@ const Selectingmenu = () => {
           router.push('/selectPayment');
           return;
         }
+        if (answer.data == '카드'||answer.data =='숭실') return;
 
         if (answer.data == 'error') return;
         setSelectedMenu(selectedMenu.filter(e => !(e.hasOwnProperty('origin'))));
@@ -100,22 +102,38 @@ const Selectingmenu = () => {
   };
 
   useEffect(() => {
+
+
+    let sound = new Howl({
+      src: ['/assets/menu_guide.mp3'], 
+      html5: true
+      });
+       sound.play();
+
     const existingOrder = JSON.parse(localStorage.getItem("order")) || [];
     setSelectedMenu(existingOrder instanceof Array ? existingOrder : []);
-  }, []);
 
+
+  }, []);
 
   //장바구니 금액 총합 계산
   useEffect(() => {
     const totalPrice = selectedMenu.reduce(
       (sum, item) => sum + item.price * item.quantity, 0);
     setTotalPrice(totalPrice);
+
+    if(!totalPrice){
+      setModalOpen(false);
+    }
   }, [selectedMenu]);
 
   // 장바구니 내역 저장
   const saveOrder = () => {
     localStorage.setItem('totalPrice', JSON.stringify(totalPrice));
     localStorage.setItem('order', JSON.stringify(selectedMenu));
+    if(totalPrice){
+     router.push("/selectPayment");
+    }    
   }
 
   const handlePreviousPage = () => {
@@ -125,12 +143,12 @@ const Selectingmenu = () => {
   };
 
   //장바구니에서 삭제
-  const handleDeleteClick = (drink) => {
-    setSelectedMenu((prevMenu) => {
-      const updatedMenu = prevMenu.filter((item) => item.id !== drink); //해당 음료 이름 필터링
-      return updatedMenu;
-    });
-  };
+const handleDeleteClick = (drink) => {
+  setSelectedMenu((prevMenu) => {
+    const updatedMenu = prevMenu.filter((item) => !(item.name === drink.name && item.temperature === drink.temperature));
+    return updatedMenu;
+  });
+};
 
   /**장바구니 음료 수량 변경 menu: selctedMenu 객체, action: 'minus' or 'plus' */
   const handleQuantity = (menu, action) => {
@@ -164,7 +182,7 @@ const Selectingmenu = () => {
       {/* <button onClick={openModal}>Open Modal</button> */}
       {/* <button isPutByServer={isPutByServer} setIsPutByServer={setIsPutByServer} onClick={alertModal}>Cart Modal</button> */}
 
-      {isModalOpen && totalPrice && <CheckingList selectedMenu={selectedMenu} setSelectedMenu={setSelectedMenu} totalPrice={totalPrice} setTotalPrice={setTotalPrice} closeModal={closeModal} />}
+      {totalPrice && isModalOpen && <CheckingList selectedMenu={selectedMenu} setSelectedMenu={setSelectedMenu} totalPrice={totalPrice} setTotalPrice={setTotalPrice} closeModal={closeModal} />}
 
       <div className="wrapper">
         <div className="upperBar">
@@ -210,10 +228,10 @@ const Selectingmenu = () => {
         <div className="payContent">
           <div className="cart-wrapper">
             <div className="pay-top" onClick={openModal}>
-              <div style={{ flex: 2.5, fontSize: 16, color: '#666666', fontWeight: 'bolder' }}>주문내역</div>
-              <div style={{ flex: 1, fontSize: 16, color: '#666666', fontWeight: 'bolder' }}>온도</div>
-              <div style={{ flex: 1, fontSize: 16, color: '#666666', fontWeight: 'bolder' }}>수량</div>
-              <div style={{ flex: 1.5, fontSize: 25, color: '#367cff', fontWeight: 'bolder' }}>
+              <div style={{ flex: 2, fontSize: 16, color: '#666666', fontWeight: 'bolder' }}>주문내역</div>
+   
+              <div style={{ flex: 0.8, fontSize: 16, color: '#666666', fontWeight: 'bolder' }}>수량</div>
+              <div style={{ flex: 1, fontSize: 25, color: '#367cff', fontWeight: 'bolder' }}>
                 {totalPrice.toLocaleString()}원
               </div>
 
@@ -222,15 +240,15 @@ const Selectingmenu = () => {
               {
                 selectedMenu.map((item) =>
                   <div className="cart-item">
-                    <div style={{ flex: 3, fontSize: 16, color: '#000000', fontWeight: 'bolder' }}>{item.name}</div>
-                    <div style={{ flex: 1, fontSize: 16, color: '#000000', fontWeight: 'bolder' }}>{item.temperature}</div>
-                    <div style={{ flex: 1.5, fontSize: 16, color: '#000000', fontWeight: 'bolder' }}>
+                    <div style={{ flex: 0.7, fontSize: 16, color: '#000000', fontWeight: 'bolder' }}> {item.temperature === 'Hot' ? '따뜻한' : `시원한`}</div>
+                    <div style={{ flex: 2, fontSize: 16, color: '#000000', fontWeight: 'bolder' }}>{item.name}</div>
+                    <div style={{ flex: 1.8, fontSize: 16, color: '#000000', fontWeight: 'bolder' }}>
                       <MinusButton handleMinusClick={() => handleQuantity(item, 'minus')} drink={item.name} />
                       {item.quantity}개
                       <PlusButton handlePlusClick={() => handleQuantity(item, 'plus')} drink={item.name} />
                     </div>
-                    <div style={{ flex: 1.2, fontSize: 16, color: '#000000', fontWeight: 'bolder' }}>   {`${(item.price * item.quantity).toLocaleString()}원`}</div>
-                    <DeleteButton handleDeleteClick={() => handleDeleteClick(item.name)} drink={item.name} />
+                    <div style={{ flex: 0.8, fontSize: 16, color: '#000000', fontWeight: 'bolder' }}>   {`${(item.price * item.quantity).toLocaleString()}원`}</div>
+                    <DeleteButton handleDeleteClick={() => handleDeleteClick({ name: item.name, temperature: item.temperature })} />
                   </div>
                 )
               }
