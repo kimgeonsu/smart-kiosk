@@ -57,14 +57,27 @@ const Selectingmenu = () => {
             temperature: item['temperature'],
             origin: 'gpt'
           };
+
           setSelectedMenu((prevMenu) => [dataToSave, ...prevMenu]);
 
-          let sound = new Howl({
-            src: ['/assets/cartchanged.mp3'],
-            html5: true
-          });
-          sound.play();
+          if(dataToSave.temperature==""){
+            let sound = new Howl({
+              src: ['/assets/temperature.mp3'],
+              html5: true
+            });
+            sound.play();
+          }
+
+          else{
+            let sound = new Howl({
+              src: ['/assets/cartchanged.mp3'],
+              html5: true
+            });
+            sound.play();
+          }
+          
         })
+        
       }
     }
   }, [answer]);
