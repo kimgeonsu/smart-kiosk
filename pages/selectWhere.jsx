@@ -3,25 +3,12 @@ import Image from 'next/image';
 import React, { useState, useEffect, useContext } from "react";
 import { useRouter } from 'next/router';
 import { GptContext } from '../src/context/gptContext';
-import styled from "styled-components";
-
-const Button = styled.button`
-  border: 1px solid #72A3FF;
-  width: 243px;
-  height: 236px;
-  margin-top: 16px;
-  transition: border-color 0.3s, background-color 0.3s;
-
-  :hover {
-    border: 3px solid #72a3ff;
-    background-color: rgba(114, 163, 255, 0.3);
-  }
-`;
 
 const selectWhere = () => {
   const router = useRouter();
   const { answer, setAnswer } = useContext(GptContext);
   const [isClicked, setIsClicked] = useState(false);
+  const [isFirst, setIsFirst] = useState(true);
 
   // 포장 여부에 포장이 들어가면 다음 페이지로 고고
   useEffect(() => {
@@ -30,6 +17,7 @@ const selectWhere = () => {
       if (answer['type'] == 'order' && answer['data'][0]['packaging'].length >= 2) {
         router.push('/selectMenu');
       } else if (answer['data'] === 'error') {
+        return;
       }
     }
   }, [answer]);
@@ -41,20 +29,16 @@ const selectWhere = () => {
     console.log(where);
   };
 
-
-
-  const handleClick = () => {
-    setIsClicked(!isClicked);
-  };
-
-
   useEffect(() => {
     let sound = new Howl({
       src: ['/assets/isToGO.mp3'],
       html5: true
     });
+    if (isFirst) {
+      sound.play();
+      setIsFirst(false);
+    }
 
-    sound.play();
   }, [])
 
   return (

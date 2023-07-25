@@ -18,13 +18,27 @@ const Selectingmenu = () => {
   const [isModalOpen, setModalOpen] = useState(false);
   const [currentSentenceIndex, setCurrentSentenceIndex] = useState(0);
   const [currentSentence, setCurrentSentence] = useState("");
+  const [isFirst, setIsFirst] = useState(true);
   const { answer, setAnswer } = useContext(GptContext);
+
 
   const router = useRouter();
 
-  //5초마다 추천 문구 바뀜
   useEffect(() => {
     setMenuData(menu.coffee);
+
+    let sound = new Howl({
+      src: ['/assets/menu_guide.mp3'],
+      html5: true
+    });
+    if (isFirst) {
+      sound.play();
+      setIsFirst(false);
+    }
+
+    const existingOrder = JSON.parse(localStorage.getItem("order")) || [];
+    setSelectedMenu(existingOrder instanceof Array ? existingOrder : []);
+
     const interval = setInterval(() => {
       setCurrentSentenceIndex((prevIndex) => (prevIndex + 1) % sentence.length);
     }, 5000);
@@ -39,7 +53,7 @@ const Selectingmenu = () => {
           router.push('/selectPayment');
           return;
         }
-        if (answer.data == '카드'||answer.data =='숭실') return;
+        if (answer.data == '카드' || answer.data == '숭실') return;
 
         setSelectedMenu(selectedMenu.filter(e => !(e.hasOwnProperty('origin'))));
 
@@ -90,30 +104,19 @@ const Selectingmenu = () => {
   const handleTypeButtonClick = (type) => {
     setMenuData([]);
     let newData;
-      if (type === "커피") {
+    if (type === "커피") {
       newData = menu.coffee;
     } else if (type === "차") {
       newData = menu.tea;
     }
-      else if (type === "스무디") {
+    else if (type === "스무디") {
       newData = menu.smoothie;
     }
-      else if (type === "주스") {
+    else if (type === "주스") {
       newData = menu.juice;
     }
     setMenuData(newData);
   };
-
-  useEffect(() => {
-    let sound = new Howl({
-      src: ['/assets/menu_guide.mp3'], 
-      html5: true
-      });
-       sound.play();
-       
-    const existingOrder = JSON.parse(localStorage.getItem("order")) || [];
-    setSelectedMenu(existingOrder instanceof Array ? existingOrder : []);
-  }, []);
 
   //장바구니 금액 총합 계산
   useEffect(() => {
@@ -121,7 +124,7 @@ const Selectingmenu = () => {
       (sum, item) => sum + item.price * item.quantity, 0);
     setTotalPrice(totalPrice);
 
-    if(!totalPrice){
+    if (!totalPrice) {
       setModalOpen(false);
     }
   }, [selectedMenu]);
@@ -130,9 +133,9 @@ const Selectingmenu = () => {
   const saveOrder = () => {
     localStorage.setItem('totalPrice', JSON.stringify(totalPrice));
     localStorage.setItem('order', JSON.stringify(selectedMenu));
-    if(totalPrice){
-     router.push("/selectPayment");
-    }    
+    if (totalPrice) {
+      router.push("/selectPayment");
+    }
   }
 
   const handlePreviousPage = () => {
@@ -142,12 +145,12 @@ const Selectingmenu = () => {
   };
 
   //장바구니에서 삭제
-const handleDeleteClick = (drink) => {
-  setSelectedMenu((prevMenu) => {
-    const updatedMenu = prevMenu.filter((item) => !(item.name === drink.name && item.temperature === drink.temperature));
-    return updatedMenu;
-  });
-};
+  const handleDeleteClick = (drink) => {
+    setSelectedMenu((prevMenu) => {
+      const updatedMenu = prevMenu.filter((item) => !(item.name === drink.name && item.temperature === drink.temperature));
+      return updatedMenu;
+    });
+  };
 
   /**장바구니 음료 수량 변경 menu: selctedMenu 객체, action: 'minus' or 'plus' */
   const handleQuantity = (menu, action) => {
@@ -225,7 +228,7 @@ const handleDeleteClick = (drink) => {
           <div className="cart-wrapper">
             <div className="pay-top" onClick={openModal}>
               <div style={{ flex: 2, fontSize: 16, color: '#666666', fontWeight: 'bolder' }}>주문내역</div>
-   
+
               <div style={{ flex: 0.8, fontSize: 16, color: '#666666', fontWeight: 'bolder' }}>수량</div>
               <div style={{ flex: 1, fontSize: 25, color: '#367cff', fontWeight: 'bolder' }}>
                 {totalPrice.toLocaleString()}원

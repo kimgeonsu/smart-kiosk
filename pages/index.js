@@ -17,7 +17,6 @@ const fadeInAnimation = keyframes`
 
 const Wrapper = styled.div`
   width: 100%;
-  height: 1100px;
   animation: ${fadeInAnimation} 1s ease-in;
   display: flex;
   justify-content: center;
@@ -26,7 +25,6 @@ const Wrapper = styled.div`
 
 const WaitingPage = () => {
   const router = useRouter();
-  const [showWaiting, setShowWaiting] = useState(false);
 
   const handleNextPage = () => {
     router.push('/selectWhere');
@@ -81,7 +79,7 @@ const WaitingPage = () => {
   return (
     <>
       <Wrapper>
-        {<Image width={820} height={1180} src="/waiting.svg" alt="Waiting" />}
+        {<Image width={820} height={1100} src="/waiting.svg" alt="Waiting" />}
       </Wrapper>
     </>
   );
