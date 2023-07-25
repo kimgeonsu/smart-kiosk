@@ -34,13 +34,24 @@ const selectPayment = () => {
     localStorage.setItem('totalPrice', JSON.stringify(0));
     localStorage.setItem('order', JSON.stringify([]));
  
-    setTimeout(() => {
+    const timeout =setTimeout(() => {
       router.push("/"); 
-    }, 5000); 
+    }, 5000);
+
+    return () => {
+      clearInterval(timeout);
+    };
 
   };
   
   const refreshGPT=()=>{
+    let sound = new Howl({
+      src: ['/assets/finish.mp3'],
+      html5: true
+    });
+
+    sound.play();
+
       axios.post('http://localhost:5001/kiosk/paying', { paying: true }) 
     .then((response) => {
       console.log("결제 완료, gpt 초기화바람", response.data); 

@@ -31,7 +31,7 @@ const selectWhere = () => {
 
   useEffect(() => {
     let sound = new Howl({
-      src: ['/assets/isToGO.mp3'],
+      src: ['/assets/selectwhere.mp3'],
       html5: true
     });
     if (isFirst) {

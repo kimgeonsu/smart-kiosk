@@ -36,7 +36,6 @@ const Cartlist = styled.div`
     justify-content: space-between;
     align-items: center;
     width: 100%;
-  
     padding:8px;
     border-bottom: 1px solid #72A3FF;
 `;
@@ -44,10 +43,7 @@ const Cartlist = styled.div`
 const Name = styled.text`
     font-size: 27px;
     font-weight: 600;
-
 `;
-
-
 
 const Text = styled.text`
     display: flex;
@@ -71,13 +67,7 @@ const Modal = ({ drinks }) => {
     <ModalOverlay>
      <ModalContent>
         <Text>장바구니에 담겼습니다!</Text>
-
-
-
-
- <PutDrinkList drinks={drinks} />
-
-
+        <PutDrinkList drinks={drinks} />
      </ModalContent>
     </ModalOverlay>
   );
