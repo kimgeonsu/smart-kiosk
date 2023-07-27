@@ -83,13 +83,15 @@ const SpeechToText = ({ children }) => {
     <>
       <GptContext.Provider value={{ answer, setAnswer }}>
         {children}
-        <div className='wrapper'>
-          <Image width={60} height={60} src='/assets/cafeperson.svg' />
-          {(answer !== null && answer['type'] == 'recommend')
-            ? <div className='caption'>{answer['caption']}</div>
-            : <div className='caption'></div>
-          }
-        </div>
+        {router.pathname != '/checkOrder' &&
+          <div className='wrapper'>
+            {<Image width={60} height={60} src='/assets/cafeperson.svg' />}
+            {(answer !== null && answer['type'] == 'recommend')
+              ? <div className='caption'>{answer['caption']}</div>
+              : <div className='caption'></div>
+            }
+          </div>
+        }
       </GptContext.Provider>
       <style jsx>{`
         .wrapper {
