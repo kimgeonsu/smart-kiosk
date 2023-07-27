@@ -51,7 +51,6 @@ const Selectingmenu = () => {
       if (answer["type"] == 'order') {
         if (answer.data == '종료') {
           router.push('/selectPayment');
-          return;
         }
         if (answer.data == '카드' || answer.data == '숭실') return;
 
@@ -59,6 +58,7 @@ const Selectingmenu = () => {
 
         if (answer.data == 'error') return;
 
+        let isTemperatureOk = true;
         answer.data.forEach((item) => {
           const myname = getMenuByName(item["product_name"]);
           if (myname == null) {
@@ -72,26 +72,25 @@ const Selectingmenu = () => {
             origin: 'gpt'
           };
 
+          if (item['temperature'] !== 'Iced' && item['temperature'] !== 'Hot') isTemperatureOk = false;
           setSelectedMenu((prevMenu) => [dataToSave, ...prevMenu]);
-
-          if(dataToSave.temperature==""){
-            let sound = new Howl({
-              src: ['/assets/temperature.mp3'],
-              html5: true
-            });
-            sound.play();
-          }
-
-          else{
-            let sound = new Howl({
-              src: ['/assets/cartchanged.mp3'],
-              html5: true
-            });
-            sound.play();
-          }
-          
         })
-        
+
+        if (isTemperatureOk) {
+          if (!(answer['data'][0].hasOwnProperty('product_name'))) return;
+          let sound = new Howl({
+            src: ['/assets/cartchanged.mp3'],
+            html5: true
+          });
+          sound.play();
+        } else {
+          let sound = new Howl({
+            src: ['/assets/temperature.mp3'],
+            html5: true
+          });
+          sound.play();
+        }
+
       }
     }
   }, [answer]);
