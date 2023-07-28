@@ -63,7 +63,7 @@ const selectPayment = () => {
       console.log(orderDataArray); 
 
     // 서버에 post 요청 보내기
-    const response = await axios.post('/selectPayment', orderDataArray);
+    const response = await axios.post('/selectPayment', { data: orderDataArray });
     
       console.log(response.data); // 서버로부터의 응답을 확인
     } catch (error) {
