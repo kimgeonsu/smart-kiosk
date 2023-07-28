@@ -15,6 +15,8 @@ const selectWhere = () => {
     console.log(answer);
     if (answer !== null) {
       if (answer['type'] == 'order' && answer['data'][0]['packaging'].length >= 2) {
+        console.log(answer['data'][0]['packaging']);
+        localStorage.setItem('where', JSON.stringify(answer['data'][0]['packaging']));
         router.push('/selectMenu');
       } else if (answer['data'] === 'error') {
         return;
@@ -25,9 +27,10 @@ const selectWhere = () => {
   const handlePage = (where) => {
     setIsClicked(!isClicked);
     router.push("/selectMenu");
-    localStorage.setItem('where', where);
+    localStorage.setItem('where', JSON.stringify(where));
     console.log(where);
   };
+  
 
   useEffect(() => {
     let sound = new Howl({
@@ -46,14 +49,14 @@ const selectWhere = () => {
       <div className="wrapper">
         <h1>어디서 드시나요?</h1>
         <div className="buttonWrapper">
-          <button className='' onClick={() => handlePage('here')}>
+          <button className='' onClick={() => handlePage('store')}>
             <Image width={120} height={103} src='/assets/seatInHere.svg' alt='eatHere' />
             <div>
               <span className="highlight">매장</span>
               <span className="btn-text">에서 먹고 갈게요</span>
             </div>
           </button>
-          <button onClick={() => handlePage('togo')}>
+          <button onClick={() => handlePage('packaging')}>
             <div>
               <Image width={120} height={110} src='/assets/takeout.svg' alt='togo' />
               <div>

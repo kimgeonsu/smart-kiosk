@@ -45,12 +45,22 @@ const Selectingmenu = () => {
     return () => clearInterval(interval);
   }, []);
 
+  // 장바구니 내역 저장
+  const saveOrder = () => {
+    localStorage.setItem('totalPrice', JSON.stringify(totalPrice));
+    localStorage.setItem('order', JSON.stringify(selectedMenu));
+    if (totalPrice) {
+      router.push("/selectPayment");
+    }
+  }
+
   useEffect(() => {
     console.log("사용자가 주문함", answer);
     if (answer !== null) {
       if (answer["type"] == 'order') {
         if (answer.data == '종료') {
-          router.push('/selectPayment');
+          saveOrder();
+          return;
         }
         if (answer.data == '카드' || answer.data == '숭실') return;
 
@@ -141,14 +151,7 @@ const Selectingmenu = () => {
     }
   }, [selectedMenu]);
 
-  // 장바구니 내역 저장
-  const saveOrder = () => {
-    localStorage.setItem('totalPrice', JSON.stringify(totalPrice));
-    localStorage.setItem('order', JSON.stringify(selectedMenu));
-    if (totalPrice) {
-      router.push("/selectPayment");
-    }
-  }
+
 
   const handlePreviousPage = () => {
     localStorage.setItem('totalPrice', JSON.stringify(0));
@@ -193,7 +196,7 @@ const Selectingmenu = () => {
 
   return (
     <>
-      {totalPrice && isModalOpen && <CheckingList selectedMenu={selectedMenu} setSelectedMenu={setSelectedMenu} totalPrice={totalPrice} setTotalPrice={setTotalPrice} closeModal={closeModal} />}
+      {totalPrice !== null && isModalOpen && <CheckingList selectedMenu={selectedMenu} setSelectedMenu={setSelectedMenu} totalPrice={totalPrice} setTotalPrice={setTotalPrice} closeModal={closeModal} />}
 
       <div className="wrapper">
         <div className="upperBar">

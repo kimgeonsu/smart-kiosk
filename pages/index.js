@@ -46,6 +46,7 @@ const WaitingPage = () => {
   }, []);
 
   useEffect(() => {
+
     // Socket.IO 클라이언트 초기화
     const socket = io('http://localhost:5001'); // 서버 주소에 맞게 변경
 
