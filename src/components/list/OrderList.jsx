@@ -3,11 +3,16 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import Image from "next/image";
 
-const OrderList = ({ orders }) => {
+const OrderList = ({ orders, onClickItem }) => {
   return (
     <div>
       {orders.map((order, index) => (
-        <OrderListItem key={index} order={order} />
+        <OrderListItem 
+          key={orders.order_number} 
+          order={order} 
+          onClick={() => {
+          onClickItem(order);
+      }} />
       ))}
     </div>
   );

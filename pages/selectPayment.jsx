@@ -41,39 +41,41 @@ const selectPayment = () => {
     };
 
   };
-  const where = JSON.parse(localStorage.getItem('where'));
-  const storedTotalPrice = JSON.parse(localStorage.getItem('totalPrice'));
-  const selectedMenu = JSON.parse(localStorage.getItem('order'));
+
+
 
   const sendOrderToServer = async () => {
+    if (typeof window !== 'undefined') {
+
+      const which = JSON.parse(localStorage.getItem('where'));
+      const storedTotalPrice = JSON.parse(localStorage.getItem('totalPrice'));
+      const selectedMenu = JSON.parse(localStorage.getItem('order'));
+    
     console.log("????"); 
     try {
       console.log("???????????????/"); 
-      // selectedMenu 배열에서 주문 정보 추출
-      const which = where !== "" ? where : item.packaging;
+
       console.log("두두두둥",which);
       const orderDataArray = selectedMenu.map((item) => ({
         packaging: which,
         product_name: item.name,
         quantity: item.quantity,
         temperature: item.temperature,
-        total_amount: storedTotalPrice, 
-      }
-      ));
+        price: (item.price)*(item.quantity),
+        total_price: storedTotalPrice,  
+      }));
       console.log(orderDataArray); 
 
-    // 서버에 post 요청 보내기
-    const response = await axios.post('/selectPayment', { data: orderDataArray });
-    
-      console.log(response.data); // 서버로부터의 응답을 확인
+      await axios.post('http://127.0.0.1:5001/selectPayment', orderDataArray);
+
     } catch (error) {
       console.error(error);
-       
     }
     localStorage.setItem('totalPrice', JSON.stringify(0));
     localStorage.setItem('order', JSON.stringify([]));
     localStorage.setItem('where', JSON.stringify([]));
-    console.error("끝~");
+
+  }
   };
   
   const refreshSound=()=>{
