@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import Image from "next/image";
 import Receipt from '../Receipt';
+
 const Wrapper = styled.div`
   width: 100%;
   cursor: pointer;
@@ -17,7 +18,6 @@ const Wrapper = styled.div`
 const Container = styled.div`
   display: flex;
   justify-content: space-between;
-
 `;
 
 
@@ -30,7 +30,6 @@ const TextContainer = styled.div`
 const OrderInfo = styled.div`
   display: ${({ isOpen }) => (isOpen ? "block" : "none")};
   margin-top: 16px;
-  
 `;
 
 const OrderListItem = ({ order, onClick }) => {
@@ -38,7 +37,6 @@ const OrderListItem = ({ order, onClick }) => {
 
   const handleClick = () => {
     setIsOpen(!isOpen);
-
   };
 
   return (
@@ -90,4 +88,3 @@ const OrderListItem = ({ order, onClick }) => {
 };
 
 export default OrderListItem;
-//<Receipt  items={order}></Receipt>

@@ -18,7 +18,13 @@ const checkingList = (props) => {
     setModalOpen(true);
   };
 
-
+  const saveOrder = () => {
+    localStorage.setItem('totalPrice', JSON.stringify(totalPrice));
+    localStorage.setItem('order', JSON.stringify(selectedMenu));
+    if (totalPrice) {
+      router.push("/selectPayment");
+    }
+  }
 
   useEffect(() => {
     if (!totalPrice) { return null };
@@ -155,7 +161,7 @@ const checkingList = (props) => {
               <div style={{ fontSize: 30, color: '#367cff', fontWeight: 'bolder', marginTop: '-10px' }}>{totalPrice.toLocaleString()}</div>
               < div style={{ fontSize: 20, color: '#666666', fontWeight: 'bolder' }}>원</div>
             </div>
-            <button onClick={openModal} className="pay-btn" > 주문 완료 </button>
+            <button onClick={saveOrder} className="pay-btn" > 주문 완료 </button>
           </div>
         </div>
 

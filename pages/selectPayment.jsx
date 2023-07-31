@@ -29,11 +29,9 @@ const selectPayment = () => {
 
   const openModal = () => {
     setModalOpen(true);
-    refreshGPT();
+    sendOrderToServer();
+    refreshSound();
 
-    localStorage.setItem('totalPrice', JSON.stringify(0));
-    localStorage.setItem('order', JSON.stringify([]));
- 
     const timeout =setTimeout(() => {
       router.push("/"); 
     }, 5000);
@@ -43,22 +41,50 @@ const selectPayment = () => {
     };
 
   };
+
+
+
+  const sendOrderToServer = async () => {
+    if (typeof window !== 'undefined') {
+
+      const which = JSON.parse(localStorage.getItem('where'));
+      const storedTotalPrice = JSON.parse(localStorage.getItem('totalPrice'));
+      const selectedMenu = JSON.parse(localStorage.getItem('order'));
+    
+    console.log("????"); 
+    try {
+      console.log("???????????????/"); 
+
+      console.log("두두두둥",which);
+      const orderDataArray = selectedMenu.map((item) => ({
+        packaging: which,
+        product_name: item.name,
+        quantity: item.quantity,
+        temperature: item.temperature,
+        price: (item.price)*(item.quantity),
+        total_price: storedTotalPrice,  
+      }));
+      console.log(orderDataArray); 
+
+      await axios.post('http://127.0.0.1:5001/selectPayment', orderDataArray);
+
+    } catch (error) {
+      console.error(error);
+    }
+    localStorage.setItem('totalPrice', JSON.stringify(0));
+    localStorage.setItem('order', JSON.stringify([]));
+    localStorage.setItem('where', JSON.stringify([]));
+
+  }
+  };
   
-  const refreshGPT=()=>{
+  const refreshSound=()=>{
     let sound = new Howl({
       src: ['/assets/finish.mp3'],
       html5: true
     });
 
     sound.play();
-
-      axios.post('http://localhost:5001/kiosk/paying', { paying: true }) 
-    .then((response) => {
-      console.log("결제 완료, gpt 초기화바람", response.data); 
-    })
-    .catch((error) => {
-      console.error('땡떙떙실패:', error);
-    });
   }
 
   const closeModal = () => {
@@ -79,9 +105,6 @@ const selectPayment = () => {
 
   const handleClick = (which) => {
     setIsClicked(!isClicked);
-
-    localStorage.setItem('totalPrice', JSON.stringify(0));
-    localStorage.setItem('order', JSON.stringify([]));
 
     if (which == "soongsilpay") {
       openModal();
@@ -116,7 +139,6 @@ const selectPayment = () => {
       <div className="wrapper">
         <div className="upperBar">
           <Image width={16} height={32} src='/asset/back.svg' alt="이미지" onClick={handlePreviousPage} />
-
         </div>
         <h1>결제 방식을 선택해주세요</h1>
         <div className="buttonWrapper">
@@ -131,7 +153,6 @@ const selectPayment = () => {
               <Image width={120} height={110} src='/assets/cash.svg' alt='cash' />
               <div>
                 <span className="highlight">숭실페이</span>
-
               </div>
             </div>
           </button>

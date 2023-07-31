@@ -105,9 +105,3 @@ const Receipt = ({ items, totalPrice }) => {
 };
 
 export default Receipt;
-/* {items.map((item) => (
-        <ItemContainer key={item.name}>
-          <ItemName>{item.name}</ItemName>
-          <ItemPrice>{item.price}원</ItemPrice>
-        </ItemContainer>
-      ))} */

@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Howl } from 'howler';
 import Image from 'next/image';
 import styled from "styled-components";
 import OrderList from '../src/components/list/OrderList';
@@ -26,7 +25,11 @@ const Container = styled.div`
         }
     }
 `;
+const Textcontainer=styled.div`
+  display: flex;
+  justify-content: center;
 
+`;
 
 
 const checkOrder=()=>{
@@ -51,7 +54,9 @@ const checkOrder=()=>{
 
  return(
   <Wrapper>
-    <h1>주문 목록</h1>
+    <Textcontainer>
+    <h1 style={{ textAlign: "center" }}>&lt;주문목록&gt;</h1>
+    </Textcontainer>
     <Container>
     <OrderList orders={orders}    onClickItem={orders} />
     </Container>
