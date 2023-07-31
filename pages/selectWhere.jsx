@@ -14,7 +14,7 @@ const selectWhere = () => {
   useEffect(() => {
     console.log(answer);
     if (answer !== null) {
-      if (answer['type'] == 'order' && answer['data'][0]['packaging'].length >= 2) {
+      if (answer['type'] == 'order' && typeof (answer['data']) == 'object' && answer['data'][0]['packaging'].length >= 2) {
         console.log(answer['data'][0]['packaging']);
         localStorage.setItem('where', JSON.stringify(answer['data'][0]['packaging']));
         router.push('/selectMenu');
@@ -30,7 +30,7 @@ const selectWhere = () => {
     localStorage.setItem('where', JSON.stringify(where));
     console.log(where);
   };
-  
+
 
   useEffect(() => {
     let sound = new Howl({
